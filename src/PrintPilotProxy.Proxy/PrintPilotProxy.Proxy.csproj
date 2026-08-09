@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>PrintPilotProxy.Proxy</RootNamespace>
+    <Description>Proxy engine integration layer using Unobtanium Web Proxy.</Description>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Unobtanium.Web.Proxy" Version="0.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PrintPilotProxy.Core\PrintPilotProxy.Core.csproj" />
+  </ItemGroup>
+
+</Project>
+

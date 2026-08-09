@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>PrintPilotProxy.Core</RootNamespace>
+    <Description>Cross-platform core library for PrintPilotProxy - models, interfaces, validation, and security.</Description>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+</Project>
+
