@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Platform Condition="'$(Platform)' == '' or '$(Platform)' == 'AnyCPU'">x64</Platform>
     <InstallerPlatform>x64</InstallerPlatform>
-    <OutputName>PrintPilotProxy-0.1.8-x64</OutputName>
+    <OutputName>PrintPilotProxy-0.2.0-x64</OutputName>
     <OutputType>Package</OutputType>
     <OutputPath>..\..\publish\</OutputPath>
   </PropertyGroup>

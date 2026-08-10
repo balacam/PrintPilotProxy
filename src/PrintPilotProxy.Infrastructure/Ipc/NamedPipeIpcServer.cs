@@ -226,7 +226,8 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
                 var isInteractive = windowsIdentity.User?.IsWellKnown(WellKnownSidType.InteractiveSid) == true
                                  || windowsIdentity.Groups?.Any(g => (g as SecurityIdentifier)?.IsWellKnown(WellKnownSidType.InteractiveSid) == true) == true;
 
-                int activeConsoleSessionId = (int)GetActiveConsoleSessionId();
+                int activeConsoleSessionId = 0;
+                try { activeConsoleSessionId = (int)GetActiveConsoleSessionId(); } catch { }
                 int callerSessionId = System.Diagnostics.Process.GetCurrentProcess().SessionId;
 
                 bool isActiveConsoleUser = (callerSessionId == activeConsoleSessionId && callerSessionId != 0) || isSystem || isAdmin || isInteractive;
@@ -247,7 +248,7 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Could not resolve IPC client identity; assigning default interactive user context.");
+            _logger.LogDebug(ex, "Could not resolve IPC client identity; assigning default interactive user context.");
             return IpcClientIdentity.CreateInteractiveUser();
         }
     }

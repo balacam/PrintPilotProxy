@@ -133,14 +133,13 @@ public partial class NetworkSettingsViewModel : ObservableObject
             DetectedAdapters.Clear();
             foreach (var ni in interfaces)
             {
-                foreach (var addr in ni.Addresses.Where(a =>
-                    a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork))
+                foreach (var addrStr in ni.Addresses)
                 {
                     DetectedAdapters.Add(new AdapterItem
                     {
-                        DisplayName = $"{ni.Name}  –  {addr}  ({(ni.IsPrivate ? LocalizationService.Instance["Common.Private"] : LocalizationService.Instance["Common.Public"])})",
+                        DisplayName = $"{ni.Name}  –  {addrStr}  ({(ni.IsPrivate ? LocalizationService.Instance["Common.Private"] : LocalizationService.Instance["Common.Public"])})",
                         InterfaceName = ni.Name,
-                        IpAddress = addr.ToString()
+                        IpAddress = addrStr
                     });
                 }
             }

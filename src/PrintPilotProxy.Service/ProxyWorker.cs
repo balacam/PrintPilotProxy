@@ -410,7 +410,12 @@ public sealed class ProxyWorker : BackgroundService
 
         return configuration.Listener.Mode switch
         {
-            ListenerMode.Auto => interfaces.SelectMany(networkInterface => networkInterface.Addresses).Distinct().ToList() switch
+            ListenerMode.Auto => interfaces.SelectMany(networkInterface => networkInterface.Addresses)
+                .Select(s => IPAddress.TryParse(s, out var ip) ? ip : null)
+                .Where(ip => ip != null)
+                .Select(ip => ip!)
+                .Distinct()
+                .ToList() switch
             {
                 { Count: > 0 } addresses => addresses,
                 _ => throw new InvalidOperationException("Automatic listener mode found no usable local network address.")
@@ -428,6 +433,9 @@ public sealed class ProxyWorker : BackgroundService
         var addresses = interfaces
             .FirstOrDefault(networkInterface => string.Equals(networkInterface.Name, adapterName, StringComparison.OrdinalIgnoreCase))
             ?.Addresses
+            .Select(s => IPAddress.TryParse(s, out var ip) ? ip : null)
+            .Where(ip => ip != null)
+            .Select(ip => ip!)
             .ToList();
         return addresses is { Count: > 0 }
             ? addresses

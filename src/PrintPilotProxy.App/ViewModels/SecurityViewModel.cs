@@ -45,11 +45,23 @@ public partial class SecurityViewModel : ObservableObject
 
             foreach (var check in audit.Checks)
             {
+                var pascalId = check.Id.Length >= 4
+                    ? char.ToUpper(check.Id[0]) + check.Id[1..3].ToLower() + check.Id[3..]
+                    : check.Id;
+
+                var nameKey = $"Sec.Check.{pascalId}.Name";
+                var localizedName = LocalizationService.Instance[nameKey];
+                if (localizedName == nameKey) localizedName = check.Name;
+
+                var descKey = $"Sec.Check.{pascalId}.Desc";
+                var localizedDesc = LocalizationService.Instance[descKey];
+                if (localizedDesc == descKey) localizedDesc = check.Description;
+
                 Checks.Add(new SecurityCheckItem
                 {
                     Id = check.Id,
-                    Name = LocalizationService.Instance[$"Sec.Check.{check.Id}.Name"] ?? check.Name,
-                    Description = LocalizationService.Instance[$"Sec.Check.{check.Id}.Desc"] ?? check.Description,
+                    Name = localizedName,
+                    Description = localizedDesc,
                     Passed = check.Passed,
                     Level = check.Level,
                     LevelLabel = check.Level switch

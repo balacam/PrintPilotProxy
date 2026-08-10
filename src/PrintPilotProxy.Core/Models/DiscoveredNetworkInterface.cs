@@ -10,5 +10,5 @@ public class DiscoveredNetworkInterface
     public string InterfaceType { get; set; } = string.Empty;
     public bool IsPrivate { get; set; }
     public bool IsOperational { get; set; }
-    public List<IPAddress> Addresses { get; set; } = new();
+    public List<string> Addresses { get; set; } = new();
 }

@@ -6,6 +6,9 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PrintPilotProxy.App.Localization;
+using System.Collections.ObjectModel;
+using PrintPilotProxy.App.Services;
+using PrintPilotProxy.Core.Models;
 using WpfClipboard = System.Windows.Clipboard;
 
 namespace PrintPilotProxy.App.ViewModels;
@@ -16,13 +19,23 @@ public partial class LogsViewModel : ObservableObject
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                      "PrintPilotProxy", "logs");
 
+    private readonly IpcClientService? _ipc;
+
     [ObservableProperty] private string _logContent = string.Empty;
     [ObservableProperty] private bool _isBusy = false;
     [ObservableProperty] private string _statusMessage = string.Empty;
     [ObservableProperty] private string _currentLogFile = string.Empty;
 
-    public LogsViewModel()
+    [ObservableProperty] private bool _showAccessLogs = true;
+    [ObservableProperty] private bool _showSystemLogs = false;
+
+    public ObservableCollection<ActivityLogEntry> AccessLogs { get; } = new();
+
+    public LogsViewModel() : this(null) { }
+
+    public LogsViewModel(IpcClientService? ipc)
     {
+        _ipc = ipc;
         _ = RefreshAsync();
     }
 
@@ -33,6 +46,24 @@ public partial class LogsViewModel : ObservableObject
         {
             IsBusy = true;
             StatusMessage = string.Empty;
+
+            if (_ipc != null)
+            {
+                var requests = await _ipc.GetRecentRequestsAsync();
+                AccessLogs.Clear();
+                foreach (var r in requests)
+                {
+                    AccessLogs.Add(new ActivityLogEntry
+                    {
+                        Time = r.Timestamp.ToLocalTime().ToString("HH:mm:ss"),
+                        ClientIp = r.ClientIp,
+                        Method = r.Method,
+                        Destination = r.Destination,
+                        Status = r.IsSuccess ? "OK" : "Error",
+                        StatusBrushKey = r.IsSuccess ? "SuccessBrush" : "ErrorBrush"
+                    });
+                }
+            }
 
             if (!Directory.Exists(LogDirectory))
             {

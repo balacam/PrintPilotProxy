@@ -120,7 +120,33 @@
         <Setter Property="Background"  Value="{StaticResource DarkBackgroundBrush}" />
         <Setter Property="Foreground"  Value="{StaticResource TextBrush}" />
         <Setter Property="BorderBrush" Value="#44445A" />
+        <Setter Property="Padding"     Value="8,6" />
         <Setter Property="FontFamily"  Value="Segoe UI" />
+    </Style>
+
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Background" Value="#2A2A3C" />
+        <Setter Property="Foreground" Value="#E0E0E0" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="Border" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="2">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource AccentBrush}" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#3A3A50" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- ─── DataGrid ───────────────────────────────────────────────────────── -->

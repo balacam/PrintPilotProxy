@@ -231,6 +231,27 @@ public sealed class WindowsServiceManager : IPlatformServiceManager
         await process.WaitForExitAsync(cancellationToken);
         var result = new ScResult(process.ExitCode, await standardOutputTask, await standardErrorTask);
 
+        if (result.ExitCode == 5) // Access Denied -> Elevate with UAC prompt
+        {
+            try
+            {
+                using var elevatedProcess = Process.Start(new ProcessStartInfo
+                {
+                    FileName = "sc.exe",
+                    Arguments = arguments,
+                    Verb = "runas",
+                    UseShellExecute = true,
+                    CreateNoWindow = true
+                });
+                if (elevatedProcess != null)
+                {
+                    await elevatedProcess.WaitForExitAsync(cancellationToken);
+                    return new ScResult(elevatedProcess.ExitCode, "Elevated command completed.", string.Empty);
+                }
+            }
+            catch { /* User declined UAC prompt */ }
+        }
+
         if (throwOnError && result.ExitCode != 0)
         {
             throw new InvalidOperationException($"sc.exe exited with code {result.ExitCode}: {CombineOutput(result)}");

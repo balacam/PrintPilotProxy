@@ -31,7 +31,7 @@ public class WindowsNetworkDiscovery : INetworkInterfaceDiscovery
                     InterfaceType = ni.NetworkInterfaceType.ToString(),
                     IsOperational = true,
                     IsPrivate = isPrivate,
-                    Addresses = addresses
+                    Addresses = addresses.Select(a => a.ToString()).ToList()
                 };
             });
 
@@ -46,7 +46,9 @@ public class WindowsNetworkDiscovery : INetworkInterfaceDiscovery
             // Automatic mode intentionally supports any usable local address,
             // including networks that do not use RFC1918 IPv4 ranges.
             .SelectMany(ni => ni.Addresses)
-            .Where(IsUsableLocalAddress)
+            .Select(addrStr => IPAddress.TryParse(addrStr, out var ip) ? ip : null)
+            .Where(ip => ip != null && IsUsableLocalAddress(ip))
+            .Select(ip => ip!)
             .ToList();
     }
 

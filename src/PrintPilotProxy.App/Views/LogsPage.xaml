@@ -21,27 +21,69 @@
             </StackPanel>
         </DockPanel>
 
-        <!-- File info -->
-        <TextBlock Grid.Row="1"
-                   Text="{Binding CurrentLogFile, StringFormat='File: {0}'}"
-                   Foreground="{StaticResource TextBrush}" Opacity="0.6" FontSize="11"
-                   Margin="0,0,0,8"
-                   Visibility="{Binding CurrentLogFile, Converter={StaticResource StringToVisibilityConverter}}" />
+        <!-- Mode Selector -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,12">
+            <RadioButton Content="🔗  İstemci Bağlantı Günlükleri" IsChecked="{Binding ShowAccessLogs}" Margin="0,0,16,0" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            <RadioButton Content="⚙️  Servis Sistem Logları" IsChecked="{Binding ShowSystemLogs}" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+        </StackPanel>
 
-        <!-- Log content -->
-        <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0">
+        <!-- Access Logs View -->
+        <Border Grid.Row="2" Margin="0">
+            <Border.Style>
+                <Style TargetType="Border" BasedOn="{StaticResource CardStyle}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ShowAccessLogs}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <DataGrid ItemsSource="{Binding AccessLogs}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      Background="Transparent"
+                      Foreground="{StaticResource TextBrush}"
+                      RowBackground="{StaticResource PanelBackgroundBrush}"
+                      AlternatingRowBackground="{StaticResource DarkBackgroundBrush}"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="None"
+                      BorderThickness="0"
+                      MinHeight="300">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Zaman"       Binding="{Binding Time}"        Width="100" />
+                    <DataGridTextColumn Header="İstemci IP"  Binding="{Binding ClientIp}"    Width="160" />
+                    <DataGridTextColumn Header="Metot"       Binding="{Binding Method}"      Width="90" />
+                    <DataGridTextColumn Header="Hedef Adres" Binding="{Binding Destination}" Width="*" />
+                    <DataGridTextColumn Header="Durum"       Binding="{Binding Status}"      Width="90" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <!-- System Logs View -->
+        <Border Grid.Row="2" Margin="0">
+            <Border.Style>
+                <Style TargetType="Border" BasedOn="{StaticResource CardStyle}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ShowSystemLogs}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <TextBox Text="{Binding LogContent}"
-                         IsReadOnly="True"
-                         Background="Transparent"
-                         Foreground="#A8FF78"
-                         FontFamily="Consolas"
-                         FontSize="12"
-                         BorderThickness="0"
-                         TextWrapping="NoWrap"
-                         VerticalScrollBarVisibility="Disabled"
-                         HorizontalScrollBarVisibility="Disabled"
-                         MinHeight="300" />
+                          IsReadOnly="True"
+                          Background="Transparent"
+                          Foreground="#A8FF78"
+                          FontFamily="Consolas"
+                          FontSize="12"
+                          BorderThickness="0"
+                          TextWrapping="NoWrap"
+                          VerticalScrollBarVisibility="Disabled"
+                          HorizontalScrollBarVisibility="Disabled"
+                          MinHeight="300" />
             </ScrollViewer>
         </Border>
 

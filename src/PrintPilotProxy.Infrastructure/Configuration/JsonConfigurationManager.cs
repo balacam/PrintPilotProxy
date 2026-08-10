@@ -138,19 +138,12 @@ namespace PrintPilotProxy.Infrastructure.Configuration
             _pathProvider.EnsureDirectoriesExist();
             string json = JsonSerializer.Serialize(configuration, _jsonOptions);
             var configurationPath = _pathProvider.ConfigurationFilePath;
-            var temporaryPath = configurationPath + ".tmp";
 
-            try
+            using (var fs = new FileStream(configurationPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+            using (var writer = new StreamWriter(fs, System.Text.Encoding.UTF8))
             {
-                await File.WriteAllTextAsync(temporaryPath, json, cancellationToken);
-                File.Move(temporaryPath, configurationPath, overwrite: true);
-            }
-            finally
-            {
-                if (File.Exists(temporaryPath))
-                {
-                    File.Delete(temporaryPath);
-                }
+                await writer.WriteAsync(json.AsMemory(), cancellationToken);
+                await writer.FlushAsync(cancellationToken);
             }
             _logger.LogInformation("Configuration saved successfully.");
         }

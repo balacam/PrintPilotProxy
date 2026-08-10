@@ -134,11 +134,8 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                         networkInterface.Name,
                         configuration.Listener.AdapterName,
                         StringComparison.OrdinalIgnoreCase));
-                var selectedAddress = selectedAdapter?.Addresses
-                    .OrderBy(address => address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? 0 : 1)
-                    .FirstOrDefault();
-
-                if (selectedAddress is null)
+                var selectedAddressStr = selectedAdapter?.Addresses.FirstOrDefault();
+                if (string.IsNullOrEmpty(selectedAddressStr) || !IPAddress.TryParse(selectedAddressStr, out var selectedAddress))
                 {
                     throw new InvalidOperationException("The selected network adapter has no usable assigned IP address.");
                 }
