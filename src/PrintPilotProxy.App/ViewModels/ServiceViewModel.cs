@@ -30,12 +30,30 @@ public partial class ServiceViewModel : ObservableObject
     [ObservableProperty] private string _activeConnections = "N/A";
     [ObservableProperty] private bool _autoRestartOnFailure = true;
 
-    [ObservableProperty] private bool _canStart;
-    [ObservableProperty] private bool _canStop;
-    [ObservableProperty] private bool _canRestart;
-    [ObservableProperty] private bool _canStartProxyEngine;
-    [ObservableProperty] private bool _canStopProxyEngine;
-    [ObservableProperty] private bool _canRestartProxyEngine;
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(StartServiceCommand))]
+    private bool _canStart;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(StopServiceCommand))]
+    private bool _canStop;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(RestartServiceCommand))]
+    private bool _canRestart;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(StartProxyEngineCommand))]
+    private bool _canStartProxyEngine;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(StopProxyEngineCommand))]
+    private bool _canStopProxyEngine;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(RestartProxyEngineCommand))]
+    private bool _canRestartProxyEngine;
+
     [ObservableProperty] private bool _isBusy;
     [ObservableProperty] private string _statusMessage = string.Empty;
     [ObservableProperty] private bool _statusIsError;
@@ -67,6 +85,9 @@ public partial class ServiceViewModel : ObservableObject
                 ProxyStateText = service.Status == ServiceStatus.NotInstalled ? LocalizationService.Instance["Svc.NotInstalled"] : LocalizationService.Instance["Common.Na"];
                 ProxyStateBrushKey = service.Status == ServiceStatus.NotInstalled ? "ErrorBrush" : "WarningBrush";
                 ListeningAddress = Uptime = TotalRequests = TotalErrors = ActiveConnections = "N/A";
+                CanStartProxyEngine = false;
+                CanStopProxyEngine = false;
+                CanRestartProxyEngine = false;
                 if (!string.IsNullOrWhiteSpace(service.ErrorMessage))
                 {
                     StatusMessage = service.ErrorMessage;
@@ -81,6 +102,9 @@ public partial class ServiceViewModel : ObservableObject
                 ProxyStateText = LocalizationService.Instance["Svc.Unavailable"];
                 ProxyStateBrushKey = "ErrorBrush";
                 ListeningAddress = Uptime = TotalRequests = TotalErrors = ActiveConnections = "N/A";
+                CanStartProxyEngine = false;
+                CanStopProxyEngine = false;
+                CanRestartProxyEngine = false;
                 return;
             }
 
@@ -107,6 +131,15 @@ public partial class ServiceViewModel : ObservableObject
         {
             StatusMessage = ex.Message;
             StatusIsError = true;
+        }
+        finally
+        {
+            StartServiceCommand.NotifyCanExecuteChanged();
+            StopServiceCommand.NotifyCanExecuteChanged();
+            RestartServiceCommand.NotifyCanExecuteChanged();
+            StartProxyEngineCommand.NotifyCanExecuteChanged();
+            StopProxyEngineCommand.NotifyCanExecuteChanged();
+            RestartProxyEngineCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -190,32 +223,18 @@ public partial class ServiceViewModel : ObservableObject
             IsBusy = true;
             CanStart = CanStop = CanRestart = false;
             var ok = await command(CancellationToken.None);
-            if (!ok)
-            {
-                await _ipc.RestartProxyAsync();
-            }
-            StatusMessage = successMessage;
-            StatusIsError = false;
-            await RefreshAsync();
+            StatusMessage = ok ? successMessage : "Command execution failed.";
+            StatusIsError = !ok;
         }
-        catch
+        catch (Exception ex)
         {
-            try
-            {
-                await _ipc.RestartProxyAsync();
-                StatusMessage = successMessage;
-                StatusIsError = false;
-                await RefreshAsync();
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = ex.Message;
-                StatusIsError = true;
-            }
+            StatusMessage = ex.Message;
+            StatusIsError = true;
         }
         finally
         {
             IsBusy = false;
+            await RefreshAsync();
         }
     }
 
