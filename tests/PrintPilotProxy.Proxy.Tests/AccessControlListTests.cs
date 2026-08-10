@@ -12,7 +12,8 @@ public class AccessControlListTests
     public void IsAllowed_AllowedIp_ReturnsTrue()
     {
         var config = new ProxyConfiguration();
-        config.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "192.168.1.100", Enabled = true });
+        config.ClientAccess.Mode = ClientAccessMode.AllowList;
+        config.ClientAccess.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "192.168.1.100", Enabled = true });
         var acl = new AccessControlList(config);
 
         var result = acl.IsAllowed(IPAddress.Parse("192.168.1.100"));
@@ -23,7 +24,8 @@ public class AccessControlListTests
     public void IsAllowed_DisallowedIp_ReturnsFalse()
     {
         var config = new ProxyConfiguration();
-        config.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "192.168.1.100", Enabled = true });
+        config.ClientAccess.Mode = ClientAccessMode.AllowList;
+        config.ClientAccess.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "192.168.1.100", Enabled = true });
         var acl = new AccessControlList(config);
 
         var result = acl.IsAllowed(IPAddress.Parse("192.168.1.101"));
@@ -34,7 +36,8 @@ public class AccessControlListTests
     public void IsAllowed_CidrRange_ReturnsTrue()
     {
         var config = new ProxyConfiguration();
-        config.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "10.0.0.0/24", Enabled = true });
+        config.ClientAccess.Mode = ClientAccessMode.AllowList;
+        config.ClientAccess.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "10.0.0.0/24", Enabled = true });
         var acl = new AccessControlList(config);
 
         var result = acl.IsAllowed(IPAddress.Parse("10.0.0.50"));
@@ -45,7 +48,8 @@ public class AccessControlListTests
     public void IsAllowed_DisabledClient_ReturnsFalse()
     {
         var config = new ProxyConfiguration();
-        config.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "192.168.1.100", Enabled = false });
+        config.ClientAccess.Mode = ClientAccessMode.AllowList;
+        config.ClientAccess.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "192.168.1.100", Enabled = false });
         var acl = new AccessControlList(config);
 
         var result = acl.IsAllowed(IPAddress.Parse("192.168.1.100"));
@@ -56,6 +60,7 @@ public class AccessControlListTests
     public void IsAllowed_EmptyAcl_ReturnsFalse()
     {
         var config = new ProxyConfiguration();
+        config.ClientAccess.Mode = ClientAccessMode.AllowList;
         var acl = new AccessControlList(config);
 
         var result = acl.IsAllowed(IPAddress.Parse("192.168.1.100"));
@@ -101,11 +106,12 @@ public class AccessControlListTests
     public void Refresh_UpdatesRules()
     {
         var config = new ProxyConfiguration();
+        config.ClientAccess.Mode = ClientAccessMode.AllowList;
         var acl = new AccessControlList(config);
         
         acl.IsAllowed(IPAddress.Parse("192.168.1.100")).Should().BeFalse();
 
-        config.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "192.168.1.100", Enabled = true });
+        config.ClientAccess.AllowedClients.Add(new AllowedClient { Name = "Test", IpOrCidr = "192.168.1.100", Enabled = true });
         acl.Refresh(config);
 
         acl.IsAllowed(IPAddress.Parse("192.168.1.100")).Should().BeTrue();

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+<data name="Common.Na" xml:space="preserve"><value>Н/Д</value></data>
+<data name="Common.Unknown" xml:space="preserve"><value>Неизвестен</value></data>
+<data name="Common.Error" xml:space="preserve"><value>Грешка</value></data>
+<data name="Common.OK" xml:space="preserve"><value>OK</value></data>
+<data name="Common.All" xml:space="preserve"><value>Всички</value></data>
+<data name="Common.AllPorts" xml:space="preserve"><value>Всички портове</value></data>
+<data name="Common.Private" xml:space="preserve"><value>Частен</value></data>
+<data name="Common.Public" xml:space="preserve"><value>Публичен</value></data>
+<data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Табло</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Мрежови настройки</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Разрешени клиенти</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Защитна стена</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>⚙️  Услуга</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>📋  Дневници</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Диагностика</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>🛡️  Сигурност</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>🌍  Език</value></data>
+<data name="MainWindow.Status" xml:space="preserve"><value>Статус: </value></data>
+<data name="MainWindow.Listen" xml:space="preserve"><value>Слушане: </value></data>
+<data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>УСЛУГАТА Е НЕДОСТЪПНА</value></data>
+<data name="Tray.Open" xml:space="preserve"><value>Отвори PrintPilotProxy</value></data>
+<data name="Tray.StartProxy" xml:space="preserve"><value>Стартирай proxy</value></data>
+<data name="Tray.StopProxy" xml:space="preserve"><value>Спри proxy</value></data>
+<data name="Tray.RestartProxy" xml:space="preserve"><value>Рестартирай proxy</value></data>
+<data name="Tray.Diagnostics" xml:space="preserve"><value>Диагностика</value></data>
+<data name="Tray.OpenLogFolder" xml:space="preserve"><value>Отвори папката с дневници</value></data>
+<data name="Tray.Exit" xml:space="preserve"><value>Изход</value></data>
+<data name="Action.Refresh" xml:space="preserve"><value>↻  Опресни</value></data>
+<data name="Action.Apply" xml:space="preserve"><value>⚡  Приложи</value></data>
+<data name="Action.Reset" xml:space="preserve"><value>↺  Нулиране</value></data>
+<data name="Action.Reload" xml:space="preserve"><value>↻  Презареди</value></data>
+<data name="Action.Add" xml:space="preserve"><value>+  Добави</value></data>
+<data name="Page.Dashboard" xml:space="preserve"><value>Табло</value></data>
+<data name="Dash.ProxyState" xml:space="preserve"><value>Състояние на proxy</value></data>
+<data name="Dash.Uptime" xml:space="preserve"><value>Време на работа</value></data>
+<data name="Dash.TotalRequests" xml:space="preserve"><value>Общо заявки</value></data>
+<data name="Dash.Errors" xml:space="preserve"><value>Грешки</value></data>
+<data name="Dash.ListeningAddress" xml:space="preserve"><value>Адрес на слушане</value></data>
+<data name="Dash.AccessMode" xml:space="preserve"><value>Режим на достъп</value></data>
+<data name="Dash.AllowedClients" xml:space="preserve"><value>Разрешени клиенти</value></data>
+<data name="Dash.AllowedPorts" xml:space="preserve"><value>Разрешени портове</value></data>
+<data name="Dash.RecentActivity" xml:space="preserve"><value>Последна активност</value></data>
+<data name="Dash.ServiceUnavailable" xml:space="preserve"><value>Услугата е недостъпна</value></data>
+<data name="Dash.Msgs.LoadError" xml:space="preserve"><value>Грешка: {0}</value></data>
+<data name="Page.NetworkSettings" xml:space="preserve"><value>Мрежови настройки</value></data>
+<data name="Net.ListenerMode" xml:space="preserve"><value>Режим на слушане</value></data>
+<data name="Net.ChooseInterface" xml:space="preserve"><value>Изберете мрежов интерфейс, който слуша proxy.</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Автоматичен  (използвай всички частни мрежови интерфейси)</value></data>
+<data name="Net.ModeAdapter" xml:space="preserve"><value>Определен адаптер  (избери от откритите адаптери)</value></data>
+<data name="Net.ModeSpecificIp" xml:space="preserve"><value>Определен IP адрес  (въведи ръчно)</value></data>
+<data name="Net.PortAndLimits" xml:space="preserve"><value>Порт и лимити</value></data>
+<data name="Net.ProxyPort" xml:space="preserve"><value>Proxy порт</value></data>
+<data name="Net.DefaultPort" xml:space="preserve"><value>По подразбиране: 3128</value></data>
+<data name="Net.MaxConnections" xml:space="preserve"><value>Макс. връзки</value></data>
+<data name="Net.DefaultConnections" xml:space="preserve"><value>По подразбиране: 1000</value></data>
+<data name="Net.TimeoutSeconds" xml:space="preserve"><value>Таймаут (секунди)</value></data>
+<data name="Net.DefaultTimeout" xml:space="preserve"><value>По подразбиране: 120</value></data>
+<data name="Net.Msgs.LoadFailed" xml:space="preserve"><value>Не можа да се зареди конфигурацията от услугата.</value></data>
+<data name="Net.Msgs.LoadError" xml:space="preserve"><value>Грешка при зареждане: {0}</value></data>
+<data name="Net.Msgs.ResetDone" xml:space="preserve"><value>Настройките са възстановени до последната записана стойност.</value></data>
+<data name="Net.Msgs.PortInvalid" xml:space="preserve"><value>Портът &apos;{0}&apos; е невалиден. Трябва да е между 1 и 65535.</value></data>
+<data name="Net.Msgs.MaxConnectionsInvalid" xml:space="preserve"><value>Макс. връзки трябва да са между 1 и 100000.</value></data>
+<data name="Net.Msgs.TimeoutInvalid" xml:space="preserve"><value>Таймаутът трябва да е между 1 и 3600 секунди.</value></data>
+<data name="Net.Msgs.SelectAdapter" xml:space="preserve"><value>Моля, изберете мрежов адаптер.</value></data>
+<data name="Net.Msgs.IpInvalid" xml:space="preserve"><value>&apos;{0}&apos; не е валиден IP адрес.</value></data>
+<data name="Net.Msgs.IpNotLocal" xml:space="preserve"><value>IP адресът &apos;{0}&apos; не е присвоен на локален мрежов интерфейс.&amp;#10;Налични: {1}</value></data>
+<data name="Net.Msgs.ReadConfigFailed" xml:space="preserve"><value>Не можа да се прочете текущата конфигурация от услугата.</value></data>
+<data name="Net.Msgs.Applied" xml:space="preserve"><value>Конфигурацията е приложена успешно. Proxy се рестартира с новите настройки.</value></data>
+<data name="Net.Msgs.ApplyFailed" xml:space="preserve"><value>Прилагането се провали: {0}</value></data>
+<data name="Net.Msgs.UnexpectedError" xml:space="preserve"><value>Неочаквана грешка: {0}</value></data>
+<data name="Page.AllowedClients" xml:space="preserve"><value>Разрешени клиенти</value></data>
+<data name="Cli.ClientAccessMode" xml:space="preserve"><value>Режим на достъп на клиенти</value></data>
+<data name="Cli.AllowAllWithHint" xml:space="preserve"><value>●  Разреши на всички клиенти  —  всеки достъпен IP адрес може да използва proxy</value></data>
+<data name="Cli.AllowAllHint" xml:space="preserve"><value>⚠ &apos;Разреши на всички&apos; е удобно, но всяко устройство в мрежата може да използва това proxy.</value></data>
+<data name="Cli.AllowListWithHint" xml:space="preserve"><value>●  Разреши само на конкретни клиенти  —  списък с IP / CIDR</value></data>
+<data name="Cli.AddClient" xml:space="preserve"><value>Добави клиент</value></data>
+<data name="Cli.Name" xml:space="preserve"><value>Име</value></data>
+<data name="Cli.IpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+<data name="Cli.DescriptionOptional" xml:space="preserve"><value>Описание (незадължително)</value></data>
+<data name="Cli.ClientList" xml:space="preserve"><value>Списък с клиенти</value></data>
+<data name="Cli.RemoveSelected" xml:space="preserve"><value>✖  Премахни избраните</value></data>
+<data name="Cli.Msgs.LoadFailed" xml:space="preserve"><value>Не можа да се зареди конфигурацията от услугата.</value></data>
+<data name="Cli.Msgs.LoadError" xml:space="preserve"><value>Грешка при зареждане: {0}</value></data>
+<data name="Cli.Msgs.NameRequired" xml:space="preserve"><value>Името на клиента е задължително.</value></data>
+<data name="Cli.Msgs.IpOrCidrInvalid" xml:space="preserve"><value>&apos;{0}&apos; не е валиден IP адрес или CIDR нотация.</value></data>
+<data name="Cli.Msgs.SelectClientToRemove" xml:space="preserve"><value>Изберете клиент за премахване.</value></data>
+<data name="Cli.Msgs.ConfigNotLoaded" xml:space="preserve"><value>Конфигурацията не е заредена.</value></data>
+<data name="Cli.Msgs.Saved" xml:space="preserve"><value>Конфигурацията за достъп на клиенти е записана и приложена.</value></data>
+<data name="Cli.Msgs.ApplyFailed" xml:space="preserve"><value>Прилагането се провали: {0}</value></data>
+<data name="Cli.Msgs.Error" xml:space="preserve"><value>Грешка: {0}</value></data>
+<data name="Page.Firewall" xml:space="preserve"><value>Защитна стена</value></data>
+<data name="Fw.Rule" xml:space="preserve"><value>Правило на защитната стена PrintPilotProxy</value></data>
+<data name="Fw.RuleName" xml:space="preserve"><value>Име на правилото:</value></data>
+<data name="Fw.Status" xml:space="preserve"><value>Статус:</value></data>
+<data name="Fw.Port" xml:space="preserve"><value>Порт:</value></data>
+<data name="Fw.Protocol" xml:space="preserve"><value>Протокол:</value></data>
+<data name="Fw.LocalScope" xml:space="preserve"><value>Локален обхват:</value></data>
+<data name="Fw.RuleExists" xml:space="preserve"><value>Правилото съществува</value></data>
+<data name="Fw.RuleNotFound" xml:space="preserve"><value>Правилото не е намерено</value></data>
+<data name="Fw.ServiceUnavailable" xml:space="preserve"><value>Услугата е недостъпна</value></data>
+<data name="Fw.ProtocolTcp" xml:space="preserve"><value>TCP</value></data>
+<data name="Fw.DirectionInbound" xml:space="preserve"><value>Входящ</value></data>
+<data name="Fw.Msgs.CreateUpdate" xml:space="preserve"><value>✔  Създай / актуализирай правилото</value></data>
+<data name="Fw.Msgs.RemoveRule" xml:space="preserve"><value>✖  Премахни правилото</value></data>
+<data name="Fw.Msgs.LoadError" xml:space="preserve"><value>Грешка при зареждане състоянието на защитната стена: {0}</value></data>
+<data name="Fw.Msgs.Applied" xml:space="preserve"><value>Правилото на защитната стена е приложено успешно.</value></data>
+<data name="Fw.Msgs.Removed" xml:space="preserve"><value>Правилото на защитната стена е премахнато.</value></data>
+<data name="Fw.Msgs.Failed" xml:space="preserve"><value>Неуспех: {0}</value></data>
+<data name="Fw.Msgs.Error" xml:space="preserve"><value>Грешка: {0}</value></data>
+<data name="Page.Service" xml:space="preserve"><value>Услуга</value></data>
+<data name="Svc.Header" xml:space="preserve"><value>Windows услуга и proxy двигател</value></data>
+<data name="Svc.ServiceStatus" xml:space="preserve"><value>Статус на услугата:</value></data>
+<data name="Svc.StartupType" xml:space="preserve"><value>Тип стартиране:</value></data>
+<data name="Svc.ProxyState" xml:space="preserve"><value>Състояние на proxy:</value></data>
+<data name="Svc.Listening" xml:space="preserve"><value>Слушане:</value></data>
+<data name="Svc.Uptime" xml:space="preserve"><value>Време на работа:</value></data>
+<data name="Svc.TotalRequests" xml:space="preserve"><value>Общо заявки:</value></data>
+<data name="Svc.TotalErrors" xml:space="preserve"><value>Общо грешки:</value></data>
+<data name="Svc.ActiveConnections" xml:space="preserve"><value>Активни връзки:</value></data>
+<data name="Svc.NotInstalled" xml:space="preserve"><value>Не е инсталирана</value></data>
+<data name="Svc.Unavailable" xml:space="preserve"><value>Недостъпна</value></data>
+<data name="Svc.AutoRestart" xml:space="preserve"><value>Автоматично рестартиране при повреди на proxy двигателя</value></data>
+<data name="Svc.StartService" xml:space="preserve"><value>▶  Старт на услугата</value></data>
+<data name="Svc.StopService" xml:space="preserve"><value>⏹  Спиране на услугата</value></data>
+<data name="Svc.RestartService" xml:space="preserve"><value>↺  Рестарт на услугата</value></data>
+<data name="Svc.ApplyRecovery" xml:space="preserve"><value>Приложи настройката за възстановяване</value></data>
+<data name="Svc.Msgs.Started" xml:space="preserve"><value>Windows услугата е стартирана.</value></data>
+<data name="Svc.Msgs.Stopped" xml:space="preserve"><value>Windows услугата е спряна.</value></data>
+<data name="Svc.Msgs.Restarted" xml:space="preserve"><value>Windows услугата е рестартирана.</value></data>
+<data name="Svc.Msgs.ServiceRequired" xml:space="preserve"><value>Windows услугата трябва да работи, за да актуализира настройките за възстановяване.</value></data>
+<data name="Svc.Msgs.RecoveryUpdated" xml:space="preserve"><value>Настройката за възстановяване на proxy двигателя е актуализирана.</value></data>
+<data name="Page.Logs" xml:space="preserve"><value>Дневници</value></data>
+<data name="Logs.File" xml:space="preserve"><value>Файл: {0}</value></data>
+<data name="Logs.NoDirectory" xml:space="preserve"><value>(Папката с дневници все още не съществува.)</value></data>
+<data name="Logs.NoFiles" xml:space="preserve"><value>(Не са намерени дневникови файлове.)</value></data>
+<data name="Logs.OpenFolder" xml:space="preserve"><value>📁  Отвори папката</value></data>
+<data name="Logs.Copy" xml:space="preserve"><value>📋  Копирай</value></data>
+<data name="Logs.ClearView" xml:space="preserve"><value>🧹  Изчисти изгледа</value></data>
+<data name="Logs.Msgs.Loaded" xml:space="preserve"><value>Заредени {0} реда от {1}</value></data>
+<data name="Logs.Msgs.LoadError" xml:space="preserve"><value>Грешка при зареждане на дневниците: {0}</value></data>
+<data name="Logs.Msgs.ViewCleared" xml:space="preserve"><value>Изгледът е изчистен. Дневниковите файлове не са засегнати.</value></data>
+<data name="Logs.Msgs.OpenFolderFailed" xml:space="preserve"><value>Не можа да се отвори папката с дневници: {0}</value></data>
+<data name="Logs.Msgs.Copied" xml:space="preserve"><value>Съдържанието на дневника е копирано в клипборда.</value></data>
+<data name="Logs.Msgs.CopyFailed" xml:space="preserve"><value>Копирането се провали: {0}</value></data>
+<data name="Page.Diagnostics" xml:space="preserve"><value>Диагностика</value></data>
+<data name="Diag.RunAll" xml:space="preserve"><value>▶  Стартирай всички проверки</value></data>
+<data name="Diag.Overall" xml:space="preserve"><value>Общо: </value></data>
+<data name="Diag.Running" xml:space="preserve"><value>Стартиране на диагностика...</value></data>
+<data name="Diag.ServiceConnection" xml:space="preserve"><value>Връзка с услугата</value></data>
+<data name="Diag.ServiceConnectionDesc" xml:space="preserve"><value>Може ли приложението да се свърже с Windows услугата чрез именуван канал?</value></data>
+<data name="Diag.Connected" xml:space="preserve"><value>Успешно свързване с услугата.</value></data>
+<data name="Diag.CannotConnect" xml:space="preserve"><value>Не може да се свърже. PrintPilotProxy услугата стартирана ли е?</value></data>
+<data name="Diag.StartServiceHint" xml:space="preserve"><value>Стартирайте услугата: sc start PrintPilotProxy</value></data>
+<data name="Diag.ConfigValid" xml:space="preserve"><value>Валидна конфигурация</value></data>
+<data name="Diag.ConfigValidDesc" xml:space="preserve"><value>Валиден ли е конфигурационният файл на proxy?</value></data>
+<data name="Diag.CouldNotLoadConfig" xml:space="preserve"><value>Не можа да се зареди конфигурацията.</value></data>
+<data name="Diag.EnsureServiceRunning" xml:space="preserve"><value>Уверете се, че услугата работи.</value></data>
+<data name="Diag.ConfigValidOk" xml:space="preserve"><value>Конфигурацията е валидна.</value></data>
+<data name="Diag.ConfigErrors" xml:space="preserve"><value>{0} грешки: {1}</value></data>
+<data name="Diag.FixConfigErrors" xml:space="preserve"><value>Отстранете грешките в конфигурацията.</value></data>
+<data name="Diag.ProxyEngineState" xml:space="preserve"><value>Състояние на proxy двигателя</value></data>
+<data name="Diag.ProxyEngineStateDesc" xml:space="preserve"><value>Работи ли proxy двигателят?</value></data>
+<data name="Diag.ServiceNotReachable" xml:space="preserve"><value>Услугата е недостъпна.</value></data>
+<data name="Diag.StartService" xml:space="preserve"><value>Стартирайте услугата.</value></data>
+<data name="Diag.RunningOn" xml:space="preserve"><value>Работи на {0}.</value></data>
+<data name="Diag.StateIs" xml:space="preserve"><value>Състояние: {0}.</value></data>
+<data name="Diag.UseServicePage" xml:space="preserve"><value>Използвайте страницата Услуга, за да стартирате proxy.</value></data>
+<data name="Diag.ConfigFileDisk" xml:space="preserve"><value>Конфигурационен файл на диска</value></data>
+<data name="Diag.ConfigFileDiskDesc" xml:space="preserve"><value>Съществува ли конфигурационният файл?</value></data>
+<data name="Diag.FoundPath" xml:space="preserve"><value>Намерен: {0}</value></data>
+<data name="Diag.NotFoundPath" xml:space="preserve"><value>Ненамерен: {0}</value></data>
+<data name="Diag.RunInstaller" xml:space="preserve"><value>Стартирайте инсталатора или услугата веднъж, за да създадете стойности по подразбиране.</value></data>
+<data name="Diag.LogDirWritable" xml:space="preserve"><value>Папка с дневници за запис</value></data>
+<data name="Diag.LogDirWritableDesc" xml:space="preserve"><value>Пишеща ли е папката с дневници?</value></data>
+<data name="Diag.LogDirMissing" xml:space="preserve"><value>Липсваща: {0}</value></data>
+<data name="Diag.StartServiceCreatesDirs" xml:space="preserve"><value>Стартирайте услугата, за да създадете необходимите папки.</value></data>
+<data name="Diag.LogDirWritableOk" xml:space="preserve"><value>Пишеща: {0}</value></data>
+<data name="Diag.LogDirNotWritable" xml:space="preserve"><value>Папката с дневници не е пишеща.</value></data>
+<data name="Diag.CheckPermissions" xml:space="preserve"><value>Проверете разрешенията в ProgramData PrintPilotProxy папката.</value></data>
+<data name="Diag.PortAvailability" xml:space="preserve"><value>Наличност на proxy порта</value></data>
+<data name="Diag.PortAvailabilityDesc" xml:space="preserve"><value>Наличен ли е proxy портът (или е зает от работещо proxy)?</value></data>
+<data name="Diag.CouldNotLoadConfigShort" xml:space="preserve"><value>Не можа да се зареди конфигурацията.</value></data>
+<data name="Diag.PortBound" xml:space="preserve"><value>Портът {0} е зает от работещо proxy.</value></data>
+<data name="Diag.PortAvailable" xml:space="preserve"><value>Портът {0} е наличен.</value></data>
+<data name="Diag.PortInUse" xml:space="preserve"><value>Портът {0} се използва от друг процес.</value></data>
+<data name="Diag.ChangePortHint" xml:space="preserve"><value>Сменете proxy порта в Мрежови настройки или спрете конфликтното приложение.</value></data>
+<data name="Diag.NetworkAdapters" xml:space="preserve"><value>Мрежови адаптери</value></data>
+<data name="Diag.NetworkAdaptersDesc" xml:space="preserve"><value>Налични ли са частни мрежови адаптери?</value></data>
+<data name="Diag.AdaptersDetected" xml:space="preserve"><value>Открити {0} адаптера.</value></data>
+<data name="Diag.NoAdapters" xml:space="preserve"><value>Не са намерени мрежови адаптери.</value></data>
+<data name="Diag.CheckNetworkConfig" xml:space="preserve"><value>Проверете мрежовата конфигурация.</value></data>
+<data name="Diag.FirewallRule" xml:space="preserve"><value>Правило на защитната стена</value></data>
+<data name="Diag.FirewallRuleDesc" xml:space="preserve"><value>Съществува ли правилото на защитната стена PrintPilotProxy?</value></data>
+<data name="Diag.CouldNotQueryFirewall" xml:space="preserve"><value>Не можа да се запроси състоянието на защитната стена.</value></data>
+<data name="Diag.FirewallRuleExists" xml:space="preserve"><value>Правилото на защитната стена съществува.</value></data>
+<data name="Diag.FirewallRuleMissing" xml:space="preserve"><value>Правилото на защитната стена липсва.</value></data>
+<data name="Diag.CreateRuleHint" xml:space="preserve"><value>Отидете на страницата Защитна стена и натиснете &apos;Създай / актуализирай правилото&apos;.</value></data>
+<data name="Diag.IpcPipe" xml:space="preserve"><value>Именуван IPC канал</value></data>
+<data name="Diag.IpcPipeDesc" xml:space="preserve"><value>Отговаря ли сървърът на именуваните канали?</value></data>
+<data name="Diag.IpcResponding" xml:space="preserve"><value>Именуваният IPC канал отговаря.</value></data>
+<data name="Diag.IpcNotResponding" xml:space="preserve"><value>IPC не отговаря.</value></data>
+<data name="Diag.RestartService" xml:space="preserve"><value>Рестартирайте PrintPilotProxy услугата.</value></data>
+<data name="Diag.AllPassed" xml:space="preserve"><value>Всички {0} проверки преминаха.</value></data>
+<data name="Diag.PassedFailed" xml:space="preserve"><value>{0} преминаха, {1} се провалиха.</value></data>
+<data name="Diag.RunError" xml:space="preserve"><value>Грешка при диагностика: {0}</value></data>
+<data name="Diag.Exception" xml:space="preserve"><value>Изключение: {0}</value></data>
+<data name="Diag.CheckLogs" xml:space="preserve"><value>Проверете дневниците на приложението за подробности.</value></data>
+<data name="Page.Language" xml:space="preserve"><value>Език</value></data>
+<data name="Lang.Title" xml:space="preserve"><value>Език на интерфейса</value></data>
+<data name="Lang.Description" xml:space="preserve"><value>Изберете езика на PrintPilotProxy интерфейса. Промените са незабавни и се записват с конфигурацията.</value></data>
+<data name="Lang.SystemDefault" xml:space="preserve"><value>Системен по подразбиране  (следвай Windows)</value></data>
+<data name="Lang.Applied" xml:space="preserve"><value>Езикът е сменен успешно.</value></data>
+<data name="Lang.ApplyFailed" xml:space="preserve"><value>Смяната на език се провали: {0}</value></data>
+<data name="Lang.LoadFailed" xml:space="preserve"><value>Не можа да се заредят настройките за език от услугата.</value></data>
+<data name="Page.Security" xml:space="preserve"><value>Сигурност</value></data>
+<data name="Sec.Title" xml:space="preserve"><value>Одит на сигурността</value></data>
+<data name="Sec.Description" xml:space="preserve"><value>Автоматичен преглед на конфигурацията на proxy и обхвата на слушане, за да поддържа мрежата за печат сигурна.</value></data>
+<data name="Sec.Overall" xml:space="preserve"><value>Общо: {0}</value></data>
+<data name="Sec.RerunAudit" xml:space="preserve"><value>⇄  Преизпълни одита</value></data>
+<data name="Sec.Level.Secure" xml:space="preserve"><value>Сигурно</value></data>
+<data name="Sec.Level.Info" xml:space="preserve"><value>Информация</value></data>
+<data name="Sec.Level.Warning" xml:space="preserve"><value>Предупреждение</value></data>
+<data name="Sec.Level.Critical" xml:space="preserve"><value>Критично</value></data>
+<data name="Sec.Msgs.AuditFailed" xml:space="preserve"><value>Не можа да се получи одитът на сигурността от услугата.</value></data>
+<data name="Sec.Check.Sec001.Name" xml:space="preserve"><value>Ограничен публичен достъп</value></data>
+<data name="Sec.Check.Sec001.Desc" xml:space="preserve"><value>Proxy не трябва да слуша на всички интерфейси, освен ако не е необходимо.</value></data>
+<data name="Sec.Check.Sec001.MsgPass" xml:space="preserve"><value>Proxy е свързан с конкретен интерфейс.</value></data>
+<data name="Sec.Check.Sec001.MsgFail" xml:space="preserve"><value>Proxy слуша на всички интерфейси (0.0.0.0). Свържете го с конкретен IP адрес.</value></data>
+<data name="Sec.Check.Sec001.Fix" xml:space="preserve"><value>Задайте адреса на слушане на IP адреса на конкретния мрежов интерфейс.</value></data>
+<data name="Sec.Check.Sec002.Name" xml:space="preserve"><value>Ограничен достъп на клиенти</value></data>
+<data name="Sec.Check.Sec002.Desc" xml:space="preserve"><value>Достъпът трябва да бъде ограничен до конкретни клиенти.</value></data>
+<data name="Sec.Check.Sec002.MsgPass" xml:space="preserve"><value>Конфигурирани {0} разрешени клиент(и).</value></data>
+<data name="Sec.Check.Sec002.MsgFail" xml:space="preserve"><value>Достъпът на клиенти е настроен на &apos;разреши на всички&apos; — всяко устройство в мрежата може да използва това proxy.</value></data>
+<data name="Sec.Check.Sec002.MsgEmpty" xml:space="preserve"><value>Няма конфигурирани разрешени клиенти. Proxy ще отхвърли всички връзки.</value></data>
+<data name="Sec.Check.Sec002.Fix" xml:space="preserve"><value>Конфигурирайте конкретни разрешени клиенти.</value></data>
+<data name="Sec.Check.Sec002.FixEmpty" xml:space="preserve"><value>Добавете поне един разрешен клиент.</value></data>
+<data name="Sec.Check.Sec003.Name" xml:space="preserve"><value>HTTPS прихващане е изключено</value></data>
+<data name="Sec.Check.Sec003.Desc" xml:space="preserve"><value>HTTPS трафикът се тунелира без инспекция, запазвайки end-to-end криптиране.</value></data>
+<data name="Sec.Check.Sec003.MsgPass" xml:space="preserve"><value>HTTPS прихващане не е имплементирано; HTTPS трафикът се предава чрез CONNECT тунел.</value></data>
+<data name="Sec.Check.Sec004.Name" xml:space="preserve"><value>Подравняване на защитната стена</value></data>
+<data name="Sec.Check.Sec004.Desc" xml:space="preserve"><value>Защитната стена трябва да ограничи достъпа до proxy порта.</value></data>
+<data name="Sec.Check.Sec004.MsgPass" xml:space="preserve"><value>Proxy е свързан с конкретен интерфейс.</value></data>
+<data name="Sec.Check.Sec004.MsgFail" xml:space="preserve"><value>Помислете за ограничаване на достъпа на Windows защитната стена до proxy порта.</value></data>
+<data name="Sec.Check.Sec004.Fix" xml:space="preserve"><value>Конфигурирайте правило на Windows защитната стена, което ограничава достъпа до IP адресите на разрешените клиенти.</value></data>
+<data name="Sec.Check.Sec005.Name" xml:space="preserve"><value>Ограничени целеви портове</value></data>
+<data name="Sec.Check.Sec005.Desc" xml:space="preserve"><value>Само конкретни целеви портове трябва да бъдат разрешени.</value></data>
+<data name="Sec.Check.Sec005.MsgPass" xml:space="preserve"><value>Целевите портове ограничени до: {0}</value></data>
+<data name="Sec.Check.Sec005.MsgFail" xml:space="preserve"><value>Ограниченията на целевите портове са изключени; всеки целеви порт е разрешен.</value></data>
+<data name="Sec.Check.Sec005.Fix" xml:space="preserve"><value>Активирайте ограниченията на целевите портове в настройките за сигурност.</value></data>
+<data name="Sec.Check.Sec006.Name" xml:space="preserve"><value>Без широки правила за подмрежи</value></data>
+<data name="Sec.Check.Sec006.Desc" xml:space="preserve"><value>Входовете за разрешени клиенти не трябва да са твърде широки.</value></data>
+<data name="Sec.Check.Sec006.MsgPass" xml:space="preserve"><value>Няма конфигурирани твърде широки подмрежи.</value></data>
+<data name="Sec.Check.Sec006.MsgFailAllowAll" xml:space="preserve"><value>Режимът &apos;разреши на всички&apos; е активиран.</value></data>
+<data name="Sec.Check.Sec006.MsgFailBroad" xml:space="preserve"><value>Открити {0} широки подмрежи: {1}</value></data>
+<data name="Sec.Check.Sec006.FixAllowAll" xml:space="preserve"><value>Превключете в режим списък за разрешение.</value></data>
+<data name="Sec.Check.Sec006.FixBroad" xml:space="preserve"><value>Стеснете CIDR обхватите на клиентите, за да намалите атакуемата повърхност.</value></data>
+<data name="Sec.Check.Sec007.Name" xml:space="preserve"><value>Валидна конфигурация</value></data>
+<data name="Sec.Check.Sec007.Desc" xml:space="preserve"><value>Конфигурацията трябва да премине всички проверки за валидност.</value></data>
+<data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>Конфигурацията е валидна.</value></data>
+<data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} грешки в конфигурацията: {1}</value></data>
+<data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Отстранете горните грешки в конфигурацията.</value></data>
+</root>

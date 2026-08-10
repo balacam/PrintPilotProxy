@@ -1,127 +1,142 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using PrintPilotProxy.Core.Interfaces;
-using PrintPilotProxy.Core.Models;
 using System;
 using System.Collections.ObjectModel;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using PrintPilotProxy.App.Localization;
+using PrintPilotProxy.App.Services;
+using PrintPilotProxy.Core.Models;
 
 namespace PrintPilotProxy.App.ViewModels;
 
-public class ActivityLog
-{
-    public string Time { get; set; } = "";
-    public string ClientIp { get; set; } = "";
-    public string Destination { get; set; } = "";
-    public string Status { get; set; } = "";
-}
-
 public partial class DashboardViewModel : ObservableObject
 {
-    private readonly IIpcClient _ipcClient;
-    private DispatcherTimer _timer;
+    private readonly IpcClientService _ipc;
+    private readonly DispatcherTimer _timer;
 
-    [ObservableProperty]
-    private string _engineName = "Unknown";
+    [ObservableProperty] private string _proxyState = "N/A";
+    [ObservableProperty] private string _proxyStateBrushKey = "WarningBrush";
+    [ObservableProperty] private string _engineName = "N/A";
+    [ObservableProperty] private string _engineVersion = "N/A";
+    [ObservableProperty] private string _listeningAddress = "N/A";
+    [ObservableProperty] private string _proxyPort = "N/A";
+    [ObservableProperty] private string _uptimeString = "N/A";
+    [ObservableProperty] private string _totalRequests = "N/A";
+    [ObservableProperty] private string _totalErrors = "N/A";
+    [ObservableProperty] private string _activeConnections = "N/A";
+    [ObservableProperty] private string _accessMode = "N/A";
+    [ObservableProperty] private string _allowedClientsCount = "N/A";
+    [ObservableProperty] private string _allowedPorts = "N/A";
+    [ObservableProperty] private bool _isLoading = false;
+    [ObservableProperty] private string _statusMessage = string.Empty;
 
-    [ObservableProperty]
-    private int _allowedClientsCount = 0;
+    public ObservableCollection<ActivityLogEntry> RecentActivities { get; } = new();
 
-    [ObservableProperty]
-    private int _totalRequests = 0;
-
-    [ObservableProperty]
-    private int _totalErrors = 0;
-
-    [ObservableProperty]
-    private string _uptimeString = "00:00:00";
-
-    public ObservableCollection<ActivityLog> RecentActivities { get; } = new();
-
-    public DashboardViewModel(IIpcClient ipcClient)
+    public DashboardViewModel(IpcClientService ipc)
     {
-        _ipcClient = ipcClient;
-
-        _timer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(2)
-        };
-        _timer.Tick += async (s, e) => await UpdateDashboardAsync();
+        _ipc = ipc;
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+        _timer.Tick += async (_, _) => await RefreshAsync();
         _timer.Start();
+        _ = RefreshAsync();
     }
 
-    private async Task UpdateDashboardAsync()
+    [RelayCommand]
+    private async Task RefreshAsync()
     {
         try
         {
-            if (!_ipcClient.IsConnected)
+            IsLoading = true;
+            StatusMessage = string.Empty;
+
+            var status = await _ipc.GetStatusAsync();
+            if (status != null)
             {
-                await _ipcClient.ConnectAsync();
+                ProxyState = status.State.ToString();
+                ProxyStateBrushKey = BrushForState(status.State);
+                EngineName = status.EngineName;
+                EngineVersion = status.EngineVersion;
+                ListeningAddress = status.ListeningAddress ?? "N/A";
+                ProxyPort = ExtractPort(status.ListeningAddress);
+                TotalRequests = status.TotalRequests.ToString("N0");
+                TotalErrors = status.TotalErrors.ToString("N0");
+                ActiveConnections = status.ActiveConnections.ToString("N0");
+                UptimeString = FormatUptime(status.Uptime);
+            }
+            else
+            {
+                ProxyState = LocalizationService.Instance["Dash.ServiceUnavailable"];
+                ProxyStateBrushKey = "ErrorBrush";
+                ListeningAddress = TotalRequests = TotalErrors = ActiveConnections = UptimeString = "N/A";
             }
 
-            // Get Status
-            var statusReq = new IpcMessage { Type = IpcMessageTypes.GetStatus };
-            var statusResp = await _ipcClient.SendAsync(statusReq);
-
-            if (statusResp.Type == IpcMessageTypes.StatusResponse && statusResp.Payload != null)
+            var config = await _ipc.GetConfigurationAsync();
+            if (config != null)
             {
-                var status = JsonSerializer.Deserialize<ProxyStatus>(statusResp.Payload);
-                if (status != null)
-                {
-                    EngineName = $"{status.EngineName} {status.EngineVersion}".Trim();
-                    TotalRequests = (int)status.TotalRequests;
-                    TotalErrors = (int)status.TotalErrors;
-                    
-                    if (status.Uptime.HasValue)
-                    {
-                        var uptime = status.Uptime.Value;
-                        UptimeString = $"{(int)uptime.TotalHours:00}:{uptime.Minutes:00}:{uptime.Seconds:00}";
-                    }
-                    else
-                    {
-                        UptimeString = "00:00:00";
-                    }
-                }
+                AccessMode = config.ClientAccess.Mode.ToString();
+                AllowedClientsCount = config.ClientAccess.AllowedClients.Count.ToString();
+                AllowedPorts = config.Security.DestinationPortRestrictionsEnabled
+                    ? string.Join(", ", config.Security.AllowedDestinationPorts)
+                    : LocalizationService.Instance["Common.AllPorts"];
             }
 
-            // Get recent requests
-            var logsReq = new IpcMessage { Type = IpcMessageTypes.GetRecentRequests };
-            var logsResp = await _ipcClient.SendAsync(logsReq);
-            if (logsResp.Type == IpcMessageTypes.RecentRequestsResponse && logsResp.Payload != null)
+            var requests = await _ipc.GetRecentRequestsAsync();
+            RecentActivities.Clear();
+            foreach (var r in requests)
             {
-                var logs = JsonSerializer.Deserialize<ProxyRequestEntry[]>(logsResp.Payload);
-                if (logs != null)
+                RecentActivities.Add(new ActivityLogEntry
                 {
-                    RecentActivities.Clear();
-                    foreach (var log in logs)
-                    {
-                        RecentActivities.Add(new ActivityLog
-                        {
-                            Time = log.Timestamp.ToLocalTime().ToString("HH:mm:ss"),
-                            ClientIp = log.ClientIp,
-                            Destination = log.Destination,
-                            Status = log.IsSuccess ? "Success" : "Error"
-                        });
-                    }
-                }
-            }
-            
-            // Get Config
-            var confReq = new IpcMessage { Type = IpcMessageTypes.GetConfiguration };
-            var confResp = await _ipcClient.SendAsync(confReq);
-            if (confResp.Type == IpcMessageTypes.ConfigurationResponse && confResp.Payload != null)
-            {
-                var conf = JsonSerializer.Deserialize<ProxyConfiguration>(confResp.Payload);
-                if (conf != null)
-                {
-                    AllowedClientsCount = conf.AllowedClients.Count;
-                }
+                    Time        = r.Timestamp.ToLocalTime().ToString("HH:mm:ss"),
+                    ClientIp    = r.ClientIp,
+                    Method      = r.Method,
+                    Destination = r.Destination,
+                    Status      = r.IsSuccess ? "OK" : "Error",
+                    StatusBrushKey = r.IsSuccess ? "SuccessBrush" : "ErrorBrush"
+                });
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error updating dashboard: {ex.Message}");
+            StatusMessage = LocalizationService.Instance.GetFormat("Dash.Msgs.LoadError", ex.Message);
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
+
+    // ─── Helpers ──────────────────────────────────────────────────────────────
+
+    private static string BrushForState(PrintPilotProxy.Core.Models.ProxyState state) => state switch
+    {
+        PrintPilotProxy.Core.Models.ProxyState.Running  => "SuccessBrush",
+        PrintPilotProxy.Core.Models.ProxyState.Stopped  => "ErrorBrush",
+        PrintPilotProxy.Core.Models.ProxyState.Faulted  => "ErrorBrush",
+        _                                               => "WarningBrush"
+    };
+
+    private static string ExtractPort(string? address)
+    {
+        if (string.IsNullOrEmpty(address)) return "N/A";
+        var idx = address.LastIndexOf(':');
+        return idx >= 0 ? address[(idx + 1)..] : "N/A";
+    }
+
+    private static string FormatUptime(TimeSpan? uptime)
+    {
+        if (!uptime.HasValue) return "N/A";
+        var u = uptime.Value;
+        return $"{(int)u.TotalHours:D2}:{u.Minutes:D2}:{u.Seconds:D2}";
+    }
+}
+
+public class ActivityLogEntry
+{
+    public string Time { get; set; } = string.Empty;
+    public string ClientIp { get; set; } = string.Empty;
+    public string Method { get; set; } = string.Empty;
+    public string Destination { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
+    public string StatusBrushKey { get; set; } = "TextBrush";
 }

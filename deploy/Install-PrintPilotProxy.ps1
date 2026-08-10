@@ -37,12 +37,20 @@ if (!(Test-Path $InstallDir)) { New-Item -ItemType Directory -Path $InstallDir -
 if (!(Test-Path $DataDir)) { New-Item -ItemType Directory -Path $DataDir -Force | Out-Null }
 
 # 3. Copy binaries (Assumes this script is run from the extracted release ZIP)
-$SourcePath = Join-Path $PSScriptRoot "bin"
-if (Test-Path $SourcePath) {
-    Write-Host "Copying binaries to $InstallDir..."
-    Copy-Item -Path "$SourcePath\*" -Destination $InstallDir -Recurse -Force
+$BinDir = Join-Path $PSScriptRoot "bin"
+if (Test-Path $BinDir) {
+    $SourcePath = $BinDir
 } else {
-    Write-Warning "Could not find 'bin' directory next to installer script. Make sure you extracted the ZIP completely."
+    $SourcePath = $PSScriptRoot
+}
+
+if ((Test-Path (Join-Path $SourcePath "Service")) -or (Test-Path (Join-Path $SourcePath "App"))) {
+    Write-Host "Copying binaries to $InstallDir..."
+    if (Test-Path (Join-Path $SourcePath "App")) { Copy-Item -Path "$SourcePath\App\*" -Destination $InstallDir -Force -ErrorAction SilentlyContinue }
+    if (Test-Path (Join-Path $SourcePath "Service")) { Copy-Item -Path "$SourcePath\Service\*" -Destination $InstallDir -Force -ErrorAction SilentlyContinue }
+    if (Test-Path (Join-Path $SourcePath "Cli")) { Copy-Item -Path "$SourcePath\Cli\*" -Destination $InstallDir -Force -ErrorAction SilentlyContinue }
+} else {
+    Write-Warning "Could not find binary directories (App, Service, Cli) next to installer script. Make sure you extracted the ZIP completely."
 }
 
 # 4. Install Windows Service

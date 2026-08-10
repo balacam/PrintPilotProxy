@@ -66,9 +66,13 @@ public class Program
                 DestinationPortRestrictionsEnabled = true,
                 AllowedDestinationPorts = new System.Collections.Generic.List<int> { 80, 443 }
             },
-            AllowedClients = new System.Collections.Generic.List<AllowedClient> 
+            ClientAccess = new ClientAccessSettings
             {
-                new AllowedClient { IpOrCidr = System.Net.IPAddress.Loopback.ToString(), Enabled = true, Name = "Localhost" }
+                Mode = ClientAccessMode.AllowList,
+                AllowedClients = new System.Collections.Generic.List<AllowedClient> 
+                {
+                    new AllowedClient { IpOrCidr = System.Net.IPAddress.Loopback.ToString(), Enabled = true, Name = "Localhost" }
+                }
             }
         };
         

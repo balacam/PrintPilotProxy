@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+<data name="Common.Na" xml:space="preserve"><value>Yok</value></data>
+<data name="Common.Unknown" xml:space="preserve"><value>Bilinmiyor</value></data>
+<data name="Common.Error" xml:space="preserve"><value>Hata</value></data>
+<data name="Common.OK" xml:space="preserve"><value>Tamam</value></data>
+<data name="Common.All" xml:space="preserve"><value>Herhangi</value></data>
+<data name="Common.AllPorts" xml:space="preserve"><value>Tüm portlar</value></data>
+<data name="Common.Private" xml:space="preserve"><value>Özel</value></data>
+<data name="Common.Public" xml:space="preserve"><value>Herkese açık</value></data>
+<data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Gösterge Paneli</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Ağ Ayarları</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  İzin Verilen İstemciler</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Güvenlik Duvarı</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>⚙️  Hizmet</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>📋  Günlükler</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Tanılama</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>🛡️  Güvenlik</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>🌍  Dil</value></data>
+<data name="MainWindow.Status" xml:space="preserve"><value>Durum: </value></data>
+<data name="MainWindow.Listen" xml:space="preserve"><value>Dinleme: </value></data>
+<data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>HİZMET KULLANILAMIYOR</value></data>
+<data name="Tray.Open" xml:space="preserve"><value>PrintPilotProxy&apos;yi aç</value></data>
+<data name="Tray.StartProxy" xml:space="preserve"><value>Proxy&apos;yi başlat</value></data>
+<data name="Tray.StopProxy" xml:space="preserve"><value>Proxy&apos;yi durdur</value></data>
+<data name="Tray.RestartProxy" xml:space="preserve"><value>Proxy&apos;yi yeniden başlat</value></data>
+<data name="Tray.Diagnostics" xml:space="preserve"><value>Tanılama</value></data>
+<data name="Tray.OpenLogFolder" xml:space="preserve"><value>Günlük klasörünü aç</value></data>
+<data name="Tray.Exit" xml:space="preserve"><value>Çıkış</value></data>
+<data name="Action.Refresh" xml:space="preserve"><value>↻  Yenile</value></data>
+<data name="Action.Apply" xml:space="preserve"><value>⚡  Uygula</value></data>
+<data name="Action.Reset" xml:space="preserve"><value>↺  Sıfırla</value></data>
+<data name="Action.Reload" xml:space="preserve"><value>↻  Yeniden yükle</value></data>
+<data name="Action.Add" xml:space="preserve"><value>+  Ekle</value></data>
+<data name="Page.Dashboard" xml:space="preserve"><value>Gösterge Paneli</value></data>
+<data name="Dash.ProxyState" xml:space="preserve"><value>Proxy Durumu</value></data>
+<data name="Dash.Uptime" xml:space="preserve"><value>Çalışma Süresi</value></data>
+<data name="Dash.TotalRequests" xml:space="preserve"><value>Toplam İstek</value></data>
+<data name="Dash.Errors" xml:space="preserve"><value>Hatalar</value></data>
+<data name="Dash.ListeningAddress" xml:space="preserve"><value>Dinleme Adresi</value></data>
+<data name="Dash.AccessMode" xml:space="preserve"><value>Erişim Modu</value></data>
+<data name="Dash.AllowedClients" xml:space="preserve"><value>İzin Verilen İstemciler</value></data>
+<data name="Dash.AllowedPorts" xml:space="preserve"><value>İzin Verilen Portlar</value></data>
+<data name="Dash.RecentActivity" xml:space="preserve"><value>Son Aktivite</value></data>
+<data name="Dash.ServiceUnavailable" xml:space="preserve"><value>Hizmet kullanılamıyor</value></data>
+<data name="Dash.Msgs.LoadError" xml:space="preserve"><value>Hata: {0}</value></data>
+<data name="Page.NetworkSettings" xml:space="preserve"><value>Ağ Ayarları</value></data>
+<data name="Net.ListenerMode" xml:space="preserve"><value>Dinleme Modu</value></data>
+<data name="Net.ChooseInterface" xml:space="preserve"><value>Proxy&apos;nin dinlediği ağ arayüzünü seçin.</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Otomatik  (tüm özel ağ arayüzlerini kullan)</value></data>
+<data name="Net.ModeAdapter" xml:space="preserve"><value>Belirli Ağ Adaptörü  (algılanan adaptörlerden seç)</value></data>
+<data name="Net.ModeSpecificIp" xml:space="preserve"><value>Belirli IP Adresi  (elle girin)</value></data>
+<data name="Net.PortAndLimits" xml:space="preserve"><value>Port ve Sınırlar</value></data>
+<data name="Net.ProxyPort" xml:space="preserve"><value>Proxy Portu</value></data>
+<data name="Net.DefaultPort" xml:space="preserve"><value>Varsayılan: 3128</value></data>
+<data name="Net.MaxConnections" xml:space="preserve"><value>Maks. Bağlantı</value></data>
+<data name="Net.DefaultConnections" xml:space="preserve"><value>Varsayılan: 1000</value></data>
+<data name="Net.TimeoutSeconds" xml:space="preserve"><value>Zaman aşımı (saniye)</value></data>
+<data name="Net.DefaultTimeout" xml:space="preserve"><value>Varsayılan: 120</value></data>
+<data name="Net.Msgs.LoadFailed" xml:space="preserve"><value>Yapılandırma hizmetten yüklenemedi.</value></data>
+<data name="Net.Msgs.LoadError" xml:space="preserve"><value>Yükleme hatası: {0}</value></data>
+<data name="Net.Msgs.ResetDone" xml:space="preserve"><value>Ayarlar son kaydedilen değerlere sıfırlandı.</value></data>
+<data name="Net.Msgs.PortInvalid" xml:space="preserve"><value>&apos;{0}&apos; portu geçersiz. 1 ile 65535 arasında olmalıdır.</value></data>
+<data name="Net.Msgs.MaxConnectionsInvalid" xml:space="preserve"><value>Maks. bağlantı 1 ile 100000 arasında olmalıdır.</value></data>
+<data name="Net.Msgs.TimeoutInvalid" xml:space="preserve"><value>Zaman aşımı 1 ile 3600 saniye arasında olmalıdır.</value></data>
+<data name="Net.Msgs.SelectAdapter" xml:space="preserve"><value>Lütfen bir ağ adaptörü seçin.</value></data>
+<data name="Net.Msgs.IpInvalid" xml:space="preserve"><value>&apos;{0}&apos; geçerli bir IP adresi değil.</value></data>
+<data name="Net.Msgs.IpNotLocal" xml:space="preserve"><value>&apos;{0}&apos; IP adresi yerel bir ağ adaptörüne atanmamış.&amp;#10;Mevcut: {1}</value></data>
+<data name="Net.Msgs.ReadConfigFailed" xml:space="preserve"><value>Mevcut yapılandırma hizmetten okunamadı.</value></data>
+<data name="Net.Msgs.Applied" xml:space="preserve"><value>Yapılandırma başarıyla uygulandı. Proxy yeni ayarlarla yeniden başlatıldı.</value></data>
+<data name="Net.Msgs.ApplyFailed" xml:space="preserve"><value>Uygulama başarısız: {0}</value></data>
+<data name="Net.Msgs.UnexpectedError" xml:space="preserve"><value>Beklenmeyen hata: {0}</value></data>
+<data name="Page.AllowedClients" xml:space="preserve"><value>İzin Verilen İstemciler</value></data>
+<data name="Cli.ClientAccessMode" xml:space="preserve"><value>İstemci Erişim Modu</value></data>
+<data name="Cli.AllowAllWithHint" xml:space="preserve"><value>●  Tüm istemcilere izin ver  —  herhangi bir erişilebilir IP proxy&apos;yi kullanabilir</value></data>
+<data name="Cli.AllowAllHint" xml:space="preserve"><value>⚠ &apos;Tümüne izin ver&apos; kullanışlıdır, ancak ağdaki herhangi bir cihaz bu proxy&apos;yi kullanabilir.</value></data>
+<data name="Cli.AllowListWithHint" xml:space="preserve"><value>●  Yalnızca belirli istemcilere izin ver  —  IP / CIDR izin listesi</value></data>
+<data name="Cli.AddClient" xml:space="preserve"><value>İstemci Ekle</value></data>
+<data name="Cli.Name" xml:space="preserve"><value>Ad</value></data>
+<data name="Cli.IpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+<data name="Cli.DescriptionOptional" xml:space="preserve"><value>Açıklama (isteğe bağlı)</value></data>
+<data name="Cli.ClientList" xml:space="preserve"><value>İstemci Listesi</value></data>
+<data name="Cli.RemoveSelected" xml:space="preserve"><value>✖  Seçileni Kaldır</value></data>
+<data name="Cli.Msgs.LoadFailed" xml:space="preserve"><value>Yapılandırma hizmetten yüklenemedi.</value></data>
+<data name="Cli.Msgs.LoadError" xml:space="preserve"><value>Yükleme hatası: {0}</value></data>
+<data name="Cli.Msgs.NameRequired" xml:space="preserve"><value>İstemci adı gerekli.</value></data>
+<data name="Cli.Msgs.IpOrCidrInvalid" xml:space="preserve"><value>&apos;{0}&apos; geçerli bir IP adresi veya CIDR gösterimi değil.</value></data>
+<data name="Cli.Msgs.SelectClientToRemove" xml:space="preserve"><value>Kaldırmak için bir istemci seçin.</value></data>
+<data name="Cli.Msgs.ConfigNotLoaded" xml:space="preserve"><value>Yapılandırma yüklenmedi.</value></data>
+<data name="Cli.Msgs.Saved" xml:space="preserve"><value>İstemci erişim yapılandırması kaydedildi ve uygulandı.</value></data>
+<data name="Cli.Msgs.ApplyFailed" xml:space="preserve"><value>Uygulama başarısız: {0}</value></data>
+<data name="Cli.Msgs.Error" xml:space="preserve"><value>Hata: {0}</value></data>
+<data name="Page.Firewall" xml:space="preserve"><value>Güvenlik Duvarı</value></data>
+<data name="Fw.Rule" xml:space="preserve"><value>PrintPilotProxy Güvenlik Duvarı Kuralı</value></data>
+<data name="Fw.RuleName" xml:space="preserve"><value>Kural Adı:</value></data>
+<data name="Fw.Status" xml:space="preserve"><value>Durum:</value></data>
+<data name="Fw.Port" xml:space="preserve"><value>Port:</value></data>
+<data name="Fw.Protocol" xml:space="preserve"><value>Protokol:</value></data>
+<data name="Fw.LocalScope" xml:space="preserve"><value>Yerel Kapsam:</value></data>
+<data name="Fw.RuleExists" xml:space="preserve"><value>Kural mevcut</value></data>
+<data name="Fw.RuleNotFound" xml:space="preserve"><value>Kural bulunamadı</value></data>
+<data name="Fw.ServiceUnavailable" xml:space="preserve"><value>Hizmet kullanılamıyor</value></data>
+<data name="Fw.ProtocolTcp" xml:space="preserve"><value>TCP</value></data>
+<data name="Fw.DirectionInbound" xml:space="preserve"><value>Gelen</value></data>
+<data name="Fw.Msgs.CreateUpdate" xml:space="preserve"><value>✔  Kural Oluştur / Güncelle</value></data>
+<data name="Fw.Msgs.RemoveRule" xml:space="preserve"><value>✖  Kuralı Kaldır</value></data>
+<data name="Fw.Msgs.LoadError" xml:space="preserve"><value>Güvenlik duvarı durumu yüklenirken hata: {0}</value></data>
+<data name="Fw.Msgs.Applied" xml:space="preserve"><value>Güvenlik duvarı kuralı başarıyla uygulandı.</value></data>
+<data name="Fw.Msgs.Removed" xml:space="preserve"><value>Güvenlik duvarı kuralı kaldırıldı.</value></data>
+<data name="Fw.Msgs.Failed" xml:space="preserve"><value>Başarısız: {0}</value></data>
+<data name="Fw.Msgs.Error" xml:space="preserve"><value>Hata: {0}</value></data>
+<data name="Page.Service" xml:space="preserve"><value>Hizmet</value></data>
+<data name="Svc.Header" xml:space="preserve"><value>Windows Hizmeti ve Proxy Motoru</value></data>
+<data name="Svc.ServiceStatus" xml:space="preserve"><value>Hizmet Durumu:</value></data>
+<data name="Svc.StartupType" xml:space="preserve"><value>Başlangıç Türü:</value></data>
+<data name="Svc.ProxyState" xml:space="preserve"><value>Proxy Durumu:</value></data>
+<data name="Svc.Listening" xml:space="preserve"><value>Dinleme:</value></data>
+<data name="Svc.Uptime" xml:space="preserve"><value>Çalışma Süresi:</value></data>
+<data name="Svc.TotalRequests" xml:space="preserve"><value>Toplam İstek:</value></data>
+<data name="Svc.TotalErrors" xml:space="preserve"><value>Toplam Hata:</value></data>
+<data name="Svc.ActiveConnections" xml:space="preserve"><value>Aktif Bağlantılar:</value></data>
+<data name="Svc.NotInstalled" xml:space="preserve"><value>Yüklü Değil</value></data>
+<data name="Svc.Unavailable" xml:space="preserve"><value>Kullanılamıyor</value></data>
+<data name="Svc.AutoRestart" xml:space="preserve"><value>Proxy motoru hatalarını otomatik olarak yeniden dene</value></data>
+<data name="Svc.StartService" xml:space="preserve"><value>▶  Hizmeti Başlat</value></data>
+<data name="Svc.StopService" xml:space="preserve"><value>⏹  Hizmeti Durdur</value></data>
+<data name="Svc.RestartService" xml:space="preserve"><value>↺  Hizmeti Yeniden Başlat</value></data>
+<data name="Svc.ApplyRecovery" xml:space="preserve"><value>Kurtarma Ayarını Uygula</value></data>
+<data name="Svc.Msgs.Started" xml:space="preserve"><value>Windows hizmeti başlatıldı.</value></data>
+<data name="Svc.Msgs.Stopped" xml:space="preserve"><value>Windows hizmeti durduruldu.</value></data>
+<data name="Svc.Msgs.Restarted" xml:space="preserve"><value>Windows hizmeti yeniden başlatıldı.</value></data>
+<data name="Svc.Msgs.ServiceRequired" xml:space="preserve"><value>Kurtarma ayarlarını güncellemek için Windows hizmetinin çalışıyor olması gerekir.</value></data>
+<data name="Svc.Msgs.RecoveryUpdated" xml:space="preserve"><value>Proxy motoru kurtarma ayarı güncellendi.</value></data>
+<data name="Page.Logs" xml:space="preserve"><value>Günlükler</value></data>
+<data name="Logs.File" xml:space="preserve"><value>Dosya: {0}</value></data>
+<data name="Logs.NoDirectory" xml:space="preserve"><value>(Günlük klasörü henüz yok.)</value></data>
+<data name="Logs.NoFiles" xml:space="preserve"><value>(Günlük dosyası bulunamadı.)</value></data>
+<data name="Logs.OpenFolder" xml:space="preserve"><value>📁  Klasörü Aç</value></data>
+<data name="Logs.Copy" xml:space="preserve"><value>📋  Kopyala</value></data>
+<data name="Logs.ClearView" xml:space="preserve"><value>🧹  Görünümü Temizle</value></data>
+<data name="Logs.Msgs.Loaded" xml:space="preserve"><value>{1} dosyasından {0} satır yüklendi</value></data>
+<data name="Logs.Msgs.LoadError" xml:space="preserve"><value>Günlükler yüklenirken hata: {0}</value></data>
+<data name="Logs.Msgs.ViewCleared" xml:space="preserve"><value>Görünüm temizlendi. Günlük dosyaları etkilenmez.</value></data>
+<data name="Logs.Msgs.OpenFolderFailed" xml:space="preserve"><value>Günlük klasörü açılamadı: {0}</value></data>
+<data name="Logs.Msgs.Copied" xml:space="preserve"><value>Günlük içeriği panoya kopyalandı.</value></data>
+<data name="Logs.Msgs.CopyFailed" xml:space="preserve"><value>Kopyalama başarısız: {0}</value></data>
+<data name="Page.Diagnostics" xml:space="preserve"><value>Tanılama</value></data>
+<data name="Diag.RunAll" xml:space="preserve"><value>▶  Tüm Kontrolleri Çalıştır</value></data>
+<data name="Diag.Overall" xml:space="preserve"><value>Genel: </value></data>
+<data name="Diag.Running" xml:space="preserve"><value>Tanılama çalıştırılıyor...</value></data>
+<data name="Diag.ServiceConnection" xml:space="preserve"><value>Hizmet Bağlantısı</value></data>
+<data name="Diag.ServiceConnectionDesc" xml:space="preserve"><value>WPF uygulaması Windows hizmetine adlı boru aracılığıyla bağlanabilir mi?</value></data>
+<data name="Diag.Connected" xml:space="preserve"><value>Hizmete başarıyla bağlanıldı.</value></data>
+<data name="Diag.CannotConnect" xml:space="preserve"><value>Bağlanamıyor. PrintPilotProxy hizmeti çalışıyor mu?</value></data>
+<data name="Diag.StartServiceHint" xml:space="preserve"><value>Hizmeti başlatın: sc start PrintPilotProxy</value></data>
+<data name="Diag.ConfigValid" xml:space="preserve"><value>Yapılandırma Geçerli</value></data>
+<data name="Diag.ConfigValidDesc" xml:space="preserve"><value>Proxy yapılandırma dosyası geçerli mi?</value></data>
+<data name="Diag.CouldNotLoadConfig" xml:space="preserve"><value>Yapılandırma yüklenemedi.</value></data>
+<data name="Diag.EnsureServiceRunning" xml:space="preserve"><value>Hizmetin çalıştığından emin olun.</value></data>
+<data name="Diag.ConfigValidOk" xml:space="preserve"><value>Yapılandırma geçerli.</value></data>
+<data name="Diag.ConfigErrors" xml:space="preserve"><value>{0} hata: {1}</value></data>
+<data name="Diag.FixConfigErrors" xml:space="preserve"><value>Yapılandırma hatalarını düzeltin.</value></data>
+<data name="Diag.ProxyEngineState" xml:space="preserve"><value>Proxy Motoru Durumu</value></data>
+<data name="Diag.ProxyEngineStateDesc" xml:space="preserve"><value>Proxy motoru çalışıyor mu?</value></data>
+<data name="Diag.ServiceNotReachable" xml:space="preserve"><value>Hizmet erişilemez.</value></data>
+<data name="Diag.StartService" xml:space="preserve"><value>Hizmeti başlatın.</value></data>
+<data name="Diag.RunningOn" xml:space="preserve"><value>{0} üzerinde çalışıyor.</value></data>
+<data name="Diag.StateIs" xml:space="preserve"><value>Durum: {0}.</value></data>
+<data name="Diag.UseServicePage" xml:space="preserve"><value>Proxy&apos;yi başlatmak için Hizmet sayfasını kullanın.</value></data>
+<data name="Diag.ConfigFileDisk" xml:space="preserve"><value>Yapılandırma Dosyası Diskte</value></data>
+<data name="Diag.ConfigFileDiskDesc" xml:space="preserve"><value>Yapılandırma dosyası var mı?</value></data>
+<data name="Diag.FoundPath" xml:space="preserve"><value>Bulundu: {0}</value></data>
+<data name="Diag.NotFoundPath" xml:space="preserve"><value>Bulunamadı: {0}</value></data>
+<data name="Diag.RunInstaller" xml:space="preserve"><value>Varsayılanları oluşturmak için yükleyiciyi çalıştırın veya hizmeti bir kez başlatın.</value></data>
+<data name="Diag.LogDirWritable" xml:space="preserve"><value>Günlük Klasörü Yazılabilir</value></data>
+<data name="Diag.LogDirWritableDesc" xml:space="preserve"><value>Günlük klasörü yazılabilir mi?</value></data>
+<data name="Diag.LogDirMissing" xml:space="preserve"><value>Eksik: {0}</value></data>
+<data name="Diag.StartServiceCreatesDirs" xml:space="preserve"><value>Gerekli klasörleri oluşturmak için hizmeti başlatın.</value></data>
+<data name="Diag.LogDirWritableOk" xml:space="preserve"><value>Yazılabilir: {0}</value></data>
+<data name="Diag.LogDirNotWritable" xml:space="preserve"><value>Günlük klasörü yazılabilir değil.</value></data>
+<data name="Diag.CheckPermissions" xml:space="preserve"><value>PrintPilotProxy ProgramData klasöründeki izinleri kontrol edin.</value></data>
+<data name="Diag.PortAvailability" xml:space="preserve"><value>Proxy Portu Kullanılabilirliği</value></data>
+<data name="Diag.PortAvailabilityDesc" xml:space="preserve"><value>Proxy portu müsait mi (veya çalışan proxy tarafından mı kullanılıyor)?</value></data>
+<data name="Diag.CouldNotLoadConfigShort" xml:space="preserve"><value>Yapılandırma yüklenemedi.</value></data>
+<data name="Diag.PortBound" xml:space="preserve"><value>Port {0} çalışan proxy tarafından kullanılıyor.</value></data>
+<data name="Diag.PortAvailable" xml:space="preserve"><value>Port {0} müsait.</value></data>
+<data name="Diag.PortInUse" xml:space="preserve"><value>Port {0} başka bir işlem tarafından kullanılıyor.</value></data>
+<data name="Diag.ChangePortHint" xml:space="preserve"><value>Ağ Ayarları&apos;nda proxy portunu değiştirin veya çakışan uygulamayı durdurun.</value></data>
+<data name="Diag.NetworkAdapters" xml:space="preserve"><value>Ağ Adaptörleri</value></data>
+<data name="Diag.NetworkAdaptersDesc" xml:space="preserve"><value>Özel ağ adaptörleri mevcut mu?</value></data>
+<data name="Diag.AdaptersDetected" xml:space="preserve"><value>{0} adaptör algılandı.</value></data>
+<data name="Diag.NoAdapters" xml:space="preserve"><value>Ağ adaptörü bulunamadı.</value></data>
+<data name="Diag.CheckNetworkConfig" xml:space="preserve"><value>Ağ yapılandırmasını kontrol edin.</value></data>
+<data name="Diag.FirewallRule" xml:space="preserve"><value>Güvenlik Duvarı Kuralı</value></data>
+<data name="Diag.FirewallRuleDesc" xml:space="preserve"><value>PrintPilotProxy güvenlik duvarı kuralı var mı?</value></data>
+<data name="Diag.CouldNotQueryFirewall" xml:space="preserve"><value>Güvenlik duvarı durumu sorgulanamadı.</value></data>
+<data name="Diag.FirewallRuleExists" xml:space="preserve"><value>Güvenlik duvarı kuralı mevcut.</value></data>
+<data name="Diag.FirewallRuleMissing" xml:space="preserve"><value>Güvenlik duvarı kuralı eksik.</value></data>
+<data name="Diag.CreateRuleHint" xml:space="preserve"><value>Güvenlik Duvarı sayfasına gidin ve &apos;Kural Oluştur / Güncelle&apos; üzerine tıklayın.</value></data>
+<data name="Diag.IpcPipe" xml:space="preserve"><value>Adlı Boru IPC</value></data>
+<data name="Diag.IpcPipeDesc" xml:space="preserve"><value>Adlı boru sunucusu yanıt veriyor mu?</value></data>
+<data name="Diag.IpcResponding" xml:space="preserve"><value>Adlı boru IPC yanıt veriyor.</value></data>
+<data name="Diag.IpcNotResponding" xml:space="preserve"><value>IPC yanıt vermiyor.</value></data>
+<data name="Diag.RestartService" xml:space="preserve"><value>PrintPilotProxy hizmetini yeniden başlatın.</value></data>
+<data name="Diag.AllPassed" xml:space="preserve"><value>Tüm {0} kontrol_passed.</value></data>
+<data name="Diag.PassedFailed" xml:space="preserve"><value>{0} başarılı, {1} başarısız.</value></data>
+<data name="Diag.RunError" xml:space="preserve"><value>Tanılama hatası: {0}</value></data>
+<data name="Diag.Exception" xml:space="preserve"><value>İstisna: {0}</value></data>
+<data name="Diag.CheckLogs" xml:space="preserve"><value>Ayrıntılar için uygulama günlüklerine bakın.</value></data>
+<data name="Page.Language" xml:space="preserve"><value>Dil</value></data>
+<data name="Lang.Title" xml:space="preserve"><value>Arayüz Dili</value></data>
+<data name="Lang.Description" xml:space="preserve"><value>PrintPilotProxy arayüzü için dili seçin. Değişiklikler hemen uygulanır ve yapılandırma ile birlikte kaydedilir.</value></data>
+<data name="Lang.SystemDefault" xml:space="preserve"><value>Sistem Varsayılanı  (Windows&apos;u takip et)</value></data>
+<data name="Lang.Applied" xml:space="preserve"><value>Dil başarıyla değiştirildi.</value></data>
+<data name="Lang.ApplyFailed" xml:space="preserve"><value>Dil değiştirme başarısız: {0}</value></data>
+<data name="Lang.LoadFailed" xml:space="preserve"><value>Dil ayarları hizmetten yüklenemedi.</value></data>
+<data name="Page.Security" xml:space="preserve"><value>Güvenlik</value></data>
+<data name="Sec.Title" xml:space="preserve"><value>Güvenlik Denetimi</value></data>
+<data name="Sec.Description" xml:space="preserve"><value>Yazdırma ağını güvende tutmak için proxy yapılandırmasını ve dinleme yüzeyini otomatik olarak gözden geçirme.</value></data>
+<data name="Sec.Overall" xml:space="preserve"><value>Genel: {0}</value></data>
+<data name="Sec.RerunAudit" xml:space="preserve"><value>⇄  Denetim Çalıştır</value></data>
+<data name="Sec.Level.Secure" xml:space="preserve"><value>Güvenli</value></data>
+<data name="Sec.Level.Info" xml:space="preserve"><value>Bilgi</value></data>
+<data name="Sec.Level.Warning" xml:space="preserve"><value>Uyarı</value></data>
+<data name="Sec.Level.Critical" xml:space="preserve"><value>Kritik</value></data>
+<data name="Sec.Msgs.AuditFailed" xml:space="preserve"><value>Güvenlik denetimi hizmetten alınamadı.</value></data>
+<data name="Sec.Check.Sec001.Name" xml:space="preserve"><value>Açık erişim kısıtlandı</value></data>
+<data name="Sec.Check.Sec001.Desc" xml:space="preserve"><value>Proxy gerekmedikçe tüm arayüzlerde dinlememeli.</value></data>
+<data name="Sec.Check.Sec001.MsgPass" xml:space="preserve"><value>Proxy belirli bir arayüze bağlı.</value></data>
+<data name="Sec.Check.Sec001.MsgFail" xml:space="preserve"><value>Proxy tüm arayüzlerde dinliyor (0.0.0.0). Belirli bir IP&apos;ye bağlayın.</value></data>
+<data name="Sec.Check.Sec001.Fix" xml:space="preserve"><value>Dinleme adresini belirli bir ağ arayüzü IP adresine ayarlayın.</value></data>
+<data name="Sec.Check.Sec002.Name" xml:space="preserve"><value>İstemci erişimi kısıtlandı</value></data>
+<data name="Sec.Check.Sec002.Desc" xml:space="preserve"><value>Erişim belirli istemcilerle sınırlandırılmalı.</value></data>
+<data name="Sec.Check.Sec002.MsgPass" xml:space="preserve"><value>{0} izin verilen istemci yapılandırıldı.</value></data>
+<data name="Sec.Check.Sec002.MsgFail" xml:space="preserve"><value>İstemci erişimi &apos;tümüne izin ver&apos; olarak ayarlandı — ağdaki herhangi bir cihaz bu proxy&apos;yi kullanabilir.</value></data>
+<data name="Sec.Check.Sec002.MsgEmpty" xml:space="preserve"><value>İzin verilen istemci yapılandırılmamış. Proxy tüm bağlantıları reddedecektir.</value></data>
+<data name="Sec.Check.Sec002.Fix" xml:space="preserve"><value>Belirli izin verilen istemciler yapılandırın.</value></data>
+<data name="Sec.Check.Sec002.FixEmpty" xml:space="preserve"><value>En az bir izin verilen istemci ekleyin.</value></data>
+<data name="Sec.Check.Sec003.Name" xml:space="preserve"><value>HTTPS yakalama devre dışı</value></data>
+<data name="Sec.Check.Sec003.Desc" xml:space="preserve"><value>HTTPS trafiği denetim olmadan tünel boyunca iletilir, uçtan uca şifreleme korunur.</value></data>
+<data name="Sec.Check.Sec003.MsgPass" xml:space="preserve"><value>HTTPS yakalama uygulanmamış; HTTPS trafiği CONNECT tüneli ile iletilir.</value></data>
+<data name="Sec.Check.Sec004.Name" xml:space="preserve"><value>Güvenlik duvarı hizalama</value></data>
+<data name="Sec.Check.Sec004.Desc" xml:space="preserve"><value>Güvenlik duvarı proxy portuna erişimi kısıtlamalı.</value></data>
+<data name="Sec.Check.Sec004.MsgPass" xml:space="preserve"><value>Proxy belirli bir arayüze bağlı.</value></data>
+<data name="Sec.Check.Sec004.MsgFail" xml:space="preserve"><value>Windows Güvenlik Duvarı&apos;nın proxy portuna erişimini kısıtlamayı düşünün.</value></data>
+<data name="Sec.Check.Sec004.Fix" xml:space="preserve"><value>İzin verilen istemci IP&apos;lerine erişimi kısıtlayan bir Windows Güvenlik Duvarı kuralı yapılandırın.</value></data>
+<data name="Sec.Check.Sec005.Name" xml:space="preserve"><value>Hedef portları kısıtlandı</value></data>
+<data name="Sec.Check.Sec005.Desc" xml:space="preserve"><value>Yalnızca belirli hedef portlarına izin verilmeli.</value></data>
+<data name="Sec.Check.Sec005.MsgPass" xml:space="preserve"><value>Hedef portları şuna kısıtlandı: {0}</value></data>
+<data name="Sec.Check.Sec005.MsgFail" xml:space="preserve"><value>Hedef port kısıtlamaları devre dışı; herhangi bir hedef portuna izin veriliyor.</value></data>
+<data name="Sec.Check.Sec005.Fix" xml:space="preserve"><value>Güvenlik ayarlarında hedef port kısıtlamalarını etkinleştirin.</value></data>
+<data name="Sec.Check.Sec006.Name" xml:space="preserve"><value>Geniş alt ağ kuralları yok</value></data>
+<data name="Sec.Check.Sec006.Desc" xml:space="preserve"><value>İzin verilen istemci girişleri çok geniş olmamalı.</value></data>
+<data name="Sec.Check.Sec006.MsgPass" xml:space="preserve"><value>Çok geniş alt ağ yapılandırılmamış.</value></data>
+<data name="Sec.Check.Sec006.MsgFailAllowAll" xml:space="preserve"><value>&apos;Tümüne izin ver&apos; modu etkin.</value></data>
+<data name="Sec.Check.Sec006.MsgFailBroad" xml:space="preserve"><value>{0} geniş alt ağ algılandı: {1}</value></data>
+<data name="Sec.Check.Sec006.FixAllowAll" xml:space="preserve"><value>İzin listesi moduna geçin.</value></data>
+<data name="Sec.Check.Sec006.FixBroad" xml:space="preserve"><value>Saldırı yüzeyini azaltmak için istemci CIDR aralıklarını daraltın.</value></data>
+<data name="Sec.Check.Sec007.Name" xml:space="preserve"><value>Yapılandırma geçerli</value></data>
+<data name="Sec.Check.Sec007.Desc" xml:space="preserve"><value>Yapılandırma tüm doğrulama kontrollerinden geçmeli.</value></data>
+<data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>Yapılandırma geçerli.</value></data>
+<data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} yapılandırma hatası: {1}</value></data>
+<data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Yukarıda listelenen yapılandırma hatalarını düzeltin.</value></data>
+</root>

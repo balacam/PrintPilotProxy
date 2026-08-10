@@ -399,3 +399,33 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# PrintPilotProxy release & build artifacts
+.wix/
+bin/
+obj/
+.vs/
+.idea/
+.vscode/
+publish/
+artifacts/
+release/
+staging/
+deploy_test_svc/
+*.msi
+*.msix
+*.appx
+*.exe
+*.zip
+*.wixpdb
+*.wixobj
+*.wixlib
+*.wixmst
+*.cab
+SHA256SUMS.txt
+install.log
+*.log
+*_output.txt
+*.tmp
+*.temp
+

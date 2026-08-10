@@ -9,7 +9,7 @@ public sealed class ProxyConfiguration
     /// <summary>
     /// Configuration schema version for forward compatibility.
     /// </summary>
-    public int SchemaVersion { get; set; } = 1;
+    public int SchemaVersion { get; set; } = 2;
 
     /// <summary>
     /// Proxy listener settings.
@@ -17,9 +17,9 @@ public sealed class ProxyConfiguration
     public ListenerSettings Listener { get; set; } = new();
 
     /// <summary>
-    /// Allowed client entries (ACL).
+    /// Client access control settings.
     /// </summary>
-    public List<AllowedClient> AllowedClients { get; set; } = new();
+    public ClientAccessSettings ClientAccess { get; set; } = new();
 
     /// <summary>
     /// Security-related settings.
@@ -37,9 +37,33 @@ public sealed class ProxyConfiguration
     public ServiceSettings Service { get; set; } = new();
 
     /// <summary>
+    /// Windows Firewall behavior for the product-owned inbound proxy rule.
+    /// </summary>
+    public FirewallSettings Firewall { get; set; } = new();
+
+    /// <summary>
+    /// Application language preference. This is intentionally machine-local and
+    /// does not affect the proxy protocol or listener behavior.
+    /// </summary>
+    public LanguageSettings Language { get; set; } = new();
+
+    /// <summary>
     /// Last modification timestamp.
     /// </summary>
     public DateTimeOffset LastModified { get; set; } = DateTimeOffset.UtcNow;
+}
+
+public enum ListenerMode
+{
+    Auto,
+    SpecificAddress,
+    AllInterfaces,
+    /// <summary>
+    /// Bind to the active address assigned to a named network adapter.
+    /// The address is resolved when the proxy starts so DHCP address changes do
+    /// not require administrators to edit the configuration manually.
+    /// </summary>
+    SpecificAdapter
 }
 
 /// <summary>
@@ -48,9 +72,19 @@ public sealed class ProxyConfiguration
 public sealed class ListenerSettings
 {
     /// <summary>
-    /// IP address to listen on (e.g., "192.168.10.10" or "0.0.0.0").
+    /// Listener mode.
     /// </summary>
-    public string ListenAddress { get; set; } = System.Net.IPAddress.Loopback.ToString();
+    public ListenerMode Mode { get; set; } = ListenerMode.Auto;
+    /// <summary>
+    /// IP address to listen on. Required only for <see cref="ListenerMode.SpecificAddress"/> mode.
+    /// </summary>
+    public string? ListenAddress { get; set; } = null;
+
+    /// <summary>
+    /// Friendly adapter name selected by the administrator. Required only for
+    /// <see cref="ListenerMode.SpecificAdapter"/> mode.
+    /// </summary>
+    public string? AdapterName { get; set; } = null;
 
     /// <summary>
     /// Port to listen on. Default: 3128.
@@ -66,6 +100,28 @@ public sealed class ListenerSettings
     /// Connection timeout in seconds.
     /// </summary>
     public int ConnectionTimeoutSeconds { get; set; } = 120;
+}
+
+public enum ClientAccessMode
+{
+    AllowAll,
+    AllowList
+}
+
+/// <summary>
+/// Client access control settings.
+/// </summary>
+public sealed class ClientAccessSettings
+{
+    /// <summary>
+    /// Access mode.
+    /// </summary>
+    public ClientAccessMode Mode { get; set; } = ClientAccessMode.AllowAll;
+
+    /// <summary>
+    /// List of explicitly allowed clients.
+    /// </summary>
+    public List<AllowedClient> AllowedClients { get; set; } = new();
 }
 
 /// <summary>
@@ -136,4 +192,26 @@ public sealed class ServiceSettings
     /// Delay in seconds before restarting the proxy after a failure.
     /// </summary>
     public int RestartDelaySeconds { get; set; } = 5;
+}
+
+/// <summary>Configuration for the firewall rule owned by PrintPilotProxy.</summary>
+public sealed class FirewallSettings
+{
+    /// <summary>Whether PrintPilotProxy should create and maintain its inbound rule.</summary>
+    public bool RuleEnabled { get; set; } = true;
+
+    /// <summary>Windows Firewall interface scope: Any, LAN, Wireless, or RAS.</summary>
+    public string InterfaceScope { get; set; } = "Any";
+}
+
+/// <summary>
+/// User-interface language settings. A null culture means that the application
+/// follows the current Windows UI culture, with English as the fallback.
+/// </summary>
+public sealed class LanguageSettings
+{
+    /// <summary>
+    /// Selected BCP-47 culture name, or null for System Default.
+    /// </summary>
+    public string? CultureName { get; set; }
 }

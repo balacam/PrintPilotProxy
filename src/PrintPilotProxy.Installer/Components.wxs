@@ -1,0 +1,99 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+  <Fragment>
+    <!-- Staging directory variable fallback if not provided -->
+    <?ifndef StagingDir ?>
+      <?define StagingDir = "..\..\publish\staging" ?>
+    <?endif ?>
+
+    <ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">
+      <Component Id="AppExeComponent" Guid="B89F2A14-4321-4A56-9BDE-123456789001" Bitness="always64">
+        <File Id="PrintPilotProxy.App.exe" Source="$(var.StagingDir)\App\PrintPilotProxy.App.exe" KeyPath="yes" />
+      </Component>
+
+      <Component Id="D3DCompiler" Guid="B89F2A14-4321-4A56-9BDE-123456789002" Bitness="always64">
+        <File Id="D3DCompiler_47_cor3.dll" Source="$(var.StagingDir)\App\D3DCompiler_47_cor3.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="PenImc" Guid="B89F2A14-4321-4A56-9BDE-123456789003" Bitness="always64">
+        <File Id="PenImc_cor3.dll" Source="$(var.StagingDir)\App\PenImc_cor3.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="PresentationNative" Guid="B89F2A14-4321-4A56-9BDE-123456789004" Bitness="always64">
+        <File Id="PresentationNative_cor3.dll" Source="$(var.StagingDir)\App\PresentationNative_cor3.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="VcRuntime" Guid="B89F2A14-4321-4A56-9BDE-123456789005" Bitness="always64">
+        <File Id="vcruntime140_cor3.dll" Source="$(var.StagingDir)\App\vcruntime140_cor3.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="WpfGfx" Guid="B89F2A14-4321-4A56-9BDE-123456789006" Bitness="always64">
+        <File Id="wpfgfx_cor3.dll" Source="$(var.StagingDir)\App\wpfgfx_cor3.dll" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="ServiceComponents" Directory="INSTALLFOLDER">
+      <Component Id="ServiceExeComponent" Guid="B89F2A14-4321-4A56-9BDE-123456789010" Bitness="always64">
+        <File Id="PrintPilotProxy.Service.exe" Source="$(var.StagingDir)\Service\PrintPilotProxy.Service.exe" KeyPath="yes" />
+        <ServiceInstall Id="ServiceInstaller"
+                        Type="ownProcess"
+                        Name="PrintPilotProxy"
+                        DisplayName="PrintPilotProxy Forward Proxy Service"
+                        Description="Forward Proxy Service for PrintPilotProxy"
+                        Start="auto"
+                        Account="LocalSystem"
+                        ErrorControl="normal" />
+        <ServiceControl Id="ServiceControl"
+                        Name="PrintPilotProxy"
+                        Start="install"
+                        Stop="both"
+                        Remove="uninstall"
+                        Wait="yes" />
+      </Component>
+
+      <Component Id="AppSettingsJson" Guid="B89F2A14-4321-4A56-9BDE-123456789011" Bitness="always64">
+        <File Id="appsettings.json" Source="$(var.StagingDir)\Service\appsettings.json" KeyPath="yes" />
+      </Component>
+
+      <Component Id="AppSettingsDevJson" Guid="B89F2A14-4321-4A56-9BDE-123456789012" Bitness="always64">
+        <File Id="appsettings.Development.json" Source="$(var.StagingDir)\Service\appsettings.Development.json" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="CliComponents" Directory="INSTALLFOLDER">
+      <Component Id="CliExeComponent" Guid="B89F2A14-4321-4A56-9BDE-123456789020" Bitness="always64">
+        <File Id="PrintPilotProxy.Cli.exe" Source="$(var.StagingDir)\Cli\PrintPilotProxy.Cli.exe" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="ShortcutComponents" Directory="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcutFolderComponent" Guid="B89F2A14-4321-4A56-9BDE-123456789030" Bitness="always64">
+        <Shortcut Id="AppStartMenuShortcut"
+                  Name="PrintPilotProxy"
+                  Description="PrintPilotProxy Administration Application"
+                  Target="[INSTALLFOLDER]PrintPilotProxy.App.exe"
+                  WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\PrintPilotProxy" Name="InstalledShortcut" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="DataDirectoryComponents">
+      <Component Id="DataFolderComponent" Guid="B89F2A14-4321-4A56-9BDE-123456789040" Directory="DATAFOLDER" Bitness="always64">
+        <CreateFolder />
+        <util:RemoveFolderEx Id="CleanDataFolderOnUninstall"
+                             Property="DATAFOLDER"
+                             On="uninstall"
+                             Condition="REMOVE=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE" />
+        <RemoveFolder Id="RemoveDataFolder" Directory="DATAFOLDER" On="uninstall" />
+        <RegistryValue Root="HKMU" Key="Software\PrintPilotProxy" Name="DataFolder" Type="string" Value="[DATAFOLDER]" KeyPath="yes" />
+      </Component>
+
+      <Component Id="LogsFolderComponent" Guid="B89F2A14-4321-4A56-9BDE-123456789041" Directory="LOGSFOLDER" Bitness="always64">
+        <CreateFolder />
+        <RemoveFolder Id="RemoveLogsFolder" Directory="LOGSFOLDER" On="uninstall" />
+      </Component>
+
+      <Component Id="BackupsFolderComponent" Guid="B89F2A14-4321-4A56-9BDE-123456789042" Directory="BACKUPSFOLDER" Bitness="always64">
+        <CreateFolder />
+        <RemoveFolder Id="RemoveBackupsFolder" Directory="BACKUPSFOLDER" On="uninstall" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

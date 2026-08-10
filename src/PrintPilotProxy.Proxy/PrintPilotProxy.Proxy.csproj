@@ -3,7 +3,6 @@
   <PropertyGroup>
     <RootNamespace>PrintPilotProxy.Proxy</RootNamespace>
     <Description>Proxy engine integration layer using Unobtanium Web Proxy.</Description>
-    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

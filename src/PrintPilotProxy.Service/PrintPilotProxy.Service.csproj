@@ -4,7 +4,6 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <RootNamespace>PrintPilotProxy.Service</RootNamespace>
     <Description>Windows Service host for the PrintPilotProxy proxy runtime.</Description>
-    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

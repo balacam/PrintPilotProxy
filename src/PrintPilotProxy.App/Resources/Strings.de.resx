@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+<data name="Common.Na" xml:space="preserve"><value>N/A</value></data>
+<data name="Common.Unknown" xml:space="preserve"><value>Unbekannt</value></data>
+<data name="Common.Error" xml:space="preserve"><value>Fehler</value></data>
+<data name="Common.OK" xml:space="preserve"><value>OK</value></data>
+<data name="Common.All" xml:space="preserve"><value>Beliebig</value></data>
+<data name="Common.AllPorts" xml:space="preserve"><value>Alle Ports</value></data>
+<data name="Common.Private" xml:space="preserve"><value>Privat</value></data>
+<data name="Common.Public" xml:space="preserve"><value>Öffentlich</value></data>
+<data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Dashboard</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Netzwerkeinstellungen</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Zugelassene Clients</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Firewall</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>⚙️  Dienst</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>📋  Protokolle</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnose</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>🛡️  Sicherheit</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>🌍  Sprache</value></data>
+<data name="MainWindow.Status" xml:space="preserve"><value>Status: </value></data>
+<data name="MainWindow.Listen" xml:space="preserve"><value>Hören: </value></data>
+<data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>DIENST NICHT VERFÜGBAR</value></data>
+<data name="Tray.Open" xml:space="preserve"><value>PrintPilotProxy öffnen</value></data>
+<data name="Tray.StartProxy" xml:space="preserve"><value>Proxy starten</value></data>
+<data name="Tray.StopProxy" xml:space="preserve"><value>Proxy beenden</value></data>
+<data name="Tray.RestartProxy" xml:space="preserve"><value>Proxy neu starten</value></data>
+<data name="Tray.Diagnostics" xml:space="preserve"><value>Diagnose</value></data>
+<data name="Tray.OpenLogFolder" xml:space="preserve"><value>Protokollordner öffnen</value></data>
+<data name="Tray.Exit" xml:space="preserve"><value>Beenden</value></data>
+<data name="Action.Refresh" xml:space="preserve"><value>↻  Aktualisieren</value></data>
+<data name="Action.Apply" xml:space="preserve"><value>⚡  Übernehmen</value></data>
+<data name="Action.Reset" xml:space="preserve"><value>↺  Zurücksetzen</value></data>
+<data name="Action.Reload" xml:space="preserve"><value>↻  Neu laden</value></data>
+<data name="Action.Add" xml:space="preserve"><value>+  Hinzufügen</value></data>
+<data name="Page.Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+<data name="Dash.ProxyState" xml:space="preserve"><value>Proxystatus</value></data>
+<data name="Dash.Uptime" xml:space="preserve"><value>Betriebszeit</value></data>
+<data name="Dash.TotalRequests" xml:space="preserve"><value>Anfragen gesamt</value></data>
+<data name="Dash.Errors" xml:space="preserve"><value>Fehler</value></data>
+<data name="Dash.ListeningAddress" xml:space="preserve"><value>Lauschadresse</value></data>
+<data name="Dash.AccessMode" xml:space="preserve"><value>Zugriffsmodus</value></data>
+<data name="Dash.AllowedClients" xml:space="preserve"><value>Zugelassene Clients</value></data>
+<data name="Dash.AllowedPorts" xml:space="preserve"><value>Zugelassene Ports</value></data>
+<data name="Dash.RecentActivity" xml:space="preserve"><value>Letzte Aktivitäten</value></data>
+<data name="Dash.ServiceUnavailable" xml:space="preserve"><value>Dienst nicht verfügbar</value></data>
+<data name="Dash.Msgs.LoadError" xml:space="preserve"><value>Fehler: {0}</value></data>
+<data name="Page.NetworkSettings" xml:space="preserve"><value>Netzwerkeinstellungen</value></data>
+<data name="Net.ListenerMode" xml:space="preserve"><value>Lauschmodus</value></data>
+<data name="Net.ChooseInterface" xml:space="preserve"><value>Wählen Sie die Netzwerkschnittstelle, auf der der Proxy lauscht.</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Automatisch  (alle privaten Netzwerkschnittstellen verwenden)</value></data>
+<data name="Net.ModeAdapter" xml:space="preserve"><value>Bestimmte Netzwerkadapter  (aus erkannten Adaptern wählen)</value></data>
+<data name="Net.ModeSpecificIp" xml:space="preserve"><value>Bestimmte IP-Adresse  (manuell eingeben)</value></data>
+<data name="Net.PortAndLimits" xml:space="preserve"><value>Port &amp; Grenzen</value></data>
+<data name="Net.ProxyPort" xml:space="preserve"><value>Proxy-Port</value></data>
+<data name="Net.DefaultPort" xml:space="preserve"><value>Standard: 3128</value></data>
+<data name="Net.MaxConnections" xml:space="preserve"><value>Max. Verbindungen</value></data>
+<data name="Net.DefaultConnections" xml:space="preserve"><value>Standard: 1000</value></data>
+<data name="Net.TimeoutSeconds" xml:space="preserve"><value>Zeitlimit (Sekunden)</value></data>
+<data name="Net.DefaultTimeout" xml:space="preserve"><value>Standard: 120</value></data>
+<data name="Net.Msgs.LoadFailed" xml:space="preserve"><value>Konfiguration konnte nicht vom Dienst geladen werden.</value></data>
+<data name="Net.Msgs.LoadError" xml:space="preserve"><value>Ladefehler: {0}</value></data>
+<data name="Net.Msgs.ResetDone" xml:space="preserve"><value>Einstellungen auf die letzten gespeicherten Werte zurückgesetzt.</value></data>
+<data name="Net.Msgs.PortInvalid" xml:space="preserve"><value>Port &apos;{0}&apos; ist ungültig. Er muss zwischen 1 und 65535 liegen.</value></data>
+<data name="Net.Msgs.MaxConnectionsInvalid" xml:space="preserve"><value>Max. Verbindungen müssen zwischen 1 und 100000 liegen.</value></data>
+<data name="Net.Msgs.TimeoutInvalid" xml:space="preserve"><value>Das Zeitlimit muss zwischen 1 und 3600 Sekunden liegen.</value></data>
+<data name="Net.Msgs.SelectAdapter" xml:space="preserve"><value>Bitte wählen Sie einen Netzwerkadapter.</value></data>
+<data name="Net.Msgs.IpInvalid" xml:space="preserve"><value>&apos;{0}&apos; ist keine gültige IP-Adresse.</value></data>
+<data name="Net.Msgs.IpNotLocal" xml:space="preserve"><value>Die IP-Adresse &apos;{0}&apos; ist keinem lokalen Netzwerkadapter zugewiesen.&amp;#10;Verfügbar: {1}</value></data>
+<data name="Net.Msgs.ReadConfigFailed" xml:space="preserve"><value>Aktuelle Konfiguration konnte nicht vom Dienst gelesen werden.</value></data>
+<data name="Net.Msgs.Applied" xml:space="preserve"><value>Konfiguration erfolgreich übernommen. Der Proxy wurde mit den neuen Einstellungen neu gestartet.</value></data>
+<data name="Net.Msgs.ApplyFailed" xml:space="preserve"><value>Übernahme fehlgeschlagen: {0}</value></data>
+<data name="Net.Msgs.UnexpectedError" xml:space="preserve"><value>Unerwarteter Fehler: {0}</value></data>
+<data name="Page.AllowedClients" xml:space="preserve"><value>Zugelassene Clients</value></data>
+<data name="Cli.ClientAccessMode" xml:space="preserve"><value>Client-Zugriffsmodus</value></data>
+<data name="Cli.AllowAllWithHint" xml:space="preserve"><value>●  Alle Clients zulassen  —  jede erreichbare IP kann den Proxy nutzen</value></data>
+<data name="Cli.AllowAllHint" xml:space="preserve"><value>⚠ „Alle zulassen&quot; ist bequem, aber jedes Gerät im Netzwerk kann diesen Proxy verwenden.</value></data>
+<data name="Cli.AllowListWithHint" xml:space="preserve"><value>●  Nur bestimmte Clients zulassen  —  IP-/CIDR-Namensliste</value></data>
+<data name="Cli.AddClient" xml:space="preserve"><value>Client hinzufügen</value></data>
+<data name="Cli.Name" xml:space="preserve"><value>Name</value></data>
+<data name="Cli.IpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+<data name="Cli.DescriptionOptional" xml:space="preserve"><value>Beschreibung (optional)</value></data>
+<data name="Cli.ClientList" xml:space="preserve"><value>Clientliste</value></data>
+<data name="Cli.RemoveSelected" xml:space="preserve"><value>✖  Auswahl entfernen</value></data>
+<data name="Cli.Msgs.LoadFailed" xml:space="preserve"><value>Konfiguration konnte nicht vom Dienst geladen werden.</value></data>
+<data name="Cli.Msgs.LoadError" xml:space="preserve"><value>Ladefehler: {0}</value></data>
+<data name="Cli.Msgs.NameRequired" xml:space="preserve"><value>Der Client-Name ist erforderlich.</value></data>
+<data name="Cli.Msgs.IpOrCidrInvalid" xml:space="preserve"><value>&apos;{0}&apos; ist keine gültige IP-Adresse oder CIDR-Notation.</value></data>
+<data name="Cli.Msgs.SelectClientToRemove" xml:space="preserve"><value>Wählen Sie einen zu entfernenden Client.</value></data>
+<data name="Cli.Msgs.ConfigNotLoaded" xml:space="preserve"><value>Konfiguration nicht geladen.</value></data>
+<data name="Cli.Msgs.Saved" xml:space="preserve"><value>Client-Zugriffskonfiguration gespeichert und angewendet.</value></data>
+<data name="Cli.Msgs.ApplyFailed" xml:space="preserve"><value>Übernahme fehlgeschlagen: {0}</value></data>
+<data name="Cli.Msgs.Error" xml:space="preserve"><value>Fehler: {0}</value></data>
+<data name="Page.Firewall" xml:space="preserve"><value>Firewall</value></data>
+<data name="Fw.Rule" xml:space="preserve"><value>Firewall-Regel von PrintPilotProxy</value></data>
+<data name="Fw.RuleName" xml:space="preserve"><value>Regelname:</value></data>
+<data name="Fw.Status" xml:space="preserve"><value>Status:</value></data>
+<data name="Fw.Port" xml:space="preserve"><value>Port:</value></data>
+<data name="Fw.Protocol" xml:space="preserve"><value>Protokoll:</value></data>
+<data name="Fw.LocalScope" xml:space="preserve"><value>Lokaler Bereich:</value></data>
+<data name="Fw.RuleExists" xml:space="preserve"><value>Regel vorhanden</value></data>
+<data name="Fw.RuleNotFound" xml:space="preserve"><value>Regel nicht gefunden</value></data>
+<data name="Fw.ServiceUnavailable" xml:space="preserve"><value>Dienst nicht verfügbar</value></data>
+<data name="Fw.ProtocolTcp" xml:space="preserve"><value>TCP</value></data>
+<data name="Fw.DirectionInbound" xml:space="preserve"><value>Eingehend</value></data>
+<data name="Fw.Msgs.CreateUpdate" xml:space="preserve"><value>✔  Regel erstellen / aktualisieren</value></data>
+<data name="Fw.Msgs.RemoveRule" xml:space="preserve"><value>✖  Regel entfernen</value></data>
+<data name="Fw.Msgs.LoadError" xml:space="preserve"><value>Fehler beim Laden des Firewall-Status: {0}</value></data>
+<data name="Fw.Msgs.Applied" xml:space="preserve"><value>Firewall-Regel erfolgreich angewendet.</value></data>
+<data name="Fw.Msgs.Removed" xml:space="preserve"><value>Firewall-Regel entfernt.</value></data>
+<data name="Fw.Msgs.Failed" xml:space="preserve"><value>Fehlgeschlagen: {0}</value></data>
+<data name="Fw.Msgs.Error" xml:space="preserve"><value>Fehler: {0}</value></data>
+<data name="Page.Service" xml:space="preserve"><value>Dienst</value></data>
+<data name="Svc.Header" xml:space="preserve"><value>Windows-Dienst und Proxy-Engine</value></data>
+<data name="Svc.ServiceStatus" xml:space="preserve"><value>Dienststatus:</value></data>
+<data name="Svc.StartupType" xml:space="preserve"><value>Starttyp:</value></data>
+<data name="Svc.ProxyState" xml:space="preserve"><value>Proxystatus:</value></data>
+<data name="Svc.Listening" xml:space="preserve"><value>Lauscht auf:</value></data>
+<data name="Svc.Uptime" xml:space="preserve"><value>Betriebszeit:</value></data>
+<data name="Svc.TotalRequests" xml:space="preserve"><value>Anfragen gesamt:</value></data>
+<data name="Svc.TotalErrors" xml:space="preserve"><value>Fehler gesamt:</value></data>
+<data name="Svc.ActiveConnections" xml:space="preserve"><value>Aktive Verbindungen:</value></data>
+<data name="Svc.NotInstalled" xml:space="preserve"><value>Nicht installiert</value></data>
+<data name="Svc.Unavailable" xml:space="preserve"><value>Nicht verfügbar</value></data>
+<data name="Svc.AutoRestart" xml:space="preserve"><value>Fehlgeschlagene Proxy-Engine automatisch erneut starten</value></data>
+<data name="Svc.StartService" xml:space="preserve"><value>▶  Dienst starten</value></data>
+<data name="Svc.StopService" xml:space="preserve"><value>⏹  Dienst beenden</value></data>
+<data name="Svc.RestartService" xml:space="preserve"><value>↺  Dienst neu starten</value></data>
+<data name="Svc.ApplyRecovery" xml:space="preserve"><value>Wiederherstellungseinstellung übernehmen</value></data>
+<data name="Svc.Msgs.Started" xml:space="preserve"><value>Windows-Dienst gestartet.</value></data>
+<data name="Svc.Msgs.Stopped" xml:space="preserve"><value>Windows-Dienst beendet.</value></data>
+<data name="Svc.Msgs.Restarted" xml:space="preserve"><value>Windows-Dienst neu gestartet.</value></data>
+<data name="Svc.Msgs.ServiceRequired" xml:space="preserve"><value>Der Windows-Dienst muss laufen, um die Wiederherstellungseinstellungen zu aktualisieren.</value></data>
+<data name="Svc.Msgs.RecoveryUpdated" xml:space="preserve"><value>Wiederherstellungseinstellung der Proxy-Engine aktualisiert.</value></data>
+<data name="Page.Logs" xml:space="preserve"><value>Protokolle</value></data>
+<data name="Logs.File" xml:space="preserve"><value>Datei: {0}</value></data>
+<data name="Logs.NoDirectory" xml:space="preserve"><value>(Das Protokollverzeichnis existiert noch nicht.)</value></data>
+<data name="Logs.NoFiles" xml:space="preserve"><value>(Keine Protokolldateien gefunden.)</value></data>
+<data name="Logs.OpenFolder" xml:space="preserve"><value>📁  Ordner öffnen</value></data>
+<data name="Logs.Copy" xml:space="preserve"><value>📋  Kopieren</value></data>
+<data name="Logs.ClearView" xml:space="preserve"><value>🧹  Anzeige leeren</value></data>
+<data name="Logs.Msgs.Loaded" xml:space="preserve"><value>{0} Zeilen aus {1} geladen</value></data>
+<data name="Logs.Msgs.LoadError" xml:space="preserve"><value>Fehler beim Laden der Protokolle: {0}</value></data>
+<data name="Logs.Msgs.ViewCleared" xml:space="preserve"><value>Anzeige geleert. Protokolldateien sind nicht betroffen.</value></data>
+<data name="Logs.Msgs.OpenFolderFailed" xml:space="preserve"><value>Protokollordner konnte nicht geöffnet werden: {0}</value></data>
+<data name="Logs.Msgs.Copied" xml:space="preserve"><value>Protokollinhalt in die Zwischenablage kopiert.</value></data>
+<data name="Logs.Msgs.CopyFailed" xml:space="preserve"><value>Kopieren fehlgeschlagen: {0}</value></data>
+<data name="Page.Diagnostics" xml:space="preserve"><value>Diagnose</value></data>
+<data name="Diag.RunAll" xml:space="preserve"><value>▶  Alle Prüfungen ausführen</value></data>
+<data name="Diag.Overall" xml:space="preserve"><value>Gesamt: </value></data>
+<data name="Diag.Running" xml:space="preserve"><value>Diagnose wird ausgeführt...</value></data>
+<data name="Diag.ServiceConnection" xml:space="preserve"><value>Dienstverbindung</value></data>
+<data name="Diag.ServiceConnectionDesc" xml:space="preserve"><value>Kann sich die App über die Named Pipe mit dem Windows-Dienst verbinden?</value></data>
+<data name="Diag.Connected" xml:space="preserve"><value>Erfolgreich mit dem Dienst verbunden.</value></data>
+<data name="Diag.CannotConnect" xml:space="preserve"><value>Keine Verbindung möglich. Läuft der PrintPilotProxy-Dienst?</value></data>
+<data name="Diag.StartServiceHint" xml:space="preserve"><value>Dienst starten: sc start PrintPilotProxy</value></data>
+<data name="Diag.ConfigValid" xml:space="preserve"><value>Konfiguration gültig</value></data>
+<data name="Diag.ConfigValidDesc" xml:space="preserve"><value>Ist die Proxy-Konfigurationsdatei gültig?</value></data>
+<data name="Diag.CouldNotLoadConfig" xml:space="preserve"><value>Konfiguration konnte nicht geladen werden.</value></data>
+<data name="Diag.EnsureServiceRunning" xml:space="preserve"><value>Stellen Sie sicher, dass der Dienst läuft.</value></data>
+<data name="Diag.ConfigValidOk" xml:space="preserve"><value>Die Konfiguration ist gültig.</value></data>
+<data name="Diag.ConfigErrors" xml:space="preserve"><value>{0} Fehler: {1}</value></data>
+<data name="Diag.FixConfigErrors" xml:space="preserve"><value>Beheben Sie die Konfigurationsfehler.</value></data>
+<data name="Diag.ProxyEngineState" xml:space="preserve"><value>Zustand der Proxy-Engine</value></data>
+<data name="Diag.ProxyEngineStateDesc" xml:space="preserve"><value>Läuft die Proxy-Engine?</value></data>
+<data name="Diag.ServiceNotReachable" xml:space="preserve"><value>Dienst nicht erreichbar.</value></data>
+<data name="Diag.StartService" xml:space="preserve"><value>Starten Sie den Dienst.</value></data>
+<data name="Diag.RunningOn" xml:space="preserve"><value>Läuft auf {0}.</value></data>
+<data name="Diag.StateIs" xml:space="preserve"><value>Zustand: {0}.</value></data>
+<data name="Diag.UseServicePage" xml:space="preserve"><value>Starten Sie den Proxy über die Dienstseite.</value></data>
+<data name="Diag.ConfigFileDisk" xml:space="preserve"><value>Konfigurationsdatei auf der Festplatte</value></data>
+<data name="Diag.ConfigFileDiskDesc" xml:space="preserve"><value>Existiert die Konfigurationsdatei?</value></data>
+<data name="Diag.FoundPath" xml:space="preserve"><value>Gefunden: {0}</value></data>
+<data name="Diag.NotFoundPath" xml:space="preserve"><value>Nicht gefunden: {0}</value></data>
+<data name="Diag.RunInstaller" xml:space="preserve"><value>Führen Sie das Installationsprogramm aus oder starten Sie den Dienst einmal zur Erstellung der Standardwerte.</value></data>
+<data name="Diag.LogDirWritable" xml:space="preserve"><value>Protokollverzeichnis beschreibbar</value></data>
+<data name="Diag.LogDirWritableDesc" xml:space="preserve"><value>Ist das Protokollverzeichnis beschreibbar?</value></data>
+<data name="Diag.LogDirMissing" xml:space="preserve"><value>Fehlt: {0}</value></data>
+<data name="Diag.StartServiceCreatesDirs" xml:space="preserve"><value>Starten Sie den Dienst, um die erforderlichen Verzeichnisse anzulegen.</value></data>
+<data name="Diag.LogDirWritableOk" xml:space="preserve"><value>Beschreibbar: {0}</value></data>
+<data name="Diag.LogDirNotWritable" xml:space="preserve"><value>Das Protokollverzeichnis ist nicht beschreibbar.</value></data>
+<data name="Diag.CheckPermissions" xml:space="preserve"><value>Prüfen Sie die Berechtigungen für den PrintPilotProxy-ProgramData-Ordner.</value></data>
+<data name="Diag.PortAvailability" xml:space="preserve"><value>Verfügbarkeit des Proxy-Ports</value></data>
+<data name="Diag.PortAvailabilityDesc" xml:space="preserve"><value>Ist der Proxy-Port verfügbar (oder vom laufenden Proxy belegt)?</value></data>
+<data name="Diag.CouldNotLoadConfigShort" xml:space="preserve"><value>Konfiguration konnte nicht geladen werden.</value></data>
+<data name="Diag.PortBound" xml:space="preserve"><value>Port {0} vom laufenden Proxy belegt.</value></data>
+<data name="Diag.PortAvailable" xml:space="preserve"><value>Port {0} ist verfügbar.</value></data>
+<data name="Diag.PortInUse" xml:space="preserve"><value>Port {0} wird von einem anderen Prozess belegt.</value></data>
+<data name="Diag.ChangePortHint" xml:space="preserve"><value>Ändern Sie den Proxy-Port in den Netzwerkeinstellungen oder beenden Sie die konkurrierende Anwendung.</value></data>
+<data name="Diag.NetworkAdapters" xml:space="preserve"><value>Netzwerkadapter</value></data>
+<data name="Diag.NetworkAdaptersDesc" xml:space="preserve"><value>Sind private Netzwerkadapter verfügbar?</value></data>
+<data name="Diag.AdaptersDetected" xml:space="preserve"><value>{0} Adapter erkannt.</value></data>
+<data name="Diag.NoAdapters" xml:space="preserve"><value>Keine Netzwerkadapter gefunden.</value></data>
+<data name="Diag.CheckNetworkConfig" xml:space="preserve"><value>Prüfen Sie die Netzwerkkonfiguration.</value></data>
+<data name="Diag.FirewallRule" xml:space="preserve"><value>Firewall-Regel</value></data>
+<data name="Diag.FirewallRuleDesc" xml:space="preserve"><value>Existiert die PrintPilotProxy-Firewall-Regel?</value></data>
+<data name="Diag.CouldNotQueryFirewall" xml:space="preserve"><value>Firewall-Status konnte nicht abgefragt werden.</value></data>
+<data name="Diag.FirewallRuleExists" xml:space="preserve"><value>Die Firewall-Regel existiert.</value></data>
+<data name="Diag.FirewallRuleMissing" xml:space="preserve"><value>Die Firewall-Regel fehlt.</value></data>
+<data name="Diag.CreateRuleHint" xml:space="preserve"><value>Öffnen Sie die Firewall-Seite und klicken Sie auf &apos;Regel erstellen / aktualisieren&apos;.</value></data>
+<data name="Diag.IpcPipe" xml:space="preserve"><value>IPC-Named-Pipe</value></data>
+<data name="Diag.IpcPipeDesc" xml:space="preserve"><value>Antwortet der Named-Pipe-Server?</value></data>
+<data name="Diag.IpcResponding" xml:space="preserve"><value>Named-Pipe-IPC antwortet.</value></data>
+<data name="Diag.IpcNotResponding" xml:space="preserve"><value>IPC antwortet nicht.</value></data>
+<data name="Diag.RestartService" xml:space="preserve"><value>Starten Sie den PrintPilotProxy-Dienst neu.</value></data>
+<data name="Diag.AllPassed" xml:space="preserve"><value>Alle {0} Prüfungen bestanden.</value></data>
+<data name="Diag.PassedFailed" xml:space="preserve"><value>{0} bestanden, {1} fehlgeschlagen.</value></data>
+<data name="Diag.RunError" xml:space="preserve"><value>Diagnosefehler: {0}</value></data>
+<data name="Diag.Exception" xml:space="preserve"><value>Ausnahme: {0}</value></data>
+<data name="Diag.CheckLogs" xml:space="preserve"><value>Details finden Sie in den Anwendungsprotokollen.</value></data>
+<data name="Page.Language" xml:space="preserve"><value>Sprache</value></data>
+<data name="Lang.Title" xml:space="preserve"><value>Sprache der Oberfläche</value></data>
+<data name="Lang.Description" xml:space="preserve"><value>Wählen Sie die Sprache für die PrintPilotProxy-Oberfläche. Änderungen gelten sofort und werden mit der Konfiguration gespeichert.</value></data>
+<data name="Lang.SystemDefault" xml:space="preserve"><value>Systemstandard  (Windows folgen)</value></data>
+<data name="Lang.Applied" xml:space="preserve"><value>Sprache erfolgreich geändert.</value></data>
+<data name="Lang.ApplyFailed" xml:space="preserve"><value>Sprachänderung fehlgeschlagen: {0}</value></data>
+<data name="Lang.LoadFailed" xml:space="preserve"><value>Spracheinstellungen konnten nicht vom Dienst geladen werden.</value></data>
+<data name="Page.Security" xml:space="preserve"><value>Sicherheit</value></data>
+<data name="Sec.Title" xml:space="preserve"><value>Sicherheitsprüfung</value></data>
+<data name="Sec.Description" xml:space="preserve"><value>Automatisierte Überprüfung der Proxy-Konfiguration und der Lauschfläche, um das Druckernetzwerk sicher zu halten.</value></data>
+<data name="Sec.Overall" xml:space="preserve"><value>Gesamt: {0}</value></data>
+<data name="Sec.RerunAudit" xml:space="preserve"><value>⇄  Prüfung ausführen</value></data>
+<data name="Sec.Level.Secure" xml:space="preserve"><value>Sicher</value></data>
+<data name="Sec.Level.Info" xml:space="preserve"><value>Info</value></data>
+<data name="Sec.Level.Warning" xml:space="preserve"><value>Warnung</value></data>
+<data name="Sec.Level.Critical" xml:space="preserve"><value>Kritisch</value></data>
+<data name="Sec.Msgs.AuditFailed" xml:space="preserve"><value>Die Sicherheitsprüfung konnte nicht vom Dienst abgerufen werden.</value></data>
+<data name="Sec.Check.Sec001.Name" xml:space="preserve"><value>Öffentlicher Zugriff eingeschränkt</value></data>
+<data name="Sec.Check.Sec001.Desc" xml:space="preserve"><value>Der Proxy sollte nicht auf allen Schnittstellen lauschen, solange dies nicht erforderlich ist.</value></data>
+<data name="Sec.Check.Sec001.MsgPass" xml:space="preserve"><value>Der Proxy ist an eine bestimmte Schnittstelle gebunden.</value></data>
+<data name="Sec.Check.Sec001.MsgFail" xml:space="preserve"><value>Der Proxy lauscht auf allen Schnittstellen (0.0.0.0). Binden Sie ihn an eine bestimmte IP.</value></data>
+<data name="Sec.Check.Sec001.Fix" xml:space="preserve"><value>Legen Sie die Lauschadresse auf die IP-Adresse einer bestimmten Netzwerkschnittstelle fest.</value></data>
+<data name="Sec.Check.Sec002.Name" xml:space="preserve"><value>Client-Zugriff eingeschränkt</value></data>
+<data name="Sec.Check.Sec002.Desc" xml:space="preserve"><value>Der Zugriff sollte auf bestimmte Clients beschränkt sein.</value></data>
+<data name="Sec.Check.Sec002.MsgPass" xml:space="preserve"><value>{0} zulässige(r) Client(s) konfiguriert.</value></data>
+<data name="Sec.Check.Sec002.MsgFail" xml:space="preserve"><value>Der Client-Zugriff ist auf „alle zulassen&quot; eingestellt — jedes Gerät im Netzwerk kann den Proxy nutzen.</value></data>
+<data name="Sec.Check.Sec002.MsgEmpty" xml:space="preserve"><value>Es sind keine zulässigen Clients konfiguriert. Der Proxy lehnt alle Verbindungen ab.</value></data>
+<data name="Sec.Check.Sec002.Fix" xml:space="preserve"><value>Konfigurieren Sie bestimmte zulässige Clients.</value></data>
+<data name="Sec.Check.Sec002.FixEmpty" xml:space="preserve"><value>Fügen Sie mindestens einen zulässigen Client hinzu.</value></data>
+<data name="Sec.Check.Sec003.Name" xml:space="preserve"><value>HTTPS-Abfangen deaktiviert</value></data>
+<data name="Sec.Check.Sec003.Desc" xml:space="preserve"><value>HTTPS-Datenverkehr wird ohne Prüfung getunnelt und die Ende-zu-Ende-Verschlüsselung bleibt erhalten.</value></data>
+<data name="Sec.Check.Sec003.MsgPass" xml:space="preserve"><value>HTTPS-Abfangen ist nicht implementiert; HTTPS-Datenverkehr wird per CONNECT-Tunnel weitergeleitet.</value></data>
+<data name="Sec.Check.Sec004.Name" xml:space="preserve"><value>Firewall-Ausrichtung</value></data>
+<data name="Sec.Check.Sec004.Desc" xml:space="preserve"><value>Die Firewall sollte den Zugriff auf den Proxy-Port einschränken.</value></data>
+<data name="Sec.Check.Sec004.MsgPass" xml:space="preserve"><value>Der Proxy ist an eine bestimmte Schnittstelle gebunden.</value></data>
+<data name="Sec.Check.Sec004.MsgFail" xml:space="preserve"><value>Erwägen Sie, den Windows-Firewall-Zugriff auf den Proxy-Port einzuschränken.</value></data>
+<data name="Sec.Check.Sec004.Fix" xml:space="preserve"><value>Konfigurieren Sie eine Windows-Firewall-Regel, die den Zugriff auf die IPs der zulässigen Clients begrenzt.</value></data>
+<data name="Sec.Check.Sec005.Name" xml:space="preserve"><value>Zielports eingeschränkt</value></data>
+<data name="Sec.Check.Sec005.Desc" xml:space="preserve"><value>Es sollten nur bestimmte Zielports zugelassen sein.</value></data>
+<data name="Sec.Check.Sec005.MsgPass" xml:space="preserve"><value>Zielports eingeschränkt auf: {0}</value></data>
+<data name="Sec.Check.Sec005.MsgFail" xml:space="preserve"><value>Die Einschränkung der Zielports ist deaktiviert; jeder Zielport ist zulässig.</value></data>
+<data name="Sec.Check.Sec005.Fix" xml:space="preserve"><value>Aktivieren Sie die Einschränkung der Zielports in den Sicherheitseinstellungen.</value></data>
+<data name="Sec.Check.Sec006.Name" xml:space="preserve"><value>Keine zu breiten Subnetzregeln</value></data>
+<data name="Sec.Check.Sec006.Desc" xml:space="preserve"><value>Einträge für zulässige Clients sollten nicht zu breit sein.</value></data>
+<data name="Sec.Check.Sec006.MsgPass" xml:space="preserve"><value>Keine zu breiten Subnetze konfiguriert.</value></data>
+<data name="Sec.Check.Sec006.MsgFailAllowAll" xml:space="preserve"><value>Der Modus „alle zulassen&quot; ist aktiviert.</value></data>
+<data name="Sec.Check.Sec006.MsgFailBroad" xml:space="preserve"><value>{0} zu breite(s) Subnetz(e) erkannt: {1}</value></data>
+<data name="Sec.Check.Sec006.FixAllowAll" xml:space="preserve"><value>Wechseln Sie in den Modus „nur Liste&quot;.</value></data>
+<data name="Sec.Check.Sec006.FixBroad" xml:space="preserve"><value>Verkleinern Sie die Client-CIDR-Bereiche, um die Angriffsfläche zu verringern.</value></data>
+<data name="Sec.Check.Sec007.Name" xml:space="preserve"><value>Konfiguration gültig</value></data>
+<data name="Sec.Check.Sec007.Desc" xml:space="preserve"><value>Die Konfiguration muss alle Prüfungen bestehen.</value></data>
+<data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>Die Konfiguration ist gültig.</value></data>
+<data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} Konfigurationsfehler: {1}</value></data>
+<data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Beheben Sie die oben aufgeführten Konfigurationsfehler.</value></data>
+</root>

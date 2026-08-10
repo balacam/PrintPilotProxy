@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Logging;
 using PrintPilotProxy.Core.Interfaces;
@@ -17,8 +18,9 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
 {
     private readonly ILogger<UnobtaniumProxyEngine> _logger;
     private readonly IAccessControlList _acl;
+    private readonly INetworkInterfaceDiscovery _networkDiscovery;
     private ProxyServer? _proxyServer;
-    private ExplicitProxyEndPoint? _explicitEndPoint;
+    private readonly List<ExplicitProxyEndPoint> _explicitEndPoints = new();
     private ProxyConfiguration? _configuration;
 
     private ProxyState _state = ProxyState.Stopped;
@@ -33,23 +35,33 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
 
     private readonly ConcurrentQueue<ProxyRequestEntry> _recentRequests = new();
     private const int MaxRecentRequests = 1000;
+    private readonly SemaphoreSlim _lifecycleLock = new(1, 1);
 
     public event EventHandler<ProxyRequestEntry>? RequestProcessed;
     public event EventHandler<ProxyErrorEventArgs>? ErrorOccurred;
 
-    public UnobtaniumProxyEngine(ILogger<UnobtaniumProxyEngine> logger, IAccessControlList acl)
+    public UnobtaniumProxyEngine(ILogger<UnobtaniumProxyEngine> logger, IAccessControlList acl, INetworkInterfaceDiscovery networkDiscovery)
     {
         _logger = logger;
         _acl = acl;
+        _networkDiscovery = networkDiscovery;
     }
 
     public async Task StartAsync(ProxyConfiguration configuration, CancellationToken cancellationToken = default)
     {
-        _configuration = configuration;
-        _state = ProxyState.Starting;
-
+        await _lifecycleLock.WaitAsync(cancellationToken);
         try
         {
+            if (_state is ProxyState.Running or ProxyState.Starting)
+            {
+                _logger.LogInformation("UnobtaniumProxyEngine is already running.");
+                return;
+            }
+
+            cancellationToken.ThrowIfCancellationRequested();
+            _configuration = configuration;
+            _state = ProxyState.Starting;
+            ResetRunStatistics();
             _proxyServer = new ProxyServer(userTrustRootCertificate: false);
             
             _proxyServer.ExceptionFunc = async (exception) =>
@@ -60,16 +72,85 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             };
 
             _proxyServer.BeforeRequest += OnBeforeRequest;
+            _explicitEndPoints.Clear();
 
-            if (!IPAddress.TryParse(configuration.Listener.ListenAddress, out var ipAddress))
+            if (configuration.Listener.Mode == ListenerMode.Auto)
             {
-                ipAddress = IPAddress.Any;
+                var ipsEnumerable = await _networkDiscovery.GetUsablePrivateIpAddressesAsync();
+                var ips = ipsEnumerable?.ToList() ?? new List<IPAddress>();
+                
+                if (ips.Count == 0)
+                {
+                    throw new InvalidOperationException("Automatic listener mode could not find a usable local network address.");
+                }
+                
+                foreach (var ip in ips)
+                {
+                    var endpoint = new ExplicitProxyEndPoint(ip, configuration.Listener.Port, decryptSsl: false);
+                    endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
+                    _proxyServer.AddEndPoint(endpoint);
+                    _explicitEndPoints.Add(endpoint);
+                }
+            }
+            else if (configuration.Listener.Mode == ListenerMode.SpecificAddress)
+            {
+                if (!IPAddress.TryParse(configuration.Listener.ListenAddress, out var ipAddress))
+                {
+                    throw new InvalidOperationException("The configured listener address is not a valid IP address.");
+                }
+
+                if (ipAddress.Equals(IPAddress.Any) || ipAddress.Equals(IPAddress.IPv6Any))
+                {
+                    throw new InvalidOperationException("Use AllInterfaces mode to bind to every address.");
+                }
+
+                var isAssigned = IPAddress.IsLoopback(ipAddress) || (await _networkDiscovery.GetInterfacesAsync())
+                    .SelectMany(networkInterface => networkInterface.Addresses)
+                    .Any(address => address.Equals(ipAddress));
+                if (!isAssigned)
+                {
+                    throw new InvalidOperationException("The configured listener address is not assigned to this computer.");
+                }
+
+                var endpoint = new ExplicitProxyEndPoint(ipAddress, configuration.Listener.Port, decryptSsl: false);
+                endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
+                _proxyServer.AddEndPoint(endpoint);
+                _explicitEndPoints.Add(endpoint);
+            }
+            else if (configuration.Listener.Mode == ListenerMode.SpecificAdapter)
+            {
+                if (string.IsNullOrWhiteSpace(configuration.Listener.AdapterName))
+                {
+                    throw new InvalidOperationException("A network adapter must be selected for SpecificAdapter mode.");
+                }
+
+                var selectedAdapter = (await _networkDiscovery.GetInterfacesAsync())
+                    .FirstOrDefault(networkInterface => string.Equals(
+                        networkInterface.Name,
+                        configuration.Listener.AdapterName,
+                        StringComparison.OrdinalIgnoreCase));
+                var selectedAddress = selectedAdapter?.Addresses
+                    .OrderBy(address => address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? 0 : 1)
+                    .FirstOrDefault();
+
+                if (selectedAddress is null)
+                {
+                    throw new InvalidOperationException("The selected network adapter has no usable assigned IP address.");
+                }
+
+                var endpoint = new ExplicitProxyEndPoint(selectedAddress, configuration.Listener.Port, decryptSsl: false);
+                endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
+                _proxyServer.AddEndPoint(endpoint);
+                _explicitEndPoints.Add(endpoint);
+            }
+            else if (configuration.Listener.Mode == ListenerMode.AllInterfaces)
+            {
+                var endpoint = new ExplicitProxyEndPoint(IPAddress.Any, configuration.Listener.Port, decryptSsl: false);
+                endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
+                _proxyServer.AddEndPoint(endpoint);
+                _explicitEndPoints.Add(endpoint);
             }
 
-            _explicitEndPoint = new ExplicitProxyEndPoint(ipAddress, configuration.Listener.Port, decryptSsl: false);
-            _explicitEndPoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
-
-            _proxyServer.AddEndPoint(_explicitEndPoint);
 #pragma warning disable CS0618
             _proxyServer.Start(false); // Starting proxy server
 #pragma warning restore CS0618
@@ -77,40 +158,40 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             _state = ProxyState.Running;
             _startedAt = DateTimeOffset.UtcNow;
             
-            _logger.LogInformation("UnobtaniumProxyEngine started on {IpAddress}:{Port}", ipAddress, configuration.Listener.Port);
+            _logger.LogInformation("UnobtaniumProxyEngine started on {ListenerMode} mode on port {Port}", configuration.Listener.Mode, configuration.Listener.Port);
         }
         catch (Exception ex)
         {
             _state = ProxyState.Faulted;
+            DisposeServer();
             _logger.LogError(ex, "Failed to start UnobtaniumProxyEngine.");
             throw;
         }
+        finally
+        {
+            _lifecycleLock.Release();
+        }
     }
 
-    public Task StopAsync(CancellationToken cancellationToken = default)
+    public async Task StopAsync(CancellationToken cancellationToken = default)
     {
-        _state = ProxyState.Stopping;
-
-        if (_proxyServer != null)
+        await _lifecycleLock.WaitAsync(cancellationToken);
+        try
         {
-            _proxyServer.BeforeRequest -= OnBeforeRequest;
-            
-            if (_explicitEndPoint != null)
+            if (_state == ProxyState.Stopped && _proxyServer is null)
             {
-                _explicitEndPoint.BeforeTunnelConnectRequest -= OnBeforeTunnelConnectRequest;
-                _proxyServer.RemoveEndPoint(_explicitEndPoint);
-                _explicitEndPoint = null;
+                return;
             }
 
-            _proxyServer.Stop();
-            _proxyServer.Dispose();
-            _proxyServer = null;
+        _state = ProxyState.Stopping;
+            DisposeServer();
+            _state = ProxyState.Stopped;
+            _logger.LogInformation("UnobtaniumProxyEngine stopped.");
         }
-
-        _state = ProxyState.Stopped;
-        _logger.LogInformation("UnobtaniumProxyEngine stopped.");
-
-        return Task.CompletedTask;
+        finally
+        {
+            _lifecycleLock.Release();
+        }
     }
 
     public ProxyStatus GetStatus()
@@ -118,7 +199,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         return new ProxyStatus
         {
             State = _state,
-            ListeningAddress = _explicitEndPoint != null ? $"{_explicitEndPoint.IpAddress}:{_explicitEndPoint.Port}" : null,
+            ListeningAddress = _explicitEndPoints.Any() ? string.Join(", ", _explicitEndPoints.Select(e => $"{e.IpAddress}:{e.Port}")) : null,
             StartedAt = _startedAt,
             TotalRequests = Interlocked.Read(ref _totalRequests),
             TotalErrors = Interlocked.Read(ref _totalErrors),
@@ -140,6 +221,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
     public async ValueTask DisposeAsync()
     {
         await StopAsync();
+        _lifecycleLock.Dispose();
     }
 
     private Task OnBeforeTunnelConnectRequest(object sender, TunnelConnectSessionEventArgs e)
@@ -155,7 +237,15 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             return Task.CompletedTask;
         }
         
-        int destPort = e.HttpClient.Request.RequestUri.Port;
+        var destinationUri = e.HttpClient.Request.RequestUri;
+        if (destinationUri is null)
+        {
+            e.DenyConnect = true;
+            LogRequest(e, clientIp, 400, "Destination URI is missing");
+            return Task.CompletedTask;
+        }
+
+        int destPort = destinationUri.Port;
         if (!_acl.IsDestinationPortAllowed(destPort))
         {
             e.DenyConnect = true;
@@ -178,7 +268,15 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             return Task.CompletedTask;
         }
         
-        int destPort = e.HttpClient.Request.RequestUri.Port;
+        var destinationUri = e.HttpClient.Request.RequestUri;
+        if (destinationUri is null)
+        {
+            RejectRequest(e, HttpStatusCode.BadRequest, "Destination URI is required");
+            LogRequest(e, clientIp, 400, "Destination URI is missing");
+            return Task.CompletedTask;
+        }
+
+        int destPort = destinationUri.Port;
         if (!_acl.IsDestinationPortAllowed(destPort))
         {
             RejectRequest(e, HttpStatusCode.Forbidden, $"Destination port {destPort} is not allowed");
@@ -229,5 +327,36 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         }
 
         RequestProcessed?.Invoke(this, entry);
+    }
+
+    private void DisposeServer()
+    {
+        if (_proxyServer is null)
+        {
+            return;
+        }
+
+        _proxyServer.BeforeRequest -= OnBeforeRequest;
+        foreach (var endpoint in _explicitEndPoints)
+        {
+            endpoint.BeforeTunnelConnectRequest -= OnBeforeTunnelConnectRequest;
+            _proxyServer.RemoveEndPoint(endpoint);
+        }
+
+        _explicitEndPoints.Clear();
+        _proxyServer.Stop();
+        _proxyServer.Dispose();
+        _proxyServer = null;
+    }
+
+    private void ResetRunStatistics()
+    {
+        Interlocked.Exchange(ref _totalRequests, 0);
+        Interlocked.Exchange(ref _totalErrors, 0);
+        Interlocked.Exchange(ref _totalBytesTransferred, 0);
+        _lastSuccessfulRequest = null;
+        _lastFailedRequest = null;
+        _startedAt = null;
+        _recentRequests.Clear();
     }
 }

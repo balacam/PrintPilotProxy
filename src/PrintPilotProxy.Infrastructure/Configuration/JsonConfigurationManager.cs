@@ -21,10 +21,10 @@ namespace PrintPilotProxy.Infrastructure.Configuration
 
         public JsonConfigurationManager(
             IPlatformPathProvider pathProvider,
-            ILogger<JsonConfigurationManager> logger)
+            ILogger<JsonConfigurationManager>? logger = null)
         {
             _pathProvider = pathProvider;
-            _logger = logger;
+            _logger = logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<JsonConfigurationManager>.Instance;
             _jsonOptions = new JsonSerializerOptions
             {
                 WriteIndented = true,
@@ -47,8 +47,67 @@ namespace PrintPilotProxy.Infrastructure.Configuration
                 }
 
                 string json = await File.ReadAllTextAsync(filePath, cancellationToken);
-                var config = JsonSerializer.Deserialize<ProxyConfiguration>(json, _jsonOptions);
-                return config ?? new ProxyConfiguration();
+                using var document = JsonDocument.Parse(json);
+                var root = document.RootElement;
+                
+                int schemaVersion = 1;
+                if (root.TryGetProperty("schemaVersion", out var versionElement) && versionElement.ValueKind == JsonValueKind.Number)
+                {
+                    schemaVersion = versionElement.GetInt32();
+                }
+
+                var config = JsonSerializer.Deserialize<ProxyConfiguration>(json, _jsonOptions) ?? new ProxyConfiguration();
+
+                if (schemaVersion < 2)
+                {
+                    _logger.LogInformation("Migrating configuration from schema version {Version} to 2.", schemaVersion);
+
+                    // Preserve the exact source document before a migration. This
+                    // runs under the same lock as LoadAsync, so another process
+                    // cannot replace the configuration between backup and save.
+                    _pathProvider.EnsureDirectoriesExist();
+                    var preMigrationBackup = Path.Combine(
+                        _pathProvider.BackupDirectory,
+                        $"config_pre_migration_{DateTime.UtcNow:yyyyMMdd_HHmmss_fff}.json");
+                    File.Copy(filePath, preMigrationBackup, overwrite: false);
+                    
+                    if (root.TryGetProperty("listener", out var listenerElement) && listenerElement.ValueKind == JsonValueKind.Object)
+                    {
+                        if (listenerElement.TryGetProperty("listenAddress", out var listenAddrElement) && listenAddrElement.ValueKind == JsonValueKind.String)
+                        {
+                            var addr = listenAddrElement.GetString();
+                            if (addr == "127.0.0.1")
+                            {
+                                config.Listener.Mode = ListenerMode.SpecificAddress;
+                                config.Listener.ListenAddress = "127.0.0.1";
+                            }
+                            else if (!string.IsNullOrEmpty(addr))
+                            {
+                                config.Listener.Mode = ListenerMode.SpecificAddress;
+                                config.Listener.ListenAddress = addr;
+                            }
+                        }
+                    }
+
+                    if (root.TryGetProperty("allowedClients", out var clientsElement) && clientsElement.ValueKind == JsonValueKind.Array)
+                    {
+                        var clients = JsonSerializer.Deserialize<List<AllowedClient>>(clientsElement.GetRawText(), _jsonOptions);
+                        if (clients != null && clients.Count > 0)
+                        {
+                            config.ClientAccess.AllowedClients = clients;
+                            config.ClientAccess.Mode = ClientAccessMode.AllowList;
+                        }
+                        else
+                        {
+                            config.ClientAccess.Mode = ClientAccessMode.AllowList;
+                        }
+                    }
+
+                    config.SchemaVersion = 2;
+                    await SaveInternalAsync(config, cancellationToken);
+                }
+
+                return config;
             }
             catch (Exception ex)
             {
@@ -78,7 +137,21 @@ namespace PrintPilotProxy.Infrastructure.Configuration
         {
             _pathProvider.EnsureDirectoriesExist();
             string json = JsonSerializer.Serialize(configuration, _jsonOptions);
-            await File.WriteAllTextAsync(_pathProvider.ConfigurationFilePath, json, cancellationToken);
+            var configurationPath = _pathProvider.ConfigurationFilePath;
+            var temporaryPath = configurationPath + ".tmp";
+
+            try
+            {
+                await File.WriteAllTextAsync(temporaryPath, json, cancellationToken);
+                File.Move(temporaryPath, configurationPath, overwrite: true);
+            }
+            finally
+            {
+                if (File.Exists(temporaryPath))
+                {
+                    File.Delete(temporaryPath);
+                }
+            }
             _logger.LogInformation("Configuration saved successfully.");
         }
 

@@ -1,0 +1,107 @@
+<UserControl x:Class="PrintPilotProxy.App.Views.DiagnosticsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:PrintPilotProxy.App.Localization">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"    />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="{loc:Loc Key=Page.Diagnostics}" Style="{StaticResource HeaderTextBlockStyle}" DockPanel.Dock="Left" Margin="0"/>
+            <Button Content="{loc:Loc Key=Diag.RunAll}"
+                    Command="{Binding RunAllCommand}"
+                    HorizontalAlignment="Right"
+                    Background="{StaticResource AccentBrush}"
+                    Foreground="White"
+                    Padding="16,8" />
+        </DockPanel>
+
+        <!-- Overall status -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,12">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{loc:Loc Key=Diag.Overall}" Foreground="{StaticResource TextBrush}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding OverallStatus}" FontSize="14" FontWeight="Bold" VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="SuccessBrush">
+                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="ErrorBrush">
+                                    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+
+        <!-- Results list -->
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding Results}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource CardStyle}" Margin="0,0,0,6">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="36" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Icon -->
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding StatusIcon}"
+                                       FontSize="18"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding StatusBrushKey}" Value="SuccessBrush">
+                                                <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding StatusBrushKey}" Value="ErrorBrush">
+                                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <!-- Detail -->
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <DockPanel>
+                                    <TextBlock Text="{Binding Name}"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextBrush}"
+                                               DockPanel.Dock="Left" />
+                                    <TextBlock Text="{Binding Duration}"
+                                               Foreground="{StaticResource TextBrush}" Opacity="0.5"
+                                               FontSize="11"
+                                               HorizontalAlignment="Right" />
+                                </DockPanel>
+                                <TextBlock Text="{Binding Description}"
+                                           Foreground="{StaticResource TextBrush}" Opacity="0.6"
+                                           FontSize="11" Margin="0,2,0,2"/>
+                                <TextBlock Text="{Binding Message}"
+                                           Foreground="{StaticResource TextBrush}"
+                                           FontSize="12" TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding Remediation, StringFormat='→ {0}'}"
+                                           Foreground="{StaticResource WarningBrush}"
+                                           FontSize="11" TextWrapping="Wrap"
+                                           Margin="0,2,0,0"
+                                           Visibility="{Binding Remediation, Converter={StaticResource StringToVisibilityConverter}}" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>

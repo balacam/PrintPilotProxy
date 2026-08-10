@@ -16,6 +16,9 @@ public sealed class IpcMessage
 
     /// <summary>Timestamp of the message.</summary>
     public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
+
+    /// <summary>Caller security identity attached by the IPC server.</summary>
+    public IpcClientIdentity? ClientIdentity { get; set; }
 }
 
 /// <summary>
@@ -23,6 +26,7 @@ public sealed class IpcMessage
 /// </summary>
 public static class IpcMessageTypes
 {
+    // Requests
     public const string GetStatus = "GetStatus";
     public const string StartProxy = "StartProxy";
     public const string StopProxy = "StopProxy";
@@ -32,11 +36,21 @@ public static class IpcMessageTypes
     public const string GetRecentRequests = "GetRecentRequests";
     public const string RunDiagnostics = "RunDiagnostics";
     public const string GetSecurityAudit = "GetSecurityAudit";
+    public const string GetNetworkInterfaces = "GetNetworkInterfaces";
+    public const string GetFirewallStatus = "GetFirewallStatus";
+    public const string ApplyFirewallRule = "ApplyFirewallRule";
+    public const string RemoveFirewallRule = "RemoveFirewallRule";
+
+    // Responses
     public const string StatusResponse = "StatusResponse";
     public const string ConfigurationResponse = "ConfigurationResponse";
     public const string RecentRequestsResponse = "RecentRequestsResponse";
     public const string DiagnosticsResponse = "DiagnosticsResponse";
     public const string SecurityAuditResponse = "SecurityAuditResponse";
+    public const string NetworkInterfacesResponse = "NetworkInterfacesResponse";
+    public const string FirewallStatusResponse = "FirewallStatusResponse";
+
+    // Generic
     public const string Error = "Error";
     public const string Success = "Success";
 }

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+<data name="Common.Na" xml:space="preserve"><value>N/A</value></data>
+<data name="Common.Unknown" xml:space="preserve"><value>Onbekend</value></data>
+<data name="Common.Error" xml:space="preserve"><value>Fout</value></data>
+<data name="Common.OK" xml:space="preserve"><value>OK</value></data>
+<data name="Common.All" xml:space="preserve"><value>Willekeurig</value></data>
+<data name="Common.AllPorts" xml:space="preserve"><value>Alle poorten</value></data>
+<data name="Common.Private" xml:space="preserve"><value>Privé</value></data>
+<data name="Common.Public" xml:space="preserve"><value>Openbaar</value></data>
+<data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Dashboard</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Netwerkinstellingen</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Toegestane clients</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Firewall</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>⚙️  Service</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>📋  Logs</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnose</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>🛡️  Beveiliging</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>🌍  Taal</value></data>
+<data name="MainWindow.Status" xml:space="preserve"><value>Status: </value></data>
+<data name="MainWindow.Listen" xml:space="preserve"><value>Luister: </value></data>
+<data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>SERVICE NIET BESCHIKBAAR</value></data>
+<data name="Tray.Open" xml:space="preserve"><value>PrintPilotProxy openen</value></data>
+<data name="Tray.StartProxy" xml:space="preserve"><value>Proxy starten</value></data>
+<data name="Tray.StopProxy" xml:space="preserve"><value>Proxy stoppen</value></data>
+<data name="Tray.RestartProxy" xml:space="preserve"><value>Proxy herstarten</value></data>
+<data name="Tray.Diagnostics" xml:space="preserve"><value>Diagnose</value></data>
+<data name="Tray.OpenLogFolder" xml:space="preserve"><value>Logmap openen</value></data>
+<data name="Tray.Exit" xml:space="preserve"><value>Afsluiten</value></data>
+<data name="Action.Refresh" xml:space="preserve"><value>↻  Vernieuwen</value></data>
+<data name="Action.Apply" xml:space="preserve"><value>⚡  Toepassen</value></data>
+<data name="Action.Reset" xml:space="preserve"><value>↺  Resetten</value></data>
+<data name="Action.Reload" xml:space="preserve"><value>↻  Herladen</value></data>
+<data name="Action.Add" xml:space="preserve"><value>+  Toevoegen</value></data>
+<data name="Page.Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+<data name="Dash.ProxyState" xml:space="preserve"><value>Proxystatus</value></data>
+<data name="Dash.Uptime" xml:space="preserve"><value>Uptime</value></data>
+<data name="Dash.TotalRequests" xml:space="preserve"><value>Totaal verzoeken</value></data>
+<data name="Dash.Errors" xml:space="preserve"><value>Fouten</value></data>
+<data name="Dash.ListeningAddress" xml:space="preserve"><value>Luisteradres</value></data>
+<data name="Dash.AccessMode" xml:space="preserve"><value>Toegangsmodus</value></data>
+<data name="Dash.AllowedClients" xml:space="preserve"><value>Toegestane clients</value></data>
+<data name="Dash.AllowedPorts" xml:space="preserve"><value>Toegestane poorten</value></data>
+<data name="Dash.RecentActivity" xml:space="preserve"><value>Recente activiteit</value></data>
+<data name="Dash.ServiceUnavailable" xml:space="preserve"><value>Service niet beschikbaar</value></data>
+<data name="Dash.Msgs.LoadError" xml:space="preserve"><value>Fout: {0}</value></data>
+<data name="Page.NetworkSettings" xml:space="preserve"><value>Netwerkinstellingen</value></data>
+<data name="Net.ListenerMode" xml:space="preserve"><value>Luistermodus</value></data>
+<data name="Net.ChooseInterface" xml:space="preserve"><value>Kies het netwerkinterface waarop de proxy luistert.</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Automatisch  (alle privé-netwerkinterfaces gebruiken)</value></data>
+<data name="Net.ModeAdapter" xml:space="preserve"><value>Specifieke netwerkadapter  (kiezen uit gedetecteerde adapters)</value></data>
+<data name="Net.ModeSpecificIp" xml:space="preserve"><value>Specifiek IP-adres  (handmatig invoeren)</value></data>
+<data name="Net.PortAndLimits" xml:space="preserve"><value>Poort en limieten</value></data>
+<data name="Net.ProxyPort" xml:space="preserve"><value>Proxy-poort</value></data>
+<data name="Net.DefaultPort" xml:space="preserve"><value>Standaard: 3128</value></data>
+<data name="Net.MaxConnections" xml:space="preserve"><value>Max. verbindingen</value></data>
+<data name="Net.DefaultConnections" xml:space="preserve"><value>Standaard: 1000</value></data>
+<data name="Net.TimeoutSeconds" xml:space="preserve"><value>Time-out (seconden)</value></data>
+<data name="Net.DefaultTimeout" xml:space="preserve"><value>Standaard: 120</value></data>
+<data name="Net.Msgs.LoadFailed" xml:space="preserve"><value>Kan de configuratie niet laden van de service.</value></data>
+<data name="Net.Msgs.LoadError" xml:space="preserve"><value>Laadfout: {0}</value></data>
+<data name="Net.Msgs.ResetDone" xml:space="preserve"><value>Instellingen teruggezet naar laatst opgeslagen waarden.</value></data>
+<data name="Net.Msgs.PortInvalid" xml:space="preserve"><value>Poort &apos;{0}&apos; is niet geldig. Moet tussen 1 en 65535 liggen.</value></data>
+<data name="Net.Msgs.MaxConnectionsInvalid" xml:space="preserve"><value>Max. verbindingen moet tussen 1 en 100000 liggen.</value></data>
+<data name="Net.Msgs.TimeoutInvalid" xml:space="preserve"><value>Time-out moet tussen 1 en 3600 seconden liggen.</value></data>
+<data name="Net.Msgs.SelectAdapter" xml:space="preserve"><value>Selecteer een netwerkadapter.</value></data>
+<data name="Net.Msgs.IpInvalid" xml:space="preserve"><value>&apos;{0}&apos; is geen geldig IP-adres.</value></data>
+<data name="Net.Msgs.IpNotLocal" xml:space="preserve"><value>IP-adres &apos;{0}&apos; is niet toegewezen aan een lokaal netwerkinterface.&amp;#10;Beschikbaar: {1}</value></data>
+<data name="Net.Msgs.ReadConfigFailed" xml:space="preserve"><value>Kan de huidige configuratie niet lezen van de service.</value></data>
+<data name="Net.Msgs.Applied" xml:space="preserve"><value>Configuratie succesvol toegepast. Proxy is herstart met de nieuwe instellingen.</value></data>
+<data name="Net.Msgs.ApplyFailed" xml:space="preserve"><value>Toepassen mislukt: {0}</value></data>
+<data name="Net.Msgs.UnexpectedError" xml:space="preserve"><value>Onverwachte fout: {0}</value></data>
+<data name="Page.AllowedClients" xml:space="preserve"><value>Toegestane clients</value></data>
+<data name="Cli.ClientAccessMode" xml:space="preserve"><value>Clienttoegangsmodus</value></data>
+<data name="Cli.AllowAllWithHint" xml:space="preserve"><value>●  Alle clients toestaan  —  elk bereikbaar IP-adres mag de proxy gebruiken</value></data>
+<data name="Cli.AllowAllHint" xml:space="preserve"><value>⚠ &apos;Alles toestaan&apos; is handig, maar elk apparaat op het netwerk kan deze proxy gebruiken.</value></data>
+<data name="Cli.AllowListWithHint" xml:space="preserve"><value>●  Alleen specifieke clients toestaan  —  IP-/CIDR-toegangslijst</value></data>
+<data name="Cli.AddClient" xml:space="preserve"><value>Client toevoegen</value></data>
+<data name="Cli.Name" xml:space="preserve"><value>Naam</value></data>
+<data name="Cli.IpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+<data name="Cli.DescriptionOptional" xml:space="preserve"><value>Beschrijving (optioneel)</value></data>
+<data name="Cli.ClientList" xml:space="preserve"><value>Clientlijst</value></data>
+<data name="Cli.RemoveSelected" xml:space="preserve"><value>✖  Geselecteerde verwijderen</value></data>
+<data name="Cli.Msgs.LoadFailed" xml:space="preserve"><value>Kan de configuratie niet laden van de service.</value></data>
+<data name="Cli.Msgs.LoadError" xml:space="preserve"><value>Laadfout: {0}</value></data>
+<data name="Cli.Msgs.NameRequired" xml:space="preserve"><value>Clientnaam is verplicht.</value></data>
+<data name="Cli.Msgs.IpOrCidrInvalid" xml:space="preserve"><value>&apos;{0}&apos; is geen geldig IP-adres of CIDR-notatie.</value></data>
+<data name="Cli.Msgs.SelectClientToRemove" xml:space="preserve"><value>Selecteer een client om te verwijderen.</value></data>
+<data name="Cli.Msgs.ConfigNotLoaded" xml:space="preserve"><value>Configuratie niet geladen.</value></data>
+<data name="Cli.Msgs.Saved" xml:space="preserve"><value>Clienttoegangsconfiguratie opgeslagen en toegepast.</value></data>
+<data name="Cli.Msgs.ApplyFailed" xml:space="preserve"><value>Toepassen mislukt: {0}</value></data>
+<data name="Cli.Msgs.Error" xml:space="preserve"><value>Fout: {0}</value></data>
+<data name="Page.Firewall" xml:space="preserve"><value>Firewall</value></data>
+<data name="Fw.Rule" xml:space="preserve"><value>Firewallregel van PrintPilotProxy</value></data>
+<data name="Fw.RuleName" xml:space="preserve"><value>Regelnaam:</value></data>
+<data name="Fw.Status" xml:space="preserve"><value>Status:</value></data>
+<data name="Fw.Port" xml:space="preserve"><value>Poort:</value></data>
+<data name="Fw.Protocol" xml:space="preserve"><value>Protocol:</value></data>
+<data name="Fw.LocalScope" xml:space="preserve"><value>Lokaal bereik:</value></data>
+<data name="Fw.RuleExists" xml:space="preserve"><value>Regel bestaat</value></data>
+<data name="Fw.RuleNotFound" xml:space="preserve"><value>Regel niet gevonden</value></data>
+<data name="Fw.ServiceUnavailable" xml:space="preserve"><value>Service niet beschikbaar</value></data>
+<data name="Fw.ProtocolTcp" xml:space="preserve"><value>TCP</value></data>
+<data name="Fw.DirectionInbound" xml:space="preserve"><value>Inkomend</value></data>
+<data name="Fw.Msgs.CreateUpdate" xml:space="preserve"><value>✔  Regel aanmaken / bijwerken</value></data>
+<data name="Fw.Msgs.RemoveRule" xml:space="preserve"><value>✖  Regel verwijderen</value></data>
+<data name="Fw.Msgs.LoadError" xml:space="preserve"><value>Fout bij laden van firewallstatus: {0}</value></data>
+<data name="Fw.Msgs.Applied" xml:space="preserve"><value>Firewallregel succesvol toegepast.</value></data>
+<data name="Fw.Msgs.Removed" xml:space="preserve"><value>Firewallregel verwijderd.</value></data>
+<data name="Fw.Msgs.Failed" xml:space="preserve"><value>Mislukt: {0}</value></data>
+<data name="Fw.Msgs.Error" xml:space="preserve"><value>Fout: {0}</value></data>
+<data name="Page.Service" xml:space="preserve"><value>Service</value></data>
+<data name="Svc.Header" xml:space="preserve"><value>Windows-service en proxymotor</value></data>
+<data name="Svc.ServiceStatus" xml:space="preserve"><value>Servicestatus:</value></data>
+<data name="Svc.StartupType" xml:space="preserve"><value>Opstarttype:</value></data>
+<data name="Svc.ProxyState" xml:space="preserve"><value>Proxystatus:</value></data>
+<data name="Svc.Listening" xml:space="preserve"><value>Luistert op:</value></data>
+<data name="Svc.Uptime" xml:space="preserve"><value>Uptime:</value></data>
+<data name="Svc.TotalRequests" xml:space="preserve"><value>Totaal verzoeken:</value></data>
+<data name="Svc.TotalErrors" xml:space="preserve"><value>Totaal fouten:</value></data>
+<data name="Svc.ActiveConnections" xml:space="preserve"><value>Actieve verbindingen:</value></data>
+<data name="Svc.NotInstalled" xml:space="preserve"><value>Niet geïnstalleerd</value></data>
+<data name="Svc.Unavailable" xml:space="preserve"><value>Niet beschikbaar</value></data>
+<data name="Svc.AutoRestart" xml:space="preserve"><value>Automatisch opnieuw proberen bij proxymotorstoringen</value></data>
+<data name="Svc.StartService" xml:space="preserve"><value>▶  Service starten</value></data>
+<data name="Svc.StopService" xml:space="preserve"><value>⏹  Service stoppen</value></data>
+<data name="Svc.RestartService" xml:space="preserve"><value>↺  Service herstarten</value></data>
+<data name="Svc.ApplyRecovery" xml:space="preserve"><value>Herstelinstelling toepassen</value></data>
+<data name="Svc.Msgs.Started" xml:space="preserve"><value>Windows-service gestart.</value></data>
+<data name="Svc.Msgs.Stopped" xml:space="preserve"><value>Windows-service gestopt.</value></data>
+<data name="Svc.Msgs.Restarted" xml:space="preserve"><value>Windows-service herstart.</value></data>
+<data name="Svc.Msgs.ServiceRequired" xml:space="preserve"><value>De Windows-service moet draaien om de herstelinstellingen bij te werken.</value></data>
+<data name="Svc.Msgs.RecoveryUpdated" xml:space="preserve"><value>Herstelinstelling van proxymotor bijgewerkt.</value></data>
+<data name="Page.Logs" xml:space="preserve"><value>Logs</value></data>
+<data name="Logs.File" xml:space="preserve"><value>Bestand: {0}</value></data>
+<data name="Logs.NoDirectory" xml:space="preserve"><value>(De logmap bestaat nog niet.)</value></data>
+<data name="Logs.NoFiles" xml:space="preserve"><value>(Geen logbestanden gevonden.)</value></data>
+<data name="Logs.OpenFolder" xml:space="preserve"><value>📁  Map openen</value></data>
+<data name="Logs.Copy" xml:space="preserve"><value>📋  Kopiëren</value></data>
+<data name="Logs.ClearView" xml:space="preserve"><value>🧹  Weergave wissen</value></data>
+<data name="Logs.Msgs.Loaded" xml:space="preserve"><value>{0} regels geladen van {1}</value></data>
+<data name="Logs.Msgs.LoadError" xml:space="preserve"><value>Fout bij laden van logs: {0}</value></data>
+<data name="Logs.Msgs.ViewCleared" xml:space="preserve"><value>Weergave gewist. Logbestanden worden niet beïnvloed.</value></data>
+<data name="Logs.Msgs.OpenFolderFailed" xml:space="preserve"><value>Kan de logmap niet openen: {0}</value></data>
+<data name="Logs.Msgs.Copied" xml:space="preserve"><value>Loginhoud gekopieerd naar het klembord.</value></data>
+<data name="Logs.Msgs.CopyFailed" xml:space="preserve"><value>Kopiëren mislukt: {0}</value></data>
+<data name="Page.Diagnostics" xml:space="preserve"><value>Diagnose</value></data>
+<data name="Diag.RunAll" xml:space="preserve"><value>▶  Alle controles uitvoeren</value></data>
+<data name="Diag.Overall" xml:space="preserve"><value>Algemeen: </value></data>
+<data name="Diag.Running" xml:space="preserve"><value>Diagnose uitvoeren...</value></data>
+<data name="Diag.ServiceConnection" xml:space="preserve"><value>Serviceverbinding</value></data>
+<data name="Diag.ServiceConnectionDesc" xml:space="preserve"><value>Kan de WPF-app verbinding maken met de Windows-service via named pipe?</value></data>
+<data name="Diag.Connected" xml:space="preserve"><value>Succesvol verbonden met de service.</value></data>
+<data name="Diag.CannotConnect" xml:space="preserve"><value>Kan geen verbinding maken. Draait de PrintPilotProxy-service?</value></data>
+<data name="Diag.StartServiceHint" xml:space="preserve"><value>Service starten: sc start PrintPilotProxy</value></data>
+<data name="Diag.ConfigValid" xml:space="preserve"><value>Configuratie geldig</value></data>
+<data name="Diag.ConfigValidDesc" xml:space="preserve"><value>Is het proxyconfiguratiebestand geldig?</value></data>
+<data name="Diag.CouldNotLoadConfig" xml:space="preserve"><value>Kan de configuratie niet laden.</value></data>
+<data name="Diag.EnsureServiceRunning" xml:space="preserve"><value>Zorg ervoor dat de service draait.</value></data>
+<data name="Diag.ConfigValidOk" xml:space="preserve"><value>De configuratie is geldig.</value></data>
+<data name="Diag.ConfigErrors" xml:space="preserve"><value>{0} fout(en): {1}</value></data>
+<data name="Diag.FixConfigErrors" xml:space="preserve"><value>Corrigeer de configuratiefouten.</value></data>
+<data name="Diag.ProxyEngineState" xml:space="preserve"><value>Status van proxymotor</value></data>
+<data name="Diag.ProxyEngineStateDesc" xml:space="preserve"><value>Draait de proxymotor?</value></data>
+<data name="Diag.ServiceNotReachable" xml:space="preserve"><value>Service niet bereikbaar.</value></data>
+<data name="Diag.StartService" xml:space="preserve"><value>Start de service.</value></data>
+<data name="Diag.RunningOn" xml:space="preserve"><value>Draait op {0}.</value></data>
+<data name="Diag.StateIs" xml:space="preserve"><value>Status: {0}.</value></data>
+<data name="Diag.UseServicePage" xml:space="preserve"><value>Gebruik de Service-pagina om de proxy te starten.</value></data>
+<data name="Diag.ConfigFileDisk" xml:space="preserve"><value>Configuratiebestand op schijf</value></data>
+<data name="Diag.ConfigFileDiskDesc" xml:space="preserve"><value>Bestaat het configuratiebestand?</value></data>
+<data name="Diag.FoundPath" xml:space="preserve"><value>Gevonden: {0}</value></data>
+<data name="Diag.NotFoundPath" xml:space="preserve"><value>Niet gevonden: {0}</value></data>
+<data name="Diag.RunInstaller" xml:space="preserve"><value>Voer de installatieprogramma uit of start de service een keer om de standaardwaarden te maken.</value></data>
+<data name="Diag.LogDirWritable" xml:space="preserve"><value>Logmap schrijfbaar</value></data>
+<data name="Diag.LogDirWritableDesc" xml:space="preserve"><value>Is de logmap schrijfbaar?</value></data>
+<data name="Diag.LogDirMissing" xml:space="preserve"><value>Ontbreekt: {0}</value></data>
+<data name="Diag.StartServiceCreatesDirs" xml:space="preserve"><value>Start de service om de vereiste mappen te maken.</value></data>
+<data name="Diag.LogDirWritableOk" xml:space="preserve"><value>Schrijfbaar: {0}</value></data>
+<data name="Diag.LogDirNotWritable" xml:space="preserve"><value>De logmap is niet schrijfbaar.</value></data>
+<data name="Diag.CheckPermissions" xml:space="preserve"><value>Controleer de machtigingen op de PrintPilotProxy ProgramData-map.</value></data>
+<data name="Diag.PortAvailability" xml:space="preserve"><value>Beschikbaarheid van proxy-poort</value></data>
+<data name="Diag.PortAvailabilityDesc" xml:space="preserve"><value>Is de proxy-poort beschikbaar (of bezet door de draaiende proxy)?</value></data>
+<data name="Diag.CouldNotLoadConfigShort" xml:space="preserve"><value>Kan de configuratie niet laden.</value></data>
+<data name="Diag.PortBound" xml:space="preserve"><value>Poort {0} bezet door de draaiende proxy.</value></data>
+<data name="Diag.PortAvailable" xml:space="preserve"><value>Poort {0} is beschikbaar.</value></data>
+<data name="Diag.PortInUse" xml:space="preserve"><value>Poort {0} wordt gebruikt door een ander proces.</value></data>
+<data name="Diag.ChangePortHint" xml:space="preserve"><value>Wijzig de proxy-poort in Netwerkinstellingen, of stop het conflicterende programma.</value></data>
+<data name="Diag.NetworkAdapters" xml:space="preserve"><value>Netwerkadapters</value></data>
+<data name="Diag.NetworkAdaptersDesc" xml:space="preserve"><value>Zijn privé-netwerkadapters beschikbaar?</value></data>
+<data name="Diag.AdaptersDetected" xml:space="preserve"><value>{0} adapter(s) gedetecteerd.</value></data>
+<data name="Diag.NoAdapters" xml:space="preserve"><value>Geen netwerkadapters gevonden.</value></data>
+<data name="Diag.CheckNetworkConfig" xml:space="preserve"><value>Controleer de netwerkconfiguratie.</value></data>
+<data name="Diag.FirewallRule" xml:space="preserve"><value>Firewallregel</value></data>
+<data name="Diag.FirewallRuleDesc" xml:space="preserve"><value>Bestaat de PrintPilotProxy-firewallregel?</value></data>
+<data name="Diag.CouldNotQueryFirewall" xml:space="preserve"><value>Kan de firewallstatus niet opvragen.</value></data>
+<data name="Diag.FirewallRuleExists" xml:space="preserve"><value>Firewallregel bestaat.</value></data>
+<data name="Diag.FirewallRuleMissing" xml:space="preserve"><value>Firewallregel ontbreekt.</value></data>
+<data name="Diag.CreateRuleHint" xml:space="preserve"><value>Ga naar de Firewall-pagina en klik op &apos;Regel aanmaken / bijwerken&apos;.</value></data>
+<data name="Diag.IpcPipe" xml:space="preserve"><value>Named pipe IPC</value></data>
+<data name="Diag.IpcPipeDesc" xml:space="preserve"><value>Reageert de named pipe-server?</value></data>
+<data name="Diag.IpcResponding" xml:space="preserve"><value>Named pipe IPC reageert.</value></data>
+<data name="Diag.IpcNotResponding" xml:space="preserve"><value>IPC reageert niet.</value></data>
+<data name="Diag.RestartService" xml:space="preserve"><value>Herstart de PrintPilotProxy-service.</value></data>
+<data name="Diag.AllPassed" xml:space="preserve"><value>Alle {0} controles zijn geslaagd.</value></data>
+<data name="Diag.PassedFailed" xml:space="preserve"><value>{0} geslaagd, {1} mislukt.</value></data>
+<data name="Diag.RunError" xml:space="preserve"><value>Diagnosefout: {0}</value></data>
+<data name="Diag.Exception" xml:space="preserve"><value>Uitzondering: {0}</value></data>
+<data name="Diag.CheckLogs" xml:space="preserve"><value>Raadpleeg de applicatielogs voor details.</value></data>
+<data name="Page.Language" xml:space="preserve"><value>Taal</value></data>
+<data name="Lang.Title" xml:space="preserve"><value>Taal van de interface</value></data>
+<data name="Lang.Description" xml:space="preserve"><value>Kies de taal voor de interface van PrintPilotProxy. Wijzigingen worden direct toegepast en opgeslagen met de configuratie.</value></data>
+<data name="Lang.SystemDefault" xml:space="preserve"><value>Standaard van het systeem  (volg Windows)</value></data>
+<data name="Lang.Applied" xml:space="preserve"><value>Taal succesvol gewijzigd.</value></data>
+<data name="Lang.ApplyFailed" xml:space="preserve"><value>Taal wijzigen mislukt: {0}</value></data>
+<data name="Lang.LoadFailed" xml:space="preserve"><value>Kan de taalinstellingen niet laden van de service.</value></data>
+<data name="Page.Security" xml:space="preserve"><value>Beveiliging</value></data>
+<data name="Sec.Title" xml:space="preserve"><value>Beveiligingsaudit</value></data>
+<data name="Sec.Description" xml:space="preserve"><value>Geautomatiseerde beoordeling van de proxyconfiguratie en luisteroppervlak om het printnetwerk veilig te houden.</value></data>
+<data name="Sec.Overall" xml:space="preserve"><value>Algemeen: {0}</value></data>
+<data name="Sec.RerunAudit" xml:space="preserve"><value>⇄  Audit uitvoeren</value></data>
+<data name="Sec.Level.Secure" xml:space="preserve"><value>Veilig</value></data>
+<data name="Sec.Level.Info" xml:space="preserve"><value>Info</value></data>
+<data name="Sec.Level.Warning" xml:space="preserve"><value>Waarschuwing</value></data>
+<data name="Sec.Level.Critical" xml:space="preserve"><value>Kritiek</value></data>
+<data name="Sec.Msgs.AuditFailed" xml:space="preserve"><value>Kan de beveiligingsaudit niet ophalen van de service.</value></data>
+<data name="Sec.Check.Sec001.Name" xml:space="preserve"><value>Openbare toegang beperkt</value></data>
+<data name="Sec.Check.Sec001.Desc" xml:space="preserve"><value>De proxy mag niet luisteren op alle interfaces, tenzij nodig.</value></data>
+<data name="Sec.Check.Sec001.MsgPass" xml:space="preserve"><value>De proxy is gebonden aan een specifiek interface.</value></data>
+<data name="Sec.Check.Sec001.MsgFail" xml:space="preserve"><value>De proxy luistert op alle interfaces (0.0.0.0). Bind het aan een specifiek IP-adres.</value></data>
+<data name="Sec.Check.Sec001.Fix" xml:space="preserve"><value>Stel het luisteradres in op het IP-adres van een specifiek netwerkinterface.</value></data>
+<data name="Sec.Check.Sec002.Name" xml:space="preserve"><value>Clienttoegang beperkt</value></data>
+<data name="Sec.Check.Sec002.Desc" xml:space="preserve"><value>De toegang moet worden beperkt tot specifieke clients.</value></data>
+<data name="Sec.Check.Sec002.MsgPass" xml:space="preserve"><value>{0} toegestane client(s) geconfigureerd.</value></data>
+<data name="Sec.Check.Sec002.MsgFail" xml:space="preserve"><value>Clienttoegang staat op &apos;alles toestaan&apos; — elk apparaat op het netwerk kan deze proxy gebruiken.</value></data>
+<data name="Sec.Check.Sec002.MsgEmpty" xml:space="preserve"><value>Geen toegestane clients geconfigureerd. De proxy zal alle verbindingen weigeren.</value></data>
+<data name="Sec.Check.Sec002.Fix" xml:space="preserve"><value>Configureer specifieke toegestane clients.</value></data>
+<data name="Sec.Check.Sec002.FixEmpty" xml:space="preserve"><value>Voeg minstens één toegestane client toe.</value></data>
+<data name="Sec.Check.Sec003.Name" xml:space="preserve"><value>HTTPS-onderschepping uitgeschakeld</value></data>
+<data name="Sec.Check.Sec003.Desc" xml:space="preserve"><value>HTTPS-verkeer wordt getunnelerd zonder inspectie, waardoor end-to-end encryptie behouden blijft.</value></data>
+<data name="Sec.Check.Sec003.MsgPass" xml:space="preserve"><value>HTTPS-onderschepping is niet geïmplementeerd; HTTPS-verkeer wordt doorgestuurd via CONNECT-tunnel.</value></data>
+<data name="Sec.Check.Sec004.Name" xml:space="preserve"><value>Firewall-uitlijning</value></data>
+<data name="Sec.Check.Sec004.Desc" xml:space="preserve"><value>De firewall moet de toegang tot de proxy-poort beperken.</value></data>
+<data name="Sec.Check.Sec004.MsgPass" xml:space="preserve"><value>De proxy is gebonden aan een specifiek interface.</value></data>
+<data name="Sec.Check.Sec004.MsgFail" xml:space="preserve"><value>Overweeg de toegang van Windows Firewall tot de proxy-poort te beperken.</value></data>
+<data name="Sec.Check.Sec004.Fix" xml:space="preserve"><value>Configureer een Windows Firewall-regel die de toegang tot de IP-adressen van toegestane clients beperkt.</value></data>
+<data name="Sec.Check.Sec005.Name" xml:space="preserve"><value>Bestemmingspoorten beperkt</value></data>
+<data name="Sec.Check.Sec005.Desc" xml:space="preserve"><value>Alleen specifieke bestemmingspoorten mogen worden toegestaan.</value></data>
+<data name="Sec.Check.Sec005.MsgPass" xml:space="preserve"><value>Bestemmingspoorten beperkt tot: {0}</value></data>
+<data name="Sec.Check.Sec005.MsgFail" xml:space="preserve"><value>Bestemmingspoortbeperkingen zijn uitgeschakeld; elke bestemmingspoort is toegestaan.</value></data>
+<data name="Sec.Check.Sec005.Fix" xml:space="preserve"><value>Schakel bestemmingspoortbeperkingen in bij beveiligingsinstellingen.</value></data>
+<data name="Sec.Check.Sec006.Name" xml:space="preserve"><value>Geen brede subnetregels</value></data>
+<data name="Sec.Check.Sec006.Desc" xml:space="preserve"><value>Toegestane clientvermeldingen mogen niet te breed zijn.</value></data>
+<data name="Sec.Check.Sec006.MsgPass" xml:space="preserve"><value>Geen te brede subnets geconfigureerd.</value></data>
+<data name="Sec.Check.Sec006.MsgFailAllowAll" xml:space="preserve"><value>Modus &apos;alles toestaan&apos; is ingeschakeld.</value></data>
+<data name="Sec.Check.Sec006.MsgFailBroad" xml:space="preserve"><value>{0} te breed(e) subnet(s) gedetecteerd: {1}</value></data>
+<data name="Sec.Check.Sec006.FixAllowAll" xml:space="preserve"><value>Schakel over op modus toegangslijst.</value></data>
+<data name="Sec.Check.Sec006.FixBroad" xml:space="preserve"><value>Verklein de CIDR-bereiken van clients om het aanvalsoppervlak te verkleinen.</value></data>
+<data name="Sec.Check.Sec007.Name" xml:space="preserve"><value>Configuratie geldig</value></data>
+<data name="Sec.Check.Sec007.Desc" xml:space="preserve"><value>De configuratie moet alle validatiecontroles doorstaan.</value></data>
+<data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>De configuratie is geldig.</value></data>
+<data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} configuratiefout(en): {1}</value></data>
+<data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Corrigeer de bovenstaande configuratiefouten.</value></data>
+</root>

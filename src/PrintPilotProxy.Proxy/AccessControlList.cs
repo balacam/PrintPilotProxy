@@ -14,6 +14,7 @@ public sealed class AccessControlList : IAccessControlList
 {
     private readonly object _lock = new();
     private List<AllowedClient> _allowedClients = new();
+    private ClientAccessMode _clientAccessMode = ClientAccessMode.AllowAll;
     private List<int> _allowedDestinationPorts = new() { 80, 443 };
     private bool _destinationPortRestrictionsEnabled = true;
 
@@ -37,6 +38,9 @@ public sealed class AccessControlList : IAccessControlList
     {
         lock (_lock)
         {
+            if (_clientAccessMode == ClientAccessMode.AllowAll)
+                return true;
+
             if (_allowedClients.Count == 0)
                 return false;
 
@@ -68,7 +72,8 @@ public sealed class AccessControlList : IAccessControlList
     {
         lock (_lock)
         {
-            _allowedClients = configuration.AllowedClients?.Where(c => c.Enabled).ToList() ?? new List<AllowedClient>();
+            _clientAccessMode = configuration.ClientAccess.Mode;
+            _allowedClients = configuration.ClientAccess.AllowedClients?.Where(c => c.Enabled).ToList() ?? new List<AllowedClient>();
             _allowedDestinationPorts = configuration.Security?.AllowedDestinationPorts ?? new List<int> { 80, 443 };
             _destinationPortRestrictionsEnabled = configuration.Security?.DestinationPortRestrictionsEnabled ?? true;
         }

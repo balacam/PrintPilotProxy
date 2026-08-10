@@ -19,7 +19,7 @@ public static class ConfigurationValidator
         ValidateListener(config.Listener, errors);
 
         // Allowed clients validation
-        ValidateAllowedClients(config.AllowedClients, errors);
+        ValidateClientAccess(config.ClientAccess, errors);
 
         // Security validation
         ValidateSecurity(config.Security, errors);
@@ -35,9 +35,21 @@ public static class ConfigurationValidator
 
     private static void ValidateListener(ListenerSettings listener, List<string> errors)
     {
-        if (!NetworkValidator.IsValidListenAddress(listener.ListenAddress))
+        if (listener.Mode == ListenerMode.SpecificAddress)
         {
-            errors.Add($"Listen address '{listener.ListenAddress}' is not a valid IP address.");
+            if (string.IsNullOrWhiteSpace(listener.ListenAddress))
+            {
+                errors.Add("Listen address must be provided when mode is SpecificAddress.");
+            }
+            else if (!NetworkValidator.IsValidListenAddress(listener.ListenAddress))
+            {
+                errors.Add($"Listen address '{listener.ListenAddress}' is not a valid IP address.");
+            }
+        }
+
+        if (listener.Mode == ListenerMode.SpecificAdapter && string.IsNullOrWhiteSpace(listener.AdapterName))
+        {
+            errors.Add("A network adapter must be selected when mode is SpecificAdapter.");
         }
 
         if (!NetworkValidator.IsValidPort(listener.Port))
@@ -56,11 +68,11 @@ public static class ConfigurationValidator
         }
     }
 
-    private static void ValidateAllowedClients(List<AllowedClient> clients, List<string> errors)
+    private static void ValidateClientAccess(ClientAccessSettings clientAccess, List<string> errors)
     {
         var seenNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var client in clients)
+        foreach (var client in clientAccess.AllowedClients)
         {
             if (string.IsNullOrWhiteSpace(client.Name))
             {
@@ -130,25 +142,32 @@ public static class ConfigurationValidator
         var warnings = new List<string>();
 
         // Warn about listening on all interfaces
-        if (NetworkValidator.IsListeningOnAllInterfaces(config.Listener.ListenAddress))
+        if (config.Listener.Mode == ListenerMode.AllInterfaces || 
+            (config.Listener.Mode == ListenerMode.SpecificAddress && config.Listener.ListenAddress != null && NetworkValidator.IsListeningOnAllInterfaces(config.Listener.ListenAddress)))
         {
             warnings.Add("Proxy is configured to listen on all interfaces. Consider binding to a specific IP address.");
         }
 
-        // Warn about no allowed clients
-        if (config.AllowedClients.Count == 0)
+        // Warn about no allowed clients in AllowList mode
+        if (config.ClientAccess.Mode == ClientAccessMode.AllowList && config.ClientAccess.AllowedClients.Count == 0)
         {
             warnings.Add("No allowed clients are configured. No client will be able to use the proxy.");
         }
+        
+        // Warn about AllowAll mode
+        if (config.ClientAccess.Mode == ClientAccessMode.AllowAll)
+        {
+            warnings.Add("Client access is set to AllowAll. Anyone can use the proxy.");
+        }
 
         // Warn about no enabled clients
-        if (config.AllowedClients.Count > 0 && !config.AllowedClients.Any(c => c.Enabled))
+        if (config.ClientAccess.Mode == ClientAccessMode.AllowList && config.ClientAccess.AllowedClients.Count > 0 && !config.ClientAccess.AllowedClients.Any(c => c.Enabled))
         {
             warnings.Add("All allowed clients are disabled. No client will be able to use the proxy.");
         }
 
         // Warn about broad subnets
-        foreach (var client in config.AllowedClients.Where(c => c.Enabled))
+        foreach (var client in config.ClientAccess.AllowedClients.Where(c => c.Enabled))
         {
             var warning = NetworkValidator.GetBroadSubnetWarning(client.IpOrCidr);
             if (warning != null)

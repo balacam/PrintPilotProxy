@@ -16,6 +16,9 @@ public interface IPlatformServiceManager
     /// <summary>Gets the current service status.</summary>
     Task<ServiceStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
+    /// <summary>Gets the current service state and configured startup type.</summary>
+    Task<PlatformServiceInfo> GetInfoAsync(CancellationToken cancellationToken = default);
+
     /// <summary>Starts the service.</summary>
     Task<bool> StartAsync(CancellationToken cancellationToken = default);
 

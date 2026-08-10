@@ -1,14 +1,13 @@
 using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
 using PrintPilotProxy.App.ViewModels;
 
 namespace PrintPilotProxy.App.Views;
 
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    public MainWindow(MainViewModel mainViewModel)
     {
         InitializeComponent();
-        DataContext = App.Current.Services.GetRequiredService<MainViewModel>();
+        DataContext = mainViewModel;
     }
 }

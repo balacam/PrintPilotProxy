@@ -1,0 +1,99 @@
+<UserControl x:Class="PrintPilotProxy.App.Views.FirewallPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:PrintPilotProxy.App.Localization">
+    <StackPanel>
+        <TextBlock Text="{loc:Loc Key=Page.Firewall}" Style="{StaticResource HeaderTextBlockStyle}" />
+
+        <!-- Status Card -->
+        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="180"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.ColumnSpan="2" Text="{loc:Loc Key=Fw.Rule}"
+                           Style="{StaticResource SubheaderTextBlockStyle}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Loc Key=Fw.RuleName}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,4"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding RuleName}" Foreground="{StaticResource TextBrush}" Margin="0,4,0,4"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc Key=Fw.Status}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,4"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding RuleStatus}" Margin="0,4,0,4">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RuleExists}" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="{loc:Loc Key=Fw.Port}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,4"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding RulePort}" Foreground="{StaticResource TextBrush}" Margin="0,4,0,4"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:Loc Key=Fw.Protocol}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,4"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RuleProtocol}" Foreground="{StaticResource TextBrush}" Margin="0,4,0,4"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="{loc:Loc Key=Fw.LocalScope}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,0"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding RuleScope}" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+            </Grid>
+        </Border>
+
+        <!-- Notice -->
+        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12" Background="#2A2A20">
+            <TextBlock Foreground="{StaticResource WarningBrush}" FontSize="12" TextWrapping="Wrap">
+                <Run FontWeight="Bold">Note:</Run>
+                <Run> Creating or removing firewall rules requires Administrator privileges. The service manages this rule automatically on startup. Use the buttons below to manually control the rule.</Run>
+            </TextBlock>
+        </Border>
+
+        <!-- Status Message -->
+        <TextBlock Text="{Binding StatusMessage}"
+                   Margin="0,0,0,12"
+                   TextWrapping="Wrap"
+                   Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding StatusIsError}" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <!-- Buttons -->
+        <StackPanel Orientation="Horizontal">
+            <Button Content="{loc:Loc Key=Fw.Msgs.CreateUpdate}"
+                    Command="{Binding ApplyRuleCommand}"
+                    Background="{StaticResource AccentBrush}"
+                    Foreground="White"
+                    Padding="16,8"
+                    Margin="0,0,12,0" />
+            <Button Content="{loc:Loc Key=Fw.Msgs.RemoveRule}"
+                    Command="{Binding RemoveRuleCommand}"
+                    Background="#5A2020"
+                    Foreground="White"
+                    Padding="16,8"
+                    Margin="0,0,12,0" />
+            <Button Content="{loc:Loc Key=Action.Refresh}"
+                    Command="{Binding LoadCommand}"
+                    Padding="16,8" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

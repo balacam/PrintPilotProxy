@@ -3,7 +3,6 @@
   <PropertyGroup>
     <RootNamespace>PrintPilotProxy.Infrastructure</RootNamespace>
     <Description>Infrastructure services: logging, configuration management, platform abstractions, IPC.</Description>
-    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +11,7 @@
     <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="System.IO.Pipes.AccessControl" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

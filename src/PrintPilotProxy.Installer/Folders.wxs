@@ -1,0 +1,18 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="PrintPilotProxy" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="CommonAppDataFolder">
+      <Directory Id="DATAFOLDER" Name="PrintPilotProxy">
+        <Directory Id="LOGSFOLDER" Name="logs" />
+        <Directory Id="BACKUPSFOLDER" Name="backups" />
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="PrintPilotProxy" />
+    </StandardDirectory>
+  </Fragment>
+</Wix>

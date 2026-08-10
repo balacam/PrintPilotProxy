@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+<data name="Common.Na" xml:space="preserve"><value>N/A</value></data>
+<data name="Common.Unknown" xml:space="preserve"><value>Neznámý</value></data>
+<data name="Common.Error" xml:space="preserve"><value>Chyba</value></data>
+<data name="Common.OK" xml:space="preserve"><value>OK</value></data>
+<data name="Common.All" xml:space="preserve"><value>Vše</value></data>
+<data name="Common.AllPorts" xml:space="preserve"><value>Všechny porty</value></data>
+<data name="Common.Private" xml:space="preserve"><value>Soukromý</value></data>
+<data name="Common.Public" xml:space="preserve"><value>Veřejný</value></data>
+<data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Hlavní panel</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Nastavení sítě</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Povolení klienti</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Brána firewall</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>⚙️  Služba</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>📋  Protokoly</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnostika</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>🛡️  Zabezpečení</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>🌍  Jazyk</value></data>
+<data name="MainWindow.Status" xml:space="preserve"><value>Stav: </value></data>
+<data name="MainWindow.Listen" xml:space="preserve"><value>Naslouchání: </value></data>
+<data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>SLUŽBA NEDOSTUPNÁ</value></data>
+<data name="Tray.Open" xml:space="preserve"><value>Otevřít PrintPilotProxy</value></data>
+<data name="Tray.StartProxy" xml:space="preserve"><value>Spustit proxy</value></data>
+<data name="Tray.StopProxy" xml:space="preserve"><value>Zastavit proxy</value></data>
+<data name="Tray.RestartProxy" xml:space="preserve"><value>Restartovat proxy</value></data>
+<data name="Tray.Diagnostics" xml:space="preserve"><value>Diagnostika</value></data>
+<data name="Tray.OpenLogFolder" xml:space="preserve"><value>Otevřít složku protokolů</value></data>
+<data name="Tray.Exit" xml:space="preserve"><value>Konec</value></data>
+<data name="Action.Refresh" xml:space="preserve"><value>↻  Obnovit</value></data>
+<data name="Action.Apply" xml:space="preserve"><value>⚡  Použít</value></data>
+<data name="Action.Reset" xml:space="preserve"><value>↺  Resetovat</value></data>
+<data name="Action.Reload" xml:space="preserve"><value>↻  Znovu načíst</value></data>
+<data name="Action.Add" xml:space="preserve"><value>+  Přidat</value></data>
+<data name="Page.Dashboard" xml:space="preserve"><value>Hlavní panel</value></data>
+<data name="Dash.ProxyState" xml:space="preserve"><value>Stav proxy</value></data>
+<data name="Dash.Uptime" xml:space="preserve"><value>Doba běhu</value></data>
+<data name="Dash.TotalRequests" xml:space="preserve"><value>Celkem požadavků</value></data>
+<data name="Dash.Errors" xml:space="preserve"><value>Chyby</value></data>
+<data name="Dash.ListeningAddress" xml:space="preserve"><value>Adresa naslouchání</value></data>
+<data name="Dash.AccessMode" xml:space="preserve"><value>Režim přístupu</value></data>
+<data name="Dash.AllowedClients" xml:space="preserve"><value>Povolení klienti</value></data>
+<data name="Dash.AllowedPorts" xml:space="preserve"><value>Povolené porty</value></data>
+<data name="Dash.RecentActivity" xml:space="preserve"><value>Nedávná aktivita</value></data>
+<data name="Dash.ServiceUnavailable" xml:space="preserve"><value>Služba nedostupná</value></data>
+<data name="Dash.Msgs.LoadError" xml:space="preserve"><value>Chyba: {0}</value></data>
+<data name="Page.NetworkSettings" xml:space="preserve"><value>Nastavení sítě</value></data>
+<data name="Net.ListenerMode" xml:space="preserve"><value>Režim naslouchání</value></data>
+<data name="Net.ChooseInterface" xml:space="preserve"><value>Vyberte síťové rozhraní, které proxy naslouchá.</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Automatický  (použít všechna soukromá síťová rozhraní)</value></data>
+<data name="Net.ModeAdapter" xml:space="preserve"><value>Konkrétní adaptér  (vyberte z detekovaných adaptérů)</value></data>
+<data name="Net.ModeSpecificIp" xml:space="preserve"><value>Konkrétní IP adresa  (zadejte ručně)</value></data>
+<data name="Net.PortAndLimits" xml:space="preserve"><value>Port a limity</value></data>
+<data name="Net.ProxyPort" xml:space="preserve"><value>Proxy port</value></data>
+<data name="Net.DefaultPort" xml:space="preserve"><value>Výchozí: 3128</value></data>
+<data name="Net.MaxConnections" xml:space="preserve"><value>Max. připojení</value></data>
+<data name="Net.DefaultConnections" xml:space="preserve"><value>Výchozí: 1000</value></data>
+<data name="Net.TimeoutSeconds" xml:space="preserve"><value>Časový limit (sekundy)</value></data>
+<data name="Net.DefaultTimeout" xml:space="preserve"><value>Výchozí: 120</value></data>
+<data name="Net.Msgs.LoadFailed" xml:space="preserve"><value>Nepodařilo se načíst konfiguraci ze služby.</value></data>
+<data name="Net.Msgs.LoadError" xml:space="preserve"><value>Chyba načítání: {0}</value></data>
+<data name="Net.Msgs.ResetDone" xml:space="preserve"><value>Nastavení bylo obnoveno na poslední uloženou hodnotu.</value></data>
+<data name="Net.Msgs.PortInvalid" xml:space="preserve"><value>Port &apos;{0}&apos; je neplatný. Musí být mezi 1 a 65535.</value></data>
+<data name="Net.Msgs.MaxConnectionsInvalid" xml:space="preserve"><value>Max. připojení musí být mezi 1 a 100000.</value></data>
+<data name="Net.Msgs.TimeoutInvalid" xml:space="preserve"><value>Časový limit musí být mezi 1 a 3600 sekundami.</value></data>
+<data name="Net.Msgs.SelectAdapter" xml:space="preserve"><value>Prosím vyberte síťový adaptér.</value></data>
+<data name="Net.Msgs.IpInvalid" xml:space="preserve"><value>&apos;{0}&apos; není platná IP adresa.</value></data>
+<data name="Net.Msgs.IpNotLocal" xml:space="preserve"><value>IP adresa &apos;{0}&apos; není přiřazena žádnému místnímu síťovému rozhraní.&amp;#10;Dostupné: {1}</value></data>
+<data name="Net.Msgs.ReadConfigFailed" xml:space="preserve"><value>Nepodařilo se přečíst aktuální konfiguraci ze služby.</value></data>
+<data name="Net.Msgs.Applied" xml:space="preserve"><value>Konfigurace byla úspěšně aplikována. Proxy se restartuje s novými nastaveními.</value></data>
+<data name="Net.Msgs.ApplyFailed" xml:space="preserve"><value>Aplikace selhala: {0}</value></data>
+<data name="Net.Msgs.UnexpectedError" xml:space="preserve"><value>Neočekávaná chyba: {0}</value></data>
+<data name="Page.AllowedClients" xml:space="preserve"><value>Povolení klienti</value></data>
+<data name="Cli.ClientAccessMode" xml:space="preserve"><value>Režim přístupu klientů</value></data>
+<data name="Cli.AllowAllWithHint" xml:space="preserve"><value>●  Povolit všem klientům  —  jakákoliv dosažitelná IP adresa může použít proxy</value></data>
+<data name="Cli.AllowAllHint" xml:space="preserve"><value>⚠ &apos;Povolit všem&apos; je pohodlné, ale jakékoliv zařízení v síti může toto proxy používat.</value></data>
+<data name="Cli.AllowListWithHint" xml:space="preserve"><value>●  Povolit pouze konkrétním klientům  —  seznam IP / CIDR</value></data>
+<data name="Cli.AddClient" xml:space="preserve"><value>Přidat klienta</value></data>
+<data name="Cli.Name" xml:space="preserve"><value>Název</value></data>
+<data name="Cli.IpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+<data name="Cli.DescriptionOptional" xml:space="preserve"><value>Popis (volitelný)</value></data>
+<data name="Cli.ClientList" xml:space="preserve"><value>Seznam klientů</value></data>
+<data name="Cli.RemoveSelected" xml:space="preserve"><value>✖  Odebrat vybrané</value></data>
+<data name="Cli.Msgs.LoadFailed" xml:space="preserve"><value>Nepodařilo se načíst konfiguraci ze služby.</value></data>
+<data name="Cli.Msgs.LoadError" xml:space="preserve"><value>Chyba načítání: {0}</value></data>
+<data name="Cli.Msgs.NameRequired" xml:space="preserve"><value>Název klienta je povinný.</value></data>
+<data name="Cli.Msgs.IpOrCidrInvalid" xml:space="preserve"><value>&apos;{0}&apos; není platná IP adresa nebo CIDR zápis.</value></data>
+<data name="Cli.Msgs.SelectClientToRemove" xml:space="preserve"><value>Vyberte klienta k odebrání.</value></data>
+<data name="Cli.Msgs.ConfigNotLoaded" xml:space="preserve"><value>Konfigurace nebyla načtena.</value></data>
+<data name="Cli.Msgs.Saved" xml:space="preserve"><value>Konfigurace přístupu klientů byla uložena a aplikována.</value></data>
+<data name="Cli.Msgs.ApplyFailed" xml:space="preserve"><value>Aplikace selhala: {0}</value></data>
+<data name="Cli.Msgs.Error" xml:space="preserve"><value>Chyba: {0}</value></data>
+<data name="Page.Firewall" xml:space="preserve"><value>Brána firewall</value></data>
+<data name="Fw.Rule" xml:space="preserve"><value>Pravidlo brány firewall PrintPilotProxy</value></data>
+<data name="Fw.RuleName" xml:space="preserve"><value>Název pravidla:</value></data>
+<data name="Fw.Status" xml:space="preserve"><value>Stav:</value></data>
+<data name="Fw.Port" xml:space="preserve"><value>Port:</value></data>
+<data name="Fw.Protocol" xml:space="preserve"><value>Protokol:</value></data>
+<data name="Fw.LocalScope" xml:space="preserve"><value>Místní rozsah:</value></data>
+<data name="Fw.RuleExists" xml:space="preserve"><value>Pravidlo existuje</value></data>
+<data name="Fw.RuleNotFound" xml:space="preserve"><value>Pravidlo nenalezeno</value></data>
+<data name="Fw.ServiceUnavailable" xml:space="preserve"><value>Služba nedostupná</value></data>
+<data name="Fw.ProtocolTcp" xml:space="preserve"><value>TCP</value></data>
+<data name="Fw.DirectionInbound" xml:space="preserve"><value>Příchozí</value></data>
+<data name="Fw.Msgs.CreateUpdate" xml:space="preserve"><value>✔  Vytvořit / aktualizovat pravidlo</value></data>
+<data name="Fw.Msgs.RemoveRule" xml:space="preserve"><value>✖  Odebrat pravidlo</value></data>
+<data name="Fw.Msgs.LoadError" xml:space="preserve"><value>Chyba načítání stavu brány firewall: {0}</value></data>
+<data name="Fw.Msgs.Applied" xml:space="preserve"><value>Pravidlo brány firewall bylo úspěšně aplikováno.</value></data>
+<data name="Fw.Msgs.Removed" xml:space="preserve"><value>Pravidlo brány firewall bylo odebráno.</value></data>
+<data name="Fw.Msgs.Failed" xml:space="preserve"><value>Selhalo: {0}</value></data>
+<data name="Fw.Msgs.Error" xml:space="preserve"><value>Chyba: {0}</value></data>
+<data name="Page.Service" xml:space="preserve"><value>Služba</value></data>
+<data name="Svc.Header" xml:space="preserve"><value>Služba Windows a proxy engine</value></data>
+<data name="Svc.ServiceStatus" xml:space="preserve"><value>Stav služby:</value></data>
+<data name="Svc.StartupType" xml:space="preserve"><value>Typ spouštění:</value></data>
+<data name="Svc.ProxyState" xml:space="preserve"><value>Stav proxy:</value></data>
+<data name="Svc.Listening" xml:space="preserve"><value>Naslouchání:</value></data>
+<data name="Svc.Uptime" xml:space="preserve"><value>Doba běhu:</value></data>
+<data name="Svc.TotalRequests" xml:space="preserve"><value>Celkem požadavků:</value></data>
+<data name="Svc.TotalErrors" xml:space="preserve"><value>Celkem chyb:</value></data>
+<data name="Svc.ActiveConnections" xml:space="preserve"><value>Aktivní připojení:</value></data>
+<data name="Svc.NotInstalled" xml:space="preserve"><value>Nainstalováno</value></data>
+<data name="Svc.Unavailable" xml:space="preserve"><value>Nedostupné</value></data>
+<data name="Svc.AutoRestart" xml:space="preserve"><value>Automatický restart při selhání proxy engine</value></data>
+<data name="Svc.StartService" xml:space="preserve"><value>▶  Spustit službu</value></data>
+<data name="Svc.StopService" xml:space="preserve"><value>⏹  Zastavit službu</value></data>
+<data name="Svc.RestartService" xml:space="preserve"><value>↺  Restartovat službu</value></data>
+<data name="Svc.ApplyRecovery" xml:space="preserve"><value>Použít nastavení obnovení</value></data>
+<data name="Svc.Msgs.Started" xml:space="preserve"><value>Služba Windows byla spuštěna.</value></data>
+<data name="Svc.Msgs.Stopped" xml:space="preserve"><value>Služba Windows byla zastavena.</value></data>
+<data name="Svc.Msgs.Restarted" xml:space="preserve"><value>Služba Windows byla restartována.</value></data>
+<data name="Svc.Msgs.ServiceRequired" xml:space="preserve"><value>Služba Windows musí běžet, aby bylo možné aktualizovat nastavení obnovení.</value></data>
+<data name="Svc.Msgs.RecoveryUpdated" xml:space="preserve"><value>Nastavení obnovení proxy engine bylo aktualizováno.</value></data>
+<data name="Page.Logs" xml:space="preserve"><value>Protokoly</value></data>
+<data name="Logs.File" xml:space="preserve"><value>Soubor: {0}</value></data>
+<data name="Logs.NoDirectory" xml:space="preserve"><value>(Složka protokolů zatím neexistuje.)</value></data>
+<data name="Logs.NoFiles" xml:space="preserve"><value>(Nebyly nalezeny žádné soubory protokolů.)</value></data>
+<data name="Logs.OpenFolder" xml:space="preserve"><value>📁  Otevřít složku</value></data>
+<data name="Logs.Copy" xml:space="preserve"><value>📋  Kopírovat</value></data>
+<data name="Logs.ClearView" xml:space="preserve"><value>🧹  Vymazat zobrazení</value></data>
+<data name="Logs.Msgs.Loaded" xml:space="preserve"><value>Načteno {0} řádků z {1}</value></data>
+<data name="Logs.Msgs.LoadError" xml:space="preserve"><value>Chyba načítání protokolů: {0}</value></data>
+<data name="Logs.Msgs.ViewCleared" xml:space="preserve"><value>Zobrazení bylo vymazáno. Soubory protokolů nejsou ovlivněny.</value></data>
+<data name="Logs.Msgs.OpenFolderFailed" xml:space="preserve"><value>Nepodařilo se otevřít složku protokolů: {0}</value></data>
+<data name="Logs.Msgs.Copied" xml:space="preserve"><value>Obsah protokolu byl zkopírován do schránky.</value></data>
+<data name="Logs.Msgs.CopyFailed" xml:space="preserve"><value>Kopírování selhalo: {0}</value></data>
+<data name="Page.Diagnostics" xml:space="preserve"><value>Diagnostika</value></data>
+<data name="Diag.RunAll" xml:space="preserve"><value>▶  Spustit všechny kontroly</value></data>
+<data name="Diag.Overall" xml:space="preserve"><value>Celkově: </value></data>
+<data name="Diag.Running" xml:space="preserve"><value>Spouštění diagnostiky...</value></data>
+<data name="Diag.ServiceConnection" xml:space="preserve"><value>Připojení ke službě</value></data>
+<data name="Diag.ServiceConnectionDesc" xml:space="preserve"><value>Může se aplikace připojit ke službě Windows přes pojmenovaný kanál?</value></data>
+<data name="Diag.Connected" xml:space="preserve"><value>Úspěšně připojeno ke službě.</value></data>
+<data name="Diag.CannotConnect" xml:space="preserve"><value>Nelze se připojit. Je PrintPilotProxy služba spuštěna?</value></data>
+<data name="Diag.StartServiceHint" xml:space="preserve"><value>Spusťte službu: sc start PrintPilotProxy</value></data>
+<data name="Diag.ConfigValid" xml:space="preserve"><value>Platná konfigurace</value></data>
+<data name="Diag.ConfigValidDesc" xml:space="preserve"><value>Je konfigurační soubor proxy platný?</value></data>
+<data name="Diag.CouldNotLoadConfig" xml:space="preserve"><value>Nepodařilo se načíst konfiguraci.</value></data>
+<data name="Diag.EnsureServiceRunning" xml:space="preserve"><value>Ujistěte se, že služba běží.</value></data>
+<data name="Diag.ConfigValidOk" xml:space="preserve"><value>Konfigurace je platná.</value></data>
+<data name="Diag.ConfigErrors" xml:space="preserve"><value>{0} chyb: {1}</value></data>
+<data name="Diag.FixConfigErrors" xml:space="preserve"><value>Opravte chyby konfigurace.</value></data>
+<data name="Diag.ProxyEngineState" xml:space="preserve"><value>Stav proxy engine</value></data>
+<data name="Diag.ProxyEngineStateDesc" xml:space="preserve"><value>Běží proxy engine?</value></data>
+<data name="Diag.ServiceNotReachable" xml:space="preserve"><value>Služba nedostupná.</value></data>
+<data name="Diag.StartService" xml:space="preserve"><value>Spusťte službu.</value></data>
+<data name="Diag.RunningOn" xml:space="preserve"><value>Běží na {0}.</value></data>
+<data name="Diag.StateIs" xml:space="preserve"><value>Stav: {0}.</value></data>
+<data name="Diag.UseServicePage" xml:space="preserve"><value>Použijte stránku Služba ke spuštění proxy.</value></data>
+<data name="Diag.ConfigFileDisk" xml:space="preserve"><value>Konfigurační soubor na disku</value></data>
+<data name="Diag.ConfigFileDiskDesc" xml:space="preserve"><value>Existuje konfigurační soubor?</value></data>
+<data name="Diag.FoundPath" xml:space="preserve"><value>Nalezen: {0}</value></data>
+<data name="Diag.NotFoundPath" xml:space="preserve"><value>Nenalezen: {0}</value></data>
+<data name="Diag.RunInstaller" xml:space="preserve"><value>Spusťte instalační program nebo službu jednou pro vytvoření výchozích hodnot.</value></data>
+<data name="Diag.LogDirWritable" xml:space="preserve"><value>Zapisovatelná složka protokolů</value></data>
+<data name="Diag.LogDirWritableDesc" xml:space="preserve"><value>Je složka protokolů zapisovatelná?</value></data>
+<data name="Diag.LogDirMissing" xml:space="preserve"><value>Chybí: {0}</value></data>
+<data name="Diag.StartServiceCreatesDirs" xml:space="preserve"><value>Spusťte službu pro vytvoření požadovaných složek.</value></data>
+<data name="Diag.LogDirWritableOk" xml:space="preserve"><value>Zapisovatelná: {0}</value></data>
+<data name="Diag.LogDirNotWritable" xml:space="preserve"><value>Složka protokolů není zapisovatelná.</value></data>
+<data name="Diag.CheckPermissions" xml:space="preserve"><value>Zkontrolujte oprávnění ve složce ProgramData PrintPilotProxy.</value></data>
+<data name="Diag.PortAvailability" xml:space="preserve"><value>Dostupnost proxy portu</value></data>
+<data name="Diag.PortAvailabilityDesc" xml:space="preserve"><value>Je proxy port dostupný (nebo obsazený běžícím proxy)?</value></data>
+<data name="Diag.CouldNotLoadConfigShort" xml:space="preserve"><value>Nepodařilo se načíst konfiguraci.</value></data>
+<data name="Diag.PortBound" xml:space="preserve"><value>Port {0} je obsazený běžícím proxy.</value></data>
+<data name="Diag.PortAvailable" xml:space="preserve"><value>Port {0} je dostupný.</value></data>
+<data name="Diag.PortInUse" xml:space="preserve"><value>Port {0} je používán jiným procesem.</value></data>
+<data name="Diag.ChangePortHint" xml:space="preserve"><value>Změňte proxy port v Nastavení sítě nebo zastavte konfliktní aplikaci.</value></data>
+<data name="Diag.NetworkAdapters" xml:space="preserve"><value>Síťové adaptéry</value></data>
+<data name="Diag.NetworkAdaptersDesc" xml:space="preserve"><value>Jsou dostupné soukromé síťové adaptéry?</value></data>
+<data name="Diag.AdaptersDetected" xml:space="preserve"><value>Detekováno {0} adaptérů.</value></data>
+<data name="Diag.NoAdapters" xml:space="preserve"><value>Nebyly nalezeny žádné síťové adaptéry.</value></data>
+<data name="Diag.CheckNetworkConfig" xml:space="preserve"><value>Zkontrolujte síťovou konfiguraci.</value></data>
+<data name="Diag.FirewallRule" xml:space="preserve"><value>Pravidlo brány firewall</value></data>
+<data name="Diag.FirewallRuleDesc" xml:space="preserve"><value>Existuje pravidlo brány firewall PrintPilotProxy?</value></data>
+<data name="Diag.CouldNotQueryFirewall" xml:space="preserve"><value>Nepodařilo se dotázat na stav brány firewall.</value></data>
+<data name="Diag.FirewallRuleExists" xml:space="preserve"><value>Pravidlo brány firewall existuje.</value></data>
+<data name="Diag.FirewallRuleMissing" xml:space="preserve"><value>Pravidlo brány firewall chybí.</value></data>
+<data name="Diag.CreateRuleHint" xml:space="preserve"><value>Přejděte na stránku Brána firewall a klikněte na &apos;Vytvořit / aktualizovat pravidlo&apos;.</value></data>
+<data name="Diag.IpcPipe" xml:space="preserve"><value>Pojmenovaný IPC kanál</value></data>
+<data name="Diag.IpcPipeDesc" xml:space="preserve"><value>Odpovídá server pojmenovaných kanálů?</value></data>
+<data name="Diag.IpcResponding" xml:space="preserve"><value>Pojmenovaný IPC kanál odpovídá.</value></data>
+<data name="Diag.IpcNotResponding" xml:space="preserve"><value>IPC neodpovídá.</value></data>
+<data name="Diag.RestartService" xml:space="preserve"><value>Restartujte službu PrintPilotProxy.</value></data>
+<data name="Diag.AllPassed" xml:space="preserve"><value>Všech {0} kontrol prošlo.</value></data>
+<data name="Diag.PassedFailed" xml:space="preserve"><value>{0} prošlo, {1} selhalo.</value></data>
+<data name="Diag.RunError" xml:space="preserve"><value>Chyba diagnostiky: {0}</value></data>
+<data name="Diag.Exception" xml:space="preserve"><value>Výjimka: {0}</value></data>
+<data name="Diag.CheckLogs" xml:space="preserve"><value>Zkontrolujte protokoly aplikace pro podrobnosti.</value></data>
+<data name="Page.Language" xml:space="preserve"><value>Jazyk</value></data>
+<data name="Lang.Title" xml:space="preserve"><value>Jazyk rozhraní</value></data>
+<data name="Lang.Description" xml:space="preserve"><value>Vyberte jazyk rozhraní PrintPilotProxy. Změny jsou okamžité a uložené s konfigurací.</value></data>
+<data name="Lang.SystemDefault" xml:space="preserve"><value>Výchozí systémový  (sledovat Windows)</value></data>
+<data name="Lang.Applied" xml:space="preserve"><value>Jazyk byl úspěšně změněn.</value></data>
+<data name="Lang.ApplyFailed" xml:space="preserve"><value>Změna jazyka selhala: {0}</value></data>
+<data name="Lang.LoadFailed" xml:space="preserve"><value>Nepodařilo se načíst nastavení jazyka ze služby.</value></data>
+<data name="Page.Security" xml:space="preserve"><value>Zabezpečení</value></data>
+<data name="Sec.Title" xml:space="preserve"><value>Audit zabezpečení</value></data>
+<data name="Sec.Description" xml:space="preserve"><value>Automatický přehled konfigurace proxy a rozsahu naslouchání, aby pomohl udržet síť tisku v bezpečí.</value></data>
+<data name="Sec.Overall" xml:space="preserve"><value>Celkově: {0}</value></data>
+<data name="Sec.RerunAudit" xml:space="preserve"><value>⇄  Spustit audit znovu</value></data>
+<data name="Sec.Level.Secure" xml:space="preserve"><value>Bezpečné</value></data>
+<data name="Sec.Level.Info" xml:space="preserve"><value>Informace</value></data>
+<data name="Sec.Level.Warning" xml:space="preserve"><value>Varování</value></data>
+<data name="Sec.Level.Critical" xml:space="preserve"><value>Kritické</value></data>
+<data name="Sec.Msgs.AuditFailed" xml:space="preserve"><value>Nepodařilo se získat audit zabezpečení ze služby.</value></data>
+<data name="Sec.Check.Sec001.Name" xml:space="preserve"><value>Omezený veřejný přístup</value></data>
+<data name="Sec.Check.Sec001.Desc" xml:space="preserve"><value>Proxy by nemělo naslouchat na všech rozhraních, pokud to není nezbytné.</value></data>
+<data name="Sec.Check.Sec001.MsgPass" xml:space="preserve"><value>Proxy je vázáno na konkrétní rozhraní.</value></data>
+<data name="Sec.Check.Sec001.MsgFail" xml:space="preserve"><value>Proxy naslouchá na všech rozhraních (0.0.0.0). Vázejte jej na konkrétní IP adresu.</value></data>
+<data name="Sec.Check.Sec001.Fix" xml:space="preserve"><value>Nastavte adresu naslouchání na IP adresu konkrétního síťového rozhraní.</value></data>
+<data name="Sec.Check.Sec002.Name" xml:space="preserve"><value>Omezený přístup klientů</value></data>
+<data name="Sec.Check.Sec002.Desc" xml:space="preserve"><value>Přístup by měl být omezen na konkrétní klienty.</value></data>
+<data name="Sec.Check.Sec002.MsgPass" xml:space="preserve"><value>Nakonfigurováno {0} povolených klientů.</value></data>
+<data name="Sec.Check.Sec002.MsgFail" xml:space="preserve"><value>Přístup klientů je nastaven na &apos;povolit všem&apos; — jakékoliv zařízení v síti může toto proxy používat.</value></data>
+<data name="Sec.Check.Sec002.MsgEmpty" xml:space="preserve"><value>Žádní nakonfigurovaní povolení klienti. Proxy odmítne všechna připojení.</value></data>
+<data name="Sec.Check.Sec002.Fix" xml:space="preserve"><value>Nakonfigurujte konkrétní povolené klienty.</value></data>
+<data name="Sec.Check.Sec002.FixEmpty" xml:space="preserve"><value>Přidejte alespoň jednoho povoleného klienta.</value></data>
+<data name="Sec.Check.Sec003.Name" xml:space="preserve"><value>Zachytávání HTTPS zakázáno</value></data>
+<data name="Sec.Check.Sec003.Desc" xml:space="preserve"><value>HTTPS provoz je tunelován bez inspekce, zachovávajíc end-to-end šifrování.</value></data>
+<data name="Sec.Check.Sec003.MsgPass" xml:space="preserve"><value>Zachytávání HTTPS není implementováno; HTTPS provoz je přenášen přes CONNECT tunel.</value></data>
+<data name="Sec.Check.Sec004.Name" xml:space="preserve"><value>Zarovnání brány firewall</value></data>
+<data name="Sec.Check.Sec004.Desc" xml:space="preserve"><value>Brána firewall by měla omezit přístup k portu proxy.</value></data>
+<data name="Sec.Check.Sec004.MsgPass" xml:space="preserve"><value>Proxy je vázáno na konkrétní rozhraní.</value></data>
+<data name="Sec.Check.Sec004.MsgFail" xml:space="preserve"><value>Zvažte omezení přístupu brány Windows k portu proxy.</value></data>
+<data name="Sec.Check.Sec004.Fix" xml:space="preserve"><value>Nakonfigurujte pravidlo brány Windows, které omezuje přístup na IP adresy povolených klientů.</value></data>
+<data name="Sec.Check.Sec005.Name" xml:space="preserve"><value>Omezené cílové porty</value></data>
+<data name="Sec.Check.Sec005.Desc" xml:space="preserve"><value>Pouze konkrétní cílové porty by měly být povoleny.</value></data>
+<data name="Sec.Check.Sec005.MsgPass" xml:space="preserve"><value>Cílové porty omezeny na: {0}</value></data>
+<data name="Sec.Check.Sec005.MsgFail" xml:space="preserve"><value>Omezení cílových portů jsou vypnuta; jakýkoliv cílový port je povolen.</value></data>
+<data name="Sec.Check.Sec005.Fix" xml:space="preserve"><value>Aktivujte omezení cílových portů v nastavení zabezpečení.</value></data>
+<data name="Sec.Check.Sec006.Name" xml:space="preserve"><value>Žádná široká pravidla podsítí</value></data>
+<data name="Sec.Check.Sec006.Desc" xml:space="preserve"><value>Záznamy povolených klientů by neměly být příliš široké.</value></data>
+<data name="Sec.Check.Sec006.MsgPass" xml:space="preserve"><value>Žádné nakonfigurované příliš široké podsítě.</value></data>
+<data name="Sec.Check.Sec006.MsgFailAllowAll" xml:space="preserve"><value>Režim &apos;povolit všem&apos; je aktivní.</value></data>
+<data name="Sec.Check.Sec006.MsgFailBroad" xml:space="preserve"><value>Detekováno {0} širokých podsítí: {1}</value></data>
+<data name="Sec.Check.Sec006.FixAllowAll" xml:space="preserve"><value>Přepněte na režim povolovacího seznamu.</value></data>
+<data name="Sec.Check.Sec006.FixBroad" xml:space="preserve"><value>Zúžte CIDR rozsahy klientů pro snížení útočné plochy.</value></data>
+<data name="Sec.Check.Sec007.Name" xml:space="preserve"><value>Platná konfigurace</value></data>
+<data name="Sec.Check.Sec007.Desc" xml:space="preserve"><value>Konfigurace musí projít všemi kontrolami platnosti.</value></data>
+<data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>Konfigurace je platná.</value></data>
+<data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} chyb konfigurace: {1}</value></data>
+<data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Opravte výše uvedené chyby konfigurace.</value></data>
+</root>

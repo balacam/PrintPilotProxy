@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+<data name="Common.Na" xml:space="preserve"><value>N/A</value></data>
+<data name="Common.Unknown" xml:space="preserve"><value>Okänd</value></data>
+<data name="Common.Error" xml:space="preserve"><value>Fel</value></data>
+<data name="Common.OK" xml:space="preserve"><value>OK</value></data>
+<data name="Common.All" xml:space="preserve"><value>Alla</value></data>
+<data name="Common.AllPorts" xml:space="preserve"><value>Alla portar</value></data>
+<data name="Common.Private" xml:space="preserve"><value>Privat</value></data>
+<data name="Common.Public" xml:space="preserve"><value>Publik</value></data>
+<data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Kontrollpanel</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Nätverksinställningar</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Tillåtna klienter</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Brandvägg</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>⚙️  Tjänst</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>📋  Loggar</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnostik</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>🛡️  Säkerhet</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>🌍  Språk</value></data>
+<data name="MainWindow.Status" xml:space="preserve"><value>Status: </value></data>
+<data name="MainWindow.Listen" xml:space="preserve"><value>Lyssnar: </value></data>
+<data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>TJÄNSTEN EJ TILLGÄNGLIG</value></data>
+<data name="Tray.Open" xml:space="preserve"><value>Öppna PrintPilotProxy</value></data>
+<data name="Tray.StartProxy" xml:space="preserve"><value>Starta proxy</value></data>
+<data name="Tray.StopProxy" xml:space="preserve"><value>Stoppa proxy</value></data>
+<data name="Tray.RestartProxy" xml:space="preserve"><value>Starta om proxy</value></data>
+<data name="Tray.Diagnostics" xml:space="preserve"><value>Diagnostik</value></data>
+<data name="Tray.OpenLogFolder" xml:space="preserve"><value>Öppna loggmappen</value></data>
+<data name="Tray.Exit" xml:space="preserve"><value>Avsluta</value></data>
+<data name="Action.Refresh" xml:space="preserve"><value>↻  Uppdatera</value></data>
+<data name="Action.Apply" xml:space="preserve"><value>⚡  Tillämpa</value></data>
+<data name="Action.Reset" xml:space="preserve"><value>↺  Återställ</value></data>
+<data name="Action.Reload" xml:space="preserve"><value>↻  Ladda om</value></data>
+<data name="Action.Add" xml:space="preserve"><value>+  Lägg till</value></data>
+<data name="Page.Dashboard" xml:space="preserve"><value>Kontrollpanel</value></data>
+<data name="Dash.ProxyState" xml:space="preserve"><value>Proxytillstånd</value></data>
+<data name="Dash.Uptime" xml:space="preserve"><value>Drifttid</value></data>
+<data name="Dash.TotalRequests" xml:space="preserve"><value>Totalt förfrågningar</value></data>
+<data name="Dash.Errors" xml:space="preserve"><value>Fel</value></data>
+<data name="Dash.ListeningAddress" xml:space="preserve"><value>Lyssningsadress</value></data>
+<data name="Dash.AccessMode" xml:space="preserve"><value>Åtkomstläge</value></data>
+<data name="Dash.AllowedClients" xml:space="preserve"><value>Tillåtna klienter</value></data>
+<data name="Dash.AllowedPorts" xml:space="preserve"><value>Tillåtna portar</value></data>
+<data name="Dash.RecentActivity" xml:space="preserve"><value>Senaste aktivitet</value></data>
+<data name="Dash.ServiceUnavailable" xml:space="preserve"><value>Tjänsten ej tillgänglig</value></data>
+<data name="Dash.Msgs.LoadError" xml:space="preserve"><value>Fel: {0}</value></data>
+<data name="Page.NetworkSettings" xml:space="preserve"><value>Nätverksinställningar</value></data>
+<data name="Net.ListenerMode" xml:space="preserve"><value>Lyssningsläge</value></data>
+<data name="Net.ChooseInterface" xml:space="preserve"><value>Välj nätverksgränssnitt som proxyn lyssnar på.</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Automatiskt  (använd alla privata nätverksgränssnitt)</value></data>
+<data name="Net.ModeAdapter" xml:space="preserve"><value>Angiven adapter  (välj bland upptäckta adaptere)</value></data>
+<data name="Net.ModeSpecificIp" xml:space="preserve"><value>Angiven IP-adress  (ange manuellt)</value></data>
+<data name="Net.PortAndLimits" xml:space="preserve"><value>Port och gränser</value></data>
+<data name="Net.ProxyPort" xml:space="preserve"><value>Proxyport</value></data>
+<data name="Net.DefaultPort" xml:space="preserve"><value>Standard: 3128</value></data>
+<data name="Net.MaxConnections" xml:space="preserve"><value>Max anslutningar</value></data>
+<data name="Net.DefaultConnections" xml:space="preserve"><value>Standard: 1000</value></data>
+<data name="Net.TimeoutSeconds" xml:space="preserve"><value>Timeout (sekunder)</value></data>
+<data name="Net.DefaultTimeout" xml:space="preserve"><value>Standard: 120</value></data>
+<data name="Net.Msgs.LoadFailed" xml:space="preserve"><value>Kunde inte ladda konfigurationen från tjänsten.</value></data>
+<data name="Net.Msgs.LoadError" xml:space="preserve"><value>Laddningsfel: {0}</value></data>
+<data name="Net.Msgs.ResetDone" xml:space="preserve"><value>Inställningarna har återställts till senast sparade värde.</value></data>
+<data name="Net.Msgs.PortInvalid" xml:space="preserve"><value>Porten &apos;{0}&apos; är ogiltig. Måste vara mellan 1 och 65535.</value></data>
+<data name="Net.Msgs.MaxConnectionsInvalid" xml:space="preserve"><value>Max anslutningar måste vara mellan 1 och 100000.</value></data>
+<data name="Net.Msgs.TimeoutInvalid" xml:space="preserve"><value>Timeout måste vara mellan 1 och 3600 sekunder.</value></data>
+<data name="Net.Msgs.SelectAdapter" xml:space="preserve"><value>Välj en nätverksadapter.</value></data>
+<data name="Net.Msgs.IpInvalid" xml:space="preserve"><value>&apos;{0}&apos; är inte en giltig IP-adress.</value></data>
+<data name="Net.Msgs.IpNotLocal" xml:space="preserve"><value>IP-adressen &apos;{0}&apos; är inte tilldelad något lokalt nätverksgränssnitt.&amp;#10;Tillgängliga: {1}</value></data>
+<data name="Net.Msgs.ReadConfigFailed" xml:space="preserve"><value>Kunde inte läsa aktuell konfiguration från tjänsten.</value></data>
+<data name="Net.Msgs.Applied" xml:space="preserve"><value>Konfigurationen har tillämpats. Proxyn startas om med de nya inställningarna.</value></data>
+<data name="Net.Msgs.ApplyFailed" xml:space="preserve"><value>Tillämpning misslyckades: {0}</value></data>
+<data name="Net.Msgs.UnexpectedError" xml:space="preserve"><value>Oväntat fel: {0}</value></data>
+<data name="Page.AllowedClients" xml:space="preserve"><value>Tillåtna klienter</value></data>
+<data name="Cli.ClientAccessMode" xml:space="preserve"><value>Klientåtkomstläge</value></data>
+<data name="Cli.AllowAllWithHint" xml:space="preserve"><value>●  Tillåt alla klienter  —  varje nåbar IP-adress kan använda proxyn</value></data>
+<data name="Cli.AllowAllHint" xml:space="preserve"><value>⚠ &apos;Tillåt alla&apos; är bekvämt, men varje enhet i nätverket kan använda denna proxy.</value></data>
+<data name="Cli.AllowListWithHint" xml:space="preserve"><value>●  Tillåt endast angivna klienter  —  IP- / CIDR-lista</value></data>
+<data name="Cli.AddClient" xml:space="preserve"><value>Lägg till klient</value></data>
+<data name="Cli.Name" xml:space="preserve"><value>Namn</value></data>
+<data name="Cli.IpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+<data name="Cli.DescriptionOptional" xml:space="preserve"><value>Beskrivning (valfritt)</value></data>
+<data name="Cli.ClientList" xml:space="preserve"><value>Klientlista</value></data>
+<data name="Cli.RemoveSelected" xml:space="preserve"><value>✖  Ta bort valda</value></data>
+<data name="Cli.Msgs.LoadFailed" xml:space="preserve"><value>Kunde inte ladda konfigurationen från tjänsten.</value></data>
+<data name="Cli.Msgs.LoadError" xml:space="preserve"><value>Laddningsfel: {0}</value></data>
+<data name="Cli.Msgs.NameRequired" xml:space="preserve"><value>Klientnamn krävs.</value></data>
+<data name="Cli.Msgs.IpOrCidrInvalid" xml:space="preserve"><value>&apos;{0}&apos; är inte en giltig IP-adress eller CIDR-notation.</value></data>
+<data name="Cli.Msgs.SelectClientToRemove" xml:space="preserve"><value>Välj en klient att ta bort.</value></data>
+<data name="Cli.Msgs.ConfigNotLoaded" xml:space="preserve"><value>Konfigurationen har inte laddats.</value></data>
+<data name="Cli.Msgs.Saved" xml:space="preserve"><value>Klientåtkomstkonfigurationen har sparats och tillämpats.</value></data>
+<data name="Cli.Msgs.ApplyFailed" xml:space="preserve"><value>Tillämpning misslyckades: {0}</value></data>
+<data name="Cli.Msgs.Error" xml:space="preserve"><value>Fel: {0}</value></data>
+<data name="Page.Firewall" xml:space="preserve"><value>Brandvägg</value></data>
+<data name="Fw.Rule" xml:space="preserve"><value>PrintPilotProxy brandväggsregel</value></data>
+<data name="Fw.RuleName" xml:space="preserve"><value>Regelnamn:</value></data>
+<data name="Fw.Status" xml:space="preserve"><value>Status:</value></data>
+<data name="Fw.Port" xml:space="preserve"><value>Port:</value></data>
+<data name="Fw.Protocol" xml:space="preserve"><value>Protokoll:</value></data>
+<data name="Fw.LocalScope" xml:space="preserve"><value>Lokalt omfång:</value></data>
+<data name="Fw.RuleExists" xml:space="preserve"><value>Regeln finns</value></data>
+<data name="Fw.RuleNotFound" xml:space="preserve"><value>Regeln hittades inte</value></data>
+<data name="Fw.ServiceUnavailable" xml:space="preserve"><value>Tjänsten ej tillgänglig</value></data>
+<data name="Fw.ProtocolTcp" xml:space="preserve"><value>TCP</value></data>
+<data name="Fw.DirectionInbound" xml:space="preserve"><value>Inkommande</value></data>
+<data name="Fw.Msgs.CreateUpdate" xml:space="preserve"><value>✔  Skapa / uppdatera regel</value></data>
+<data name="Fw.Msgs.RemoveRule" xml:space="preserve"><value>✖  Ta bort regel</value></data>
+<data name="Fw.Msgs.LoadError" xml:space="preserve"><value>Fel vid laddning av brandväggsstatus: {0}</value></data>
+<data name="Fw.Msgs.Applied" xml:space="preserve"><value>Brandväggsregeln har tillämpats.</value></data>
+<data name="Fw.Msgs.Removed" xml:space="preserve"><value>Brandväggsregeln har tagits bort.</value></data>
+<data name="Fw.Msgs.Failed" xml:space="preserve"><value>Misslyckades: {0}</value></data>
+<data name="Fw.Msgs.Error" xml:space="preserve"><value>Fel: {0}</value></data>
+<data name="Page.Service" xml:space="preserve"><value>Tjänst</value></data>
+<data name="Svc.Header" xml:space="preserve"><value>Windows-tjänst och proxy-motor</value></data>
+<data name="Svc.ServiceStatus" xml:space="preserve"><value>Tjänststatus:</value></data>
+<data name="Svc.StartupType" xml:space="preserve"><value>Starttyp:</value></data>
+<data name="Svc.ProxyState" xml:space="preserve"><value>Proxytillstånd:</value></data>
+<data name="Svc.Listening" xml:space="preserve"><value>Lyssnar:</value></data>
+<data name="Svc.Uptime" xml:space="preserve"><value>Drifttid:</value></data>
+<data name="Svc.TotalRequests" xml:space="preserve"><value>Totalt förfrågningar:</value></data>
+<data name="Svc.TotalErrors" xml:space="preserve"><value>Totalt fel:</value></data>
+<data name="Svc.ActiveConnections" xml:space="preserve"><value>Aktiva anslutningar:</value></data>
+<data name="Svc.NotInstalled" xml:space="preserve"><value>Ej installerad</value></data>
+<data name="Svc.Unavailable" xml:space="preserve"><value>Ej tillgänglig</value></data>
+<data name="Svc.AutoRestart" xml:space="preserve"><value>Automatisk omstart vid proxy-motorfel</value></data>
+<data name="Svc.StartService" xml:space="preserve"><value>▶  Starta tjänst</value></data>
+<data name="Svc.StopService" xml:space="preserve"><value>⏹  Stoppa tjänst</value></data>
+<data name="Svc.RestartService" xml:space="preserve"><value>↺  Starta om tjänst</value></data>
+<data name="Svc.ApplyRecovery" xml:space="preserve"><value>Tillämpa återställningsinställning</value></data>
+<data name="Svc.Msgs.Started" xml:space="preserve"><value>Windows-tjänsten har startats.</value></data>
+<data name="Svc.Msgs.Stopped" xml:space="preserve"><value>Windows-tjänsten har stoppats.</value></data>
+<data name="Svc.Msgs.Restarted" xml:space="preserve"><value>Windows-tjänsten har startats om.</value></data>
+<data name="Svc.Msgs.ServiceRequired" xml:space="preserve"><value>Windows-tjänsten måste köra för att uppdatera återställningsinställningar.</value></data>
+<data name="Svc.Msgs.RecoveryUpdated" xml:space="preserve"><value>Proxy-motorns återställningsinställning har uppdaterats.</value></data>
+<data name="Page.Logs" xml:space="preserve"><value>Loggar</value></data>
+<data name="Logs.File" xml:space="preserve"><value>Fil: {0}</value></data>
+<data name="Logs.NoDirectory" xml:space="preserve"><value>(Loggmappen finns inte ännu.)</value></data>
+<data name="Logs.NoFiles" xml:space="preserve"><value>(Inga loggfiler hittades.)</value></data>
+<data name="Logs.OpenFolder" xml:space="preserve"><value>📁  Öppna mapp</value></data>
+<data name="Logs.Copy" xml:space="preserve"><value>📋  Kopiera</value></data>
+<data name="Logs.ClearView" xml:space="preserve"><value>🧹  Rensa vy</value></data>
+<data name="Logs.Msgs.Loaded" xml:space="preserve"><value>Laddade {0} rader från {1}</value></data>
+<data name="Logs.Msgs.LoadError" xml:space="preserve"><value>Fel vid laddning av loggar: {0}</value></data>
+<data name="Logs.Msgs.ViewCleared" xml:space="preserve"><value>Vyn har rensats. Loggfiler påverkas inte.</value></data>
+<data name="Logs.Msgs.OpenFolderFailed" xml:space="preserve"><value>Kunde inte öppna loggmappen: {0}</value></data>
+<data name="Logs.Msgs.Copied" xml:space="preserve"><value>Logginnnehåll kopierat till urklipp.</value></data>
+<data name="Logs.Msgs.CopyFailed" xml:space="preserve"><value>Kopiering misslyckades: {0}</value></data>
+<data name="Page.Diagnostics" xml:space="preserve"><value>Diagnostik</value></data>
+<data name="Diag.RunAll" xml:space="preserve"><value>▶  Kör alla kontroller</value></data>
+<data name="Diag.Overall" xml:space="preserve"><value>Totalt: </value></data>
+<data name="Diag.Running" xml:space="preserve"><value>Kör diagnostik...</value></data>
+<data name="Diag.ServiceConnection" xml:space="preserve"><value>Tjänstanslutning</value></data>
+<data name="Diag.ServiceConnectionDesc" xml:space="preserve"><value>Kan appen ansluta till Windows-tjänsten via namngiven kanal?</value></data>
+<data name="Diag.Connected" xml:space="preserve"><value>Ansluten till tjänsten.</value></data>
+<data name="Diag.CannotConnect" xml:space="preserve"><value>Kan inte ansluta. Är PrintPilotProxy-tjänsten igång?</value></data>
+<data name="Diag.StartServiceHint" xml:space="preserve"><value>Starta tjänsten: sc start PrintPilotProxy</value></data>
+<data name="Diag.ConfigValid" xml:space="preserve"><value>Giltig konfiguration</value></data>
+<data name="Diag.ConfigValidDesc" xml:space="preserve"><value>Är proxykonfigurationsfilen giltig?</value></data>
+<data name="Diag.CouldNotLoadConfig" xml:space="preserve"><value>Kunde inte ladda konfigurationen.</value></data>
+<data name="Diag.EnsureServiceRunning" xml:space="preserve"><value>Se till att tjänsten körs.</value></data>
+<data name="Diag.ConfigValidOk" xml:space="preserve"><value>Konfigurationen är giltig.</value></data>
+<data name="Diag.ConfigErrors" xml:space="preserve"><value>{0} fel: {1}</value></data>
+<data name="Diag.FixConfigErrors" xml:space="preserve"><value>Åtgärda konfigurationsfelen.</value></data>
+<data name="Diag.ProxyEngineState" xml:space="preserve"><value>Proxy-motorstatus</value></data>
+<data name="Diag.ProxyEngineStateDesc" xml:space="preserve"><value>Kör proxy-motorn?</value></data>
+<data name="Diag.ServiceNotReachable" xml:space="preserve"><value>Tjänsten ej tillgänglig.</value></data>
+<data name="Diag.StartService" xml:space="preserve"><value>Starta tjänsten.</value></data>
+<data name="Diag.RunningOn" xml:space="preserve"><value>Kör på {0}.</value></data>
+<data name="Diag.StateIs" xml:space="preserve"><value>Status: {0}.</value></data>
+<data name="Diag.UseServicePage" xml:space="preserve"><value>Använd sidan Tjänst för att starta proxyn.</value></data>
+<data name="Diag.ConfigFileDisk" xml:space="preserve"><value>Konfigurationsfil på disk</value></data>
+<data name="Diag.ConfigFileDiskDesc" xml:space="preserve"><value>Finns konfigurationsfilen?</value></data>
+<data name="Diag.FoundPath" xml:space="preserve"><value>Hittad: {0}</value></data>
+<data name="Diag.NotFoundPath" xml:space="preserve"><value>Ej hittad: {0}</value></data>
+<data name="Diag.RunInstaller" xml:space="preserve"><value>Kör installeraren eller starta tjänsten en gång för att skapa standardvärden.</value></data>
+<data name="Diag.LogDirWritable" xml:space="preserve"><value>Skrivbar loggkatalog</value></data>
+<data name="Diag.LogDirWritableDesc" xml:space="preserve"><value>Är loggmappen skrivbar?</value></data>
+<data name="Diag.LogDirMissing" xml:space="preserve"><value>Saknas: {0}</value></data>
+<data name="Diag.StartServiceCreatesDirs" xml:space="preserve"><value>Starta tjänsten för att skapa nödvändiga mappar.</value></data>
+<data name="Diag.LogDirWritableOk" xml:space="preserve"><value>Skrivbar: {0}</value></data>
+<data name="Diag.LogDirNotWritable" xml:space="preserve"><value>Loggmappen är inte skrivbar.</value></data>
+<data name="Diag.CheckPermissions" xml:space="preserve"><value>Kontrollera behörigheterna i ProgramData PrintPilotProxy-mappen.</value></data>
+<data name="Diag.PortAvailability" xml:space="preserve"><value>Proxyportens tillgänglighet</value></data>
+<data name="Diag.PortAvailabilityDesc" xml:space="preserve"><value>Är proxyporten tillgänglig (eller upptagen av en aktiv proxy)?</value></data>
+<data name="Diag.CouldNotLoadConfigShort" xml:space="preserve"><value>Kunde inte ladda konfigurationen.</value></data>
+<data name="Diag.PortBound" xml:space="preserve"><value>Porten {0} är upptagen av en aktiv proxy.</value></data>
+<data name="Diag.PortAvailable" xml:space="preserve"><value>Porten {0} är tillgänglig.</value></data>
+<data name="Diag.PortInUse" xml:space="preserve"><value>Porten {0} används av en annan process.</value></data>
+<data name="Diag.ChangePortHint" xml:space="preserve"><value>Ändra proxyporten i Nätverksinställningar eller stoppa den kolliderande applikationen.</value></data>
+<data name="Diag.NetworkAdapters" xml:space="preserve"><value>Nätverksadaptere</value></data>
+<data name="Diag.NetworkAdaptersDesc" xml:space="preserve"><value>Finns privata nätverksadaptere tillgängliga?</value></data>
+<data name="Diag.AdaptersDetected" xml:space="preserve"><value>Upptäckte {0} adaptere.</value></data>
+<data name="Diag.NoAdapters" xml:space="preserve"><value>Inga nätverksadaptere hittades.</value></data>
+<data name="Diag.CheckNetworkConfig" xml:space="preserve"><value>Kontrollera nätverkskonfigurationen.</value></data>
+<data name="Diag.FirewallRule" xml:space="preserve"><value>Brandväggsregel</value></data>
+<data name="Diag.FirewallRuleDesc" xml:space="preserve"><value>Finns PrintPilotProxy-brandväggsregeln?</value></data>
+<data name="Diag.CouldNotQueryFirewall" xml:space="preserve"><value>Kunde inte fråga efter brandväggsstatus.</value></data>
+<data name="Diag.FirewallRuleExists" xml:space="preserve"><value>Brandväggsregeln finns.</value></data>
+<data name="Diag.FirewallRuleMissing" xml:space="preserve"><value>Brandväggsregeln saknas.</value></data>
+<data name="Diag.CreateRuleHint" xml:space="preserve"><value>Gå till sidan Brandvägg och klicka på &apos;Skapa / uppdatera regel&apos;.</value></data>
+<data name="Diag.IpcPipe" xml:space="preserve"><value>Namngiven IPC-kanal</value></data>
+<data name="Diag.IpcPipeDesc" xml:space="preserve"><value>Svarar den namngivna kanalservern?</value></data>
+<data name="Diag.IpcResponding" xml:space="preserve"><value>Den namngivna IPC-kanalen svarar.</value></data>
+<data name="Diag.IpcNotResponding" xml:space="preserve"><value>IPC svarar inte.</value></data>
+<data name="Diag.RestartService" xml:space="preserve"><value>Starta om PrintPilotProxy-tjänsten.</value></data>
+<data name="Diag.AllPassed" xml:space="preserve"><value>Alla {0} kontroller passerade.</value></data>
+<data name="Diag.PassedFailed" xml:space="preserve"><value>{0} passerade, {1} misslyckades.</value></data>
+<data name="Diag.RunError" xml:space="preserve"><value>Diagnostikfel: {0}</value></data>
+<data name="Diag.Exception" xml:space="preserve"><value>Undantag: {0}</value></data>
+<data name="Diag.CheckLogs" xml:space="preserve"><value>Kontrollera applogarna för detaljer.</value></data>
+<data name="Page.Language" xml:space="preserve"><value>Språk</value></data>
+<data name="Lang.Title" xml:space="preserve"><value>Gränssnittsspråk</value></data>
+<data name="Lang.Description" xml:space="preserve"><value>Välj språk för PrintPilotProxy-gränssnittet. Ändringar är omedelbara och sparas med konfigurationen.</value></data>
+<data name="Lang.SystemDefault" xml:space="preserve"><value>Systemstandard  (följ Windows)</value></data>
+<data name="Lang.Applied" xml:space="preserve"><value>Språket har ändrats.</value></data>
+<data name="Lang.ApplyFailed" xml:space="preserve"><value>Språkändring misslyckades: {0}</value></data>
+<data name="Lang.LoadFailed" xml:space="preserve"><value>Kunde inte ladda språkinställningar från tjänsten.</value></data>
+<data name="Page.Security" xml:space="preserve"><value>Säkerhet</value></data>
+<data name="Sec.Title" xml:space="preserve"><value>Säkerhetsgranskning</value></data>
+<data name="Sec.Description" xml:space="preserve"><value>Automatisk granskning av proxykonfiguration och lyssningsomfång för att hjälpa hålla utskriftsntverket säkert.</value></data>
+<data name="Sec.Overall" xml:space="preserve"><value>Totalt: {0}</value></data>
+<data name="Sec.RerunAudit" xml:space="preserve"><value>⇄  Kör granskningen igen</value></data>
+<data name="Sec.Level.Secure" xml:space="preserve"><value>Säkert</value></data>
+<data name="Sec.Level.Info" xml:space="preserve"><value>Information</value></data>
+<data name="Sec.Level.Warning" xml:space="preserve"><value>Varning</value></data>
+<data name="Sec.Level.Critical" xml:space="preserve"><value>Kritiskt</value></data>
+<data name="Sec.Msgs.AuditFailed" xml:space="preserve"><value>Kunde inte hämta säkerhetsgranskningen från tjänsten.</value></data>
+<data name="Sec.Check.Sec001.Name" xml:space="preserve"><value>Begränsad publik åtkomst</value></data>
+<data name="Sec.Check.Sec001.Desc" xml:space="preserve"><value>Proxyn bör inte lyssna på alla gränssnitt om det inte är nödvändigt.</value></data>
+<data name="Sec.Check.Sec001.MsgPass" xml:space="preserve"><value>Proxyn är bunden till ett specifikt gränssnitt.</value></data>
+<data name="Sec.Check.Sec001.MsgFail" xml:space="preserve"><value>Proxyn lyssnar på alla gränssnitt (0.0.0.0). Bind den till en specifik IP-adress.</value></data>
+<data name="Sec.Check.Sec001.Fix" xml:space="preserve"><value>Ställ in lyssningsadressen till IP-adressen för det specifika nätverksgränssnittet.</value></data>
+<data name="Sec.Check.Sec002.Name" xml:space="preserve"><value>Begränsad klientåtkomst</value></data>
+<data name="Sec.Check.Sec002.Desc" xml:space="preserve"><value>Åtkomst bör begränsas till specifika klienter.</value></data>
+<data name="Sec.Check.Sec002.MsgPass" xml:space="preserve"><value>Konfigurerade {0} tillåtna klient(er).</value></data>
+<data name="Sec.Check.Sec002.MsgFail" xml:space="preserve"><value>Klientåtkomst är inställd på &apos;tillåt alla&apos; — varje enhet i nätverket kan använda denna proxy.</value></data>
+<data name="Sec.Check.Sec002.MsgEmpty" xml:space="preserve"><value>Inga konfigurerade tillåtna klienter. Proxyn kommer att avvisa alla anslutningar.</value></data>
+<data name="Sec.Check.Sec002.Fix" xml:space="preserve"><value>Konfigurera specifika tillåtna klienter.</value></data>
+<data name="Sec.Check.Sec002.FixEmpty" xml:space="preserve"><value>Lägg till minst en tillåten klient.</value></data>
+<data name="Sec.Check.Sec003.Name" xml:space="preserve"><value>HTTPS-avlyssning inaktiverad</value></data>
+<data name="Sec.Check.Sec003.Desc" xml:space="preserve"><value>HTTPS-trafik tunnlas utan inspektion, vilket bevarar end-to-end-kryptering.</value></data>
+<data name="Sec.Check.Sec003.MsgPass" xml:space="preserve"><value>HTTPS-avlyssning är inte implementerad; HTTPS-trafik skickas via CONNECT-tunnel.</value></data>
+<data name="Sec.Check.Sec004.Name" xml:space="preserve"><value>Brandväggsutjämning</value></data>
+<data name="Sec.Check.Sec004.Desc" xml:space="preserve"><value>Brandväggen bör begränsa åtkomsten till proxyporten.</value></data>
+<data name="Sec.Check.Sec004.MsgPass" xml:space="preserve"><value>Proxyn är bunden till ett specifikt gränssnitt.</value></data>
+<data name="Sec.Check.Sec004.MsgFail" xml:space="preserve"><value>Överväg att begränsa Windows-brandväggens åtkomst till proxyporten.</value></data>
+<data name="Sec.Check.Sec004.Fix" xml:space="preserve"><value>Konfigurera en Windows-brandväggsregel som begränsar åtkomsten till tillåtna klienters IP-adresser.</value></data>
+<data name="Sec.Check.Sec005.Name" xml:space="preserve"><value>Begränsade målportar</value></data>
+<data name="Sec.Check.Sec005.Desc" xml:space="preserve"><value>Endast specifika målportar bör tillåtas.</value></data>
+<data name="Sec.Check.Sec005.MsgPass" xml:space="preserve"><value>Målportar begränsade till: {0}</value></data>
+<data name="Sec.Check.Sec005.MsgFail" xml:space="preserve"><value>Målportbegränsningar är inaktiverade; varje målport är tillåten.</value></data>
+<data name="Sec.Check.Sec005.Fix" xml:space="preserve"><value>Aktivera målportbegränsningar i säkerhetsinställningarna.</value></data>
+<data name="Sec.Check.Sec006.Name" xml:space="preserve"><value>Inga breda underverksregler</value></data>
+<data name="Sec.Check.Sec006.Desc" xml:space="preserve"><value>Tillåtna klientposter bör inte vara för breda.</value></data>
+<data name="Sec.Check.Sec006.MsgPass" xml:space="preserve"><value>Inga konfigurerade för breda underverk.</value></data>
+<data name="Sec.Check.Sec006.MsgFailAllowAll" xml:space="preserve"><value>Läget &apos;tillåt alla&apos; är aktiverat.</value></data>
+<data name="Sec.Check.Sec006.MsgFailBroad" xml:space="preserve"><value>Upptäckte {0} breda underverk: {1}</value></data>
+<data name="Sec.Check.Sec006.FixAllowAll" xml:space="preserve"><value>Byt till tillåtnalisteläge.</value></data>
+<data name="Sec.Check.Sec006.FixBroad" xml:space="preserve"><value>Gör CIDR-intervallen för klienter smalare för att minska attackytan.</value></data>
+<data name="Sec.Check.Sec007.Name" xml:space="preserve"><value>Giltig konfiguration</value></data>
+<data name="Sec.Check.Sec007.Desc" xml:space="preserve"><value>Konfigurationen måste klara alla valideringskontroller.</value></data>
+<data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>Konfigurationen är giltig.</value></data>
+<data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} konfigurationsfel: {1}</value></data>
+<data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Åtgärda ovannämnda konfigurationsfel.</value></data>
+</root>

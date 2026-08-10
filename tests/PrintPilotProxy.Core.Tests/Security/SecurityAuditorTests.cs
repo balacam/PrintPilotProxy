@@ -20,7 +20,7 @@ public class SecurityAuditorTests
     public void Audit_ListenAllInterfaces_WarnsAboutPublicAccess()
     {
         var config = new ProxyConfiguration();
-        config.Listener.ListenAddress = "0.0.0.0";
+        config.Listener.Mode = ListenerMode.AllInterfaces;
         var auditor = new SecurityAuditor();
         var result = auditor.Audit(config);
         
@@ -31,6 +31,7 @@ public class SecurityAuditorTests
     public void Audit_NoClients_ShowsInfo()
     {
         var config = new ProxyConfiguration();
+        config.ClientAccess.Mode = ClientAccessMode.AllowList;
         var auditor = new SecurityAuditor();
         var result = auditor.Audit(config);
         
@@ -41,7 +42,8 @@ public class SecurityAuditorTests
     public void Audit_BroadSubnet_Warns()
     {
         var config = new ProxyConfiguration();
-        config.AllowedClients.Add(new AllowedClient { Name = "All", IpOrCidr = "10.0.0.0/8" });
+        config.ClientAccess.Mode = ClientAccessMode.AllowList;
+        config.ClientAccess.AllowedClients.Add(new AllowedClient { Name = "All", IpOrCidr = "10.0.0.0/8" });
         var auditor = new SecurityAuditor();
         var result = auditor.Audit(config);
         

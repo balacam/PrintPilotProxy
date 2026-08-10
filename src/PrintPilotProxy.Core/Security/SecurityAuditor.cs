@@ -1,3 +1,4 @@
+using System.Linq;
 using PrintPilotProxy.Core.Interfaces;
 using PrintPilotProxy.Core.Models;
 
@@ -26,7 +27,8 @@ public sealed class SecurityAuditor : ISecurityAuditor
 
     private static SecurityCheck CheckPublicAccess(ProxyConfiguration config)
     {
-        var isPublic = Validation.NetworkValidator.IsListeningOnAllInterfaces(config.Listener.ListenAddress);
+        var isPublic = config.Listener.Mode == ListenerMode.AllInterfaces || 
+                       (config.Listener.Mode == ListenerMode.SpecificAddress && config.Listener.ListenAddress != null && Validation.NetworkValidator.IsListeningOnAllInterfaces(config.Listener.ListenAddress));
         return new SecurityCheck
         {
             Id = "SEC001",
@@ -43,18 +45,21 @@ public sealed class SecurityAuditor : ISecurityAuditor
 
     private static SecurityCheck CheckAllowedClients(ProxyConfiguration config)
     {
-        var hasClients = config.AllowedClients.Any(c => c.Enabled);
+        var isAllowAll = config.ClientAccess.Mode == ClientAccessMode.AllowAll;
+        var hasClients = config.ClientAccess.AllowedClients.Any(c => c.Enabled);
         return new SecurityCheck
         {
             Id = "SEC002",
-            Name = "Allowed clients configured",
-            Description = "At least one allowed client must be configured for the proxy to be usable.",
-            Passed = hasClients,
-            Level = hasClients ? SecurityLevel.Secure : SecurityLevel.Info,
-            Message = hasClients
-                ? $"{config.AllowedClients.Count(c => c.Enabled)} allowed client(s) configured."
-                : "No allowed clients configured. The proxy will reject all connections.",
-            Remediation = hasClients ? null : "Add at least one allowed client in the Allowed Clients settings."
+            Name = "Client access restricted",
+            Description = "Proxy should restrict access to specific clients.",
+            Passed = !isAllowAll && hasClients,
+            Level = isAllowAll ? SecurityLevel.Warning : (hasClients ? SecurityLevel.Secure : SecurityLevel.Info),
+            Message = isAllowAll
+                ? "Client access is set to AllowAll. Anyone can use the proxy."
+                : (hasClients
+                    ? $"{config.ClientAccess.AllowedClients.Count(c => c.Enabled)} allowed client(s) configured."
+                    : "No allowed clients configured. The proxy will reject all connections."),
+            Remediation = isAllowAll ? "Configure specific allowed clients." : (hasClients ? null : "Add at least one allowed client.")
         };
     }
 
@@ -74,7 +79,8 @@ public sealed class SecurityAuditor : ISecurityAuditor
 
     private static SecurityCheck CheckFirewallBinding(ProxyConfiguration config)
     {
-        var isAllInterfaces = Validation.NetworkValidator.IsListeningOnAllInterfaces(config.Listener.ListenAddress);
+        var isAllInterfaces = config.Listener.Mode == ListenerMode.AllInterfaces || 
+                              (config.Listener.Mode == ListenerMode.SpecificAddress && config.Listener.ListenAddress != null && Validation.NetworkValidator.IsListeningOnAllInterfaces(config.Listener.ListenAddress));
         return new SecurityCheck
         {
             Id = "SEC004",
@@ -108,7 +114,21 @@ public sealed class SecurityAuditor : ISecurityAuditor
 
     private static SecurityCheck CheckBroadSubnets(ProxyConfiguration config)
     {
-        var broadClients = config.AllowedClients
+        if (config.ClientAccess.Mode == ClientAccessMode.AllowAll)
+        {
+            return new SecurityCheck
+            {
+                Id = "SEC006",
+                Name = "No broad subnet rules",
+                Description = "Allowed client entries should not be overly broad.",
+                Passed = false,
+                Level = SecurityLevel.Warning,
+                Message = "AllowAll mode is enabled.",
+                Remediation = "Switch to AllowList mode."
+            };
+        }
+
+        var broadClients = config.ClientAccess.AllowedClients
             .Where(c => c.Enabled && c.IsCidr)
             .Where(c => Validation.NetworkValidator.GetBroadSubnetWarning(c.IpOrCidr) != null)
             .ToList();

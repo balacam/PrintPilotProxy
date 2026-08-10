@@ -5,17 +5,18 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <RootNamespace>PrintPilotProxy.App</RootNamespace>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon></ApplicationIcon>
+    <UseWindowsForms>true</UseWindowsForms>
     <Description>WPF management interface for PrintPilotProxy.</Description>
-    <Version>0.1.0</Version>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm"                    Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting"             Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting"               Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.File"                       Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,4 +26,3 @@
   </ItemGroup>
 
 </Project>
-

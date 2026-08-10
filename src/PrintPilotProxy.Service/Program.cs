@@ -37,8 +37,8 @@ public class Program
             .UseSerilog()
             .ConfigureServices((hostContext, services) =>
             {
-                // Register Core/Proxy/Infrastructure services
-                // This would be replaced with actual registrations from other layers
+                PrintPilotProxy.Infrastructure.InfrastructureServiceExtensions.AddInfrastructureServices(services);
+                PrintPilotProxy.Proxy.ProxyServiceExtensions.AddProxyServices(services);
                 services.AddHostedService<ProxyWorker>();
             });
 }

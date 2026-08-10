@@ -4,7 +4,6 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>PrintPilotProxy.Cli</RootNamespace>
     <Description>Cross-platform CLI for PrintPilotProxy (minimal v1).</Description>
-    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

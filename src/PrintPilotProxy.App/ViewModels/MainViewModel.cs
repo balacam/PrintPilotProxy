@@ -1,96 +1,160 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.DependencyInjection;
-using PrintPilotProxy.Core.Interfaces;
-using PrintPilotProxy.Core.Models;
 using System;
-using System.Text.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using PrintPilotProxy.App.Localization;
+using PrintPilotProxy.App.Services;
+using PrintPilotProxy.App.ViewModels;
+using PrintPilotProxy.App.Views;
+using PrintPilotProxy.Core.Models;
 
 namespace PrintPilotProxy.App.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
-    private readonly IIpcClient _ipcClient;
-    private DispatcherTimer? _timer;
-
-    [ObservableProperty]
-    private object? _currentPage;
-
-    [ObservableProperty]
-    private string _proxyStatus = "UNKNOWN";
-
-    [ObservableProperty]
-    private string _listenAddress = "Unknown";
-
-    public MainViewModel(IIpcClient ipcClient)
+    private static readonly Dictionary<string, (Type ViewType, Type ViewModelType)> PageRoutes = new(StringComparer.OrdinalIgnoreCase)
     {
-        _ipcClient = ipcClient;
+        ["Dashboard"]       = (typeof(DashboardPage),       typeof(DashboardViewModel)),
+        ["NetworkSettings"] = (typeof(NetworkSettingsPage), typeof(NetworkSettingsViewModel)),
+        ["ProxySettings"]   = (typeof(NetworkSettingsPage), typeof(NetworkSettingsViewModel)),
+        ["Settings"]        = (typeof(NetworkSettingsPage), typeof(NetworkSettingsViewModel)),
+        ["AllowedClients"]  = (typeof(AllowedClientsPage),  typeof(AllowedClientsViewModel)),
+        ["Firewall"]        = (typeof(FirewallPage),        typeof(FirewallViewModel)),
+        ["Service"]         = (typeof(ServicePage),         typeof(ServiceViewModel)),
+        ["Logs"]            = (typeof(LogsPage),            typeof(LogsViewModel)),
+        ["Diagnostics"]     = (typeof(DiagnosticsPage),     typeof(DiagnosticsViewModel)),
+        ["Security"]        = (typeof(SecurityPage),        typeof(SecurityViewModel)),
+        ["Language"]        = (typeof(LanguagePage),        typeof(LanguageViewModel)),
+    };
 
-        _timer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(2)
-        };
-        _timer.Tick += async (s, e) => await UpdateStatusAsync();
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IpcClientService _ipc;
+    private readonly DispatcherTimer _timer;
+
+    [ObservableProperty] private object? _currentPage;
+    [ObservableProperty] private string _proxyStatus = "Unknown";
+    [ObservableProperty] private string _listenAddress = "N/A";
+    [ObservableProperty] private bool _isConnectedToService = false;
+
+    public MainViewModel(IServiceProvider serviceProvider, IpcClientService ipc)
+    {
+        _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
+
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+        _timer.Tick += async (_, _) => await UpdateStatusAsync();
         _timer.Start();
 
-        // Navigate("Dashboard");
+        // Navigate to Dashboard by default
+        Navigate("Dashboard");
     }
 
     private async Task UpdateStatusAsync()
     {
         try
         {
-            if (!_ipcClient.IsConnected)
+            var status = await _ipc.GetStatusAsync();
+            if (status != null)
             {
-                await _ipcClient.ConnectAsync();
+                IsConnectedToService = true;
+                ProxyStatus = status.State.ToString().ToUpperInvariant();
+                ListenAddress = status.ListeningAddress ?? "N/A";
             }
-
-            var request = new IpcMessage { Type = IpcMessageTypes.GetStatus };
-            var response = await _ipcClient.SendAsync(request);
-
-            if (response.Type == IpcMessageTypes.StatusResponse && response.Payload != null)
+            else
             {
-                var status = JsonSerializer.Deserialize<ProxyStatus>(response.Payload);
-                if (status != null)
-                {
-                    ProxyStatus = status.State.ToString().ToUpperInvariant();
-                    ListenAddress = status.ListeningAddress ?? "Unknown";
-                }
+                IsConnectedToService = false;
+                ProxyStatus = LocalizationService.Instance["MainWindow.ServiceUnavailable"];
+                ListenAddress = LocalizationService.Instance["Common.Na"];
             }
         }
-        catch (Exception ex)
+        catch
         {
-            System.Diagnostics.Debug.WriteLine($"Error fetching status: {ex.Message}");
-            ProxyStatus = "ERROR";
+            IsConnectedToService = false;
+            ProxyStatus = LocalizationService.Instance["MainWindow.ServiceUnavailable"];
+            ListenAddress = LocalizationService.Instance["Common.Na"];
         }
     }
 
     [RelayCommand]
     private void Navigate(string pageName)
     {
+        DiagnosticLogger.Log($"[1. Settings Button Clicked / 2. Navigation Command Executed] Requested route: '{pageName}'");
+
         try
         {
-            var viewType = Type.GetType($"PrintPilotProxy.App.Views.{pageName}Page");
-            if (viewType != null)
+            if (string.IsNullOrWhiteSpace(pageName))
             {
-                var view = Activator.CreateInstance(viewType) as UserControl;
-                var viewModelType = Type.GetType($"PrintPilotProxy.App.ViewModels.{pageName}ViewModel");
-                if (viewModelType != null && view != null)
-                {
-                    view.DataContext = App.Current.Services.GetService(viewModelType);
-                }
-                if (view != null)
-                {
-                    CurrentPage = view;
-                }
+                DiagnosticLogger.Log("[3. Route Invalid] Page name parameter was null or empty.");
+                return;
             }
+
+            var requestedName = pageName.Trim();
+            DiagnosticLogger.Log($"[3. Requested route]: '{requestedName}'");
+
+            if (!PageRoutes.TryGetValue(requestedName, out var route))
+            {
+                DiagnosticLogger.Log($"[4. Route Unmapped] Could not resolve page route for '{requestedName}'.");
+                MessageBox.Show($"Navigation target '{requestedName}' is not recognized.", "Navigation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var viewType = route.ViewType;
+            var viewModelType = route.ViewModelType;
+            DiagnosticLogger.Log($"[4. Normalized route]: '{viewType.Name}' | [5. Resolved View type]: '{viewType.FullName}' | [6. Resolved ViewModel type]: '{viewModelType.FullName}'");
+
+            UserControl view;
+            try
+            {
+                var instantiated = Activator.CreateInstance(viewType);
+                if (instantiated is not UserControl uc)
+                {
+                    DiagnosticLogger.Log($"[8. View Creation Failed] Created object was not UserControl: '{instantiated?.GetType().FullName}'");
+                    return;
+                }
+                view = uc;
+                DiagnosticLogger.Log($"[8. View Creation Succeeded] View '{viewType.Name}' instantiated.");
+            }
+            catch (Exception ex)
+            {
+                DiagnosticLogger.LogException($"8. View Creation Failed for '{viewType.Name}'", ex);
+                MessageBox.Show($"Failed to instantiate View '{viewType.Name}':\n{ex.Message}", "View Instantiation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            object? vm = null;
+            try
+            {
+                vm = _serviceProvider.GetService(viewModelType);
+            }
+            catch (Exception ex)
+            {
+                DiagnosticLogger.LogException($"7. DI Resolution Exception for '{viewModelType.Name}'", ex);
+            }
+
+            if (vm != null)
+            {
+                DiagnosticLogger.Log($"[7. ViewModel resolved through DI]: '{viewModelType.Name}'");
+                view.DataContext = vm;
+            }
+            else
+            {
+                DiagnosticLogger.Log($"[7. DI Resolution Failed] Could not resolve ViewModel '{viewModelType.Name}' from IServiceProvider.");
+                MessageBox.Show($"Failed to resolve ViewModel '{viewModelType.Name}' from DI service provider.", "DI Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            DiagnosticLogger.Log($"[9. IPC Connection Attempted] IsConnected={_ipc.IsConnected}");
+            CurrentPage = view;
+            DiagnosticLogger.Log($"[10. Navigation Complete] CurrentPage set to '{viewType.Name}'");
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Navigation error: {ex.Message}");
+            DiagnosticLogger.LogException($"11-14. Global Navigation Exception for '{pageName}'", ex);
+            MessageBox.Show($"Navigation Error to '{pageName}':\n{ex.Message}\n\nLog file: {DiagnosticLogger.LogFilePath}", "Navigation Failure", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

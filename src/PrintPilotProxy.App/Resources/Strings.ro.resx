@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+<data name="Common.Na" xml:space="preserve"><value>N/A</value></data>
+<data name="Common.Unknown" xml:space="preserve"><value>Necunoscut</value></data>
+<data name="Common.Error" xml:space="preserve"><value>Eroare</value></data>
+<data name="Common.OK" xml:space="preserve"><value>OK</value></data>
+<data name="Common.All" xml:space="preserve"><value>Toate</value></data>
+<data name="Common.AllPorts" xml:space="preserve"><value>Toate porturile</value></data>
+<data name="Common.Private" xml:space="preserve"><value>Privat</value></data>
+<data name="Common.Public" xml:space="preserve"><value>Public</value></data>
+<data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Panou de control</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Setări de rețea</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Clienți autorizați</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Paravan de protecție</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>⚙️  Serviciu</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>📋  Jurnale</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnoză</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>🛡️  Securitate</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>🌍  Limbă</value></data>
+<data name="MainWindow.Status" xml:space="preserve"><value>Stare: </value></data>
+<data name="MainWindow.Listen" xml:space="preserve"><value>Ascultare: </value></data>
+<data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>SERVICIU INDISPONIBIL</value></data>
+<data name="Tray.Open" xml:space="preserve"><value>Deschide PrintPilotProxy</value></data>
+<data name="Tray.StartProxy" xml:space="preserve"><value>Pornire proxy</value></data>
+<data name="Tray.StopProxy" xml:space="preserve"><value>Oprire proxy</value></data>
+<data name="Tray.RestartProxy" xml:space="preserve"><value>Repornire proxy</value></data>
+<data name="Tray.Diagnostics" xml:space="preserve"><value>Diagnoză</value></data>
+<data name="Tray.OpenLogFolder" xml:space="preserve"><value>Deschide dosarul jurnalelor</value></data>
+<data name="Tray.Exit" xml:space="preserve"><value>Ieșire</value></data>
+<data name="Action.Refresh" xml:space="preserve"><value>↻  Reîmprospătare</value></data>
+<data name="Action.Apply" xml:space="preserve"><value>⚡  Aplică</value></data>
+<data name="Action.Reset" xml:space="preserve"><value>↺  Resetare</value></data>
+<data name="Action.Reload" xml:space="preserve"><value>↻  Reîncărcare</value></data>
+<data name="Action.Add" xml:space="preserve"><value>+  Adaugă</value></data>
+<data name="Page.Dashboard" xml:space="preserve"><value>Panou de control</value></data>
+<data name="Dash.ProxyState" xml:space="preserve"><value>Stare proxy</value></data>
+<data name="Dash.Uptime" xml:space="preserve"><value>Timp de funcționare</value></data>
+<data name="Dash.TotalRequests" xml:space="preserve"><value>Total cereri</value></data>
+<data name="Dash.Errors" xml:space="preserve"><value>Erori</value></data>
+<data name="Dash.ListeningAddress" xml:space="preserve"><value>Adresă de ascultare</value></data>
+<data name="Dash.AccessMode" xml:space="preserve"><value>Mod de acces</value></data>
+<data name="Dash.AllowedClients" xml:space="preserve"><value>Clienți autorizați</value></data>
+<data name="Dash.AllowedPorts" xml:space="preserve"><value>Porturi autorizate</value></data>
+<data name="Dash.RecentActivity" xml:space="preserve"><value>Activitate recentă</value></data>
+<data name="Dash.ServiceUnavailable" xml:space="preserve"><value>Serviciu indisponibil</value></data>
+<data name="Dash.Msgs.LoadError" xml:space="preserve"><value>Eroare: {0}</value></data>
+<data name="Page.NetworkSettings" xml:space="preserve"><value>Setări de rețea</value></data>
+<data name="Net.ListenerMode" xml:space="preserve"><value>Mod de ascultare</value></data>
+<data name="Net.ChooseInterface" xml:space="preserve"><value>Alege interfața de rețea pe care o ascultă proxy-ul.</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Automat  (folosește toate interfețele de rețea private)</value></data>
+<data name="Net.ModeAdapter" xml:space="preserve"><value>Adaptor de rețea specificat  (alege din adapatorii detectați)</value></data>
+<data name="Net.ModeSpecificIp" xml:space="preserve"><value>Adresă IP specificată  (introdu manual)</value></data>
+<data name="Net.PortAndLimits" xml:space="preserve"><value>Port și limite</value></data>
+<data name="Net.ProxyPort" xml:space="preserve"><value>Port proxy</value></data>
+<data name="Net.DefaultPort" xml:space="preserve"><value>Implicit: 3128</value></data>
+<data name="Net.MaxConnections" xml:space="preserve"><value>Conexiuni maxime</value></data>
+<data name="Net.DefaultConnections" xml:space="preserve"><value>Implicit: 1000</value></data>
+<data name="Net.TimeoutSeconds" xml:space="preserve"><value>Limită de timp (secunde)</value></data>
+<data name="Net.DefaultTimeout" xml:space="preserve"><value>Implicit: 120</value></data>
+<data name="Net.Msgs.LoadFailed" xml:space="preserve"><value>Nu s-a putut încărca configurația din serviciu.</value></data>
+<data name="Net.Msgs.LoadError" xml:space="preserve"><value>Eroare la încărcare: {0}</value></data>
+<data name="Net.Msgs.ResetDone" xml:space="preserve"><value>Setările au fost restaurate la ultima valoare salvată.</value></data>
+<data name="Net.Msgs.PortInvalid" xml:space="preserve"><value>Portul &apos;{0}&apos; este invalid. Trebuie să fie între 1 și 65535.</value></data>
+<data name="Net.Msgs.MaxConnectionsInvalid" xml:space="preserve"><value>Conexiunile maxime trebuie să fie între 1 și 100000.</value></data>
+<data name="Net.Msgs.TimeoutInvalid" xml:space="preserve"><value>Limita de timp trebuie să fie între 1 și 3600 secunde.</value></data>
+<data name="Net.Msgs.SelectAdapter" xml:space="preserve"><value>Selectează un adaptor de rețea.</value></data>
+<data name="Net.Msgs.IpInvalid" xml:space="preserve"><value>&apos;{0}&apos; nu este o adresă IP validă.</value></data>
+<data name="Net.Msgs.IpNotLocal" xml:space="preserve"><value>Adresa IP &apos;{0}&apos; nu este atribuită niciunei interfețe de rețea locală.&amp;#10;Disponibile: {1}</value></data>
+<data name="Net.Msgs.ReadConfigFailed" xml:space="preserve"><value>Nu s-a putut citi configurația curentă din serviciu.</value></data>
+<data name="Net.Msgs.Applied" xml:space="preserve"><value>Configurația a fost aplicată cu succes. Proxy-ul repornește cu noile setări.</value></data>
+<data name="Net.Msgs.ApplyFailed" xml:space="preserve"><value>Aplicarea a eșuat: {0}</value></data>
+<data name="Net.Msgs.UnexpectedError" xml:space="preserve"><value>Eroare neașteptată: {0}</value></data>
+<data name="Page.AllowedClients" xml:space="preserve"><value>Clienți autorizați</value></data>
+<data name="Cli.ClientAccessMode" xml:space="preserve"><value>Mod de acces clienți</value></data>
+<data name="Cli.AllowAllWithHint" xml:space="preserve"><value>●  Permite tuturor clienților  —  orice adresă IP accesibilă poate folosi proxy-ul</value></data>
+<data name="Cli.AllowAllHint" xml:space="preserve"><value>⚠ &apos;Permite tuturor&apos; este comod, dar orice dispozitiv din rețea poate folosi acest proxy.</value></data>
+<data name="Cli.AllowListWithHint" xml:space="preserve"><value>●  Permite doar clienților specificați  —  listă IP / CIDR autorizate</value></data>
+<data name="Cli.AddClient" xml:space="preserve"><value>Adaugă client</value></data>
+<data name="Cli.Name" xml:space="preserve"><value>Nume</value></data>
+<data name="Cli.IpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+<data name="Cli.DescriptionOptional" xml:space="preserve"><value>Descriere (opțional)</value></data>
+<data name="Cli.ClientList" xml:space="preserve"><value>Listă de clienți</value></data>
+<data name="Cli.RemoveSelected" xml:space="preserve"><value>✖  Elimină selectații</value></data>
+<data name="Cli.Msgs.LoadFailed" xml:space="preserve"><value>Nu s-a putut încărca configurația din serviciu.</value></data>
+<data name="Cli.Msgs.LoadError" xml:space="preserve"><value>Eroare la încărcare: {0}</value></data>
+<data name="Cli.Msgs.NameRequired" xml:space="preserve"><value>Numele clientului este obligatoriu.</value></data>
+<data name="Cli.Msgs.IpOrCidrInvalid" xml:space="preserve"><value>&apos;{0}&apos; nu este o adresă IP sau notare CIDR validă.</value></data>
+<data name="Cli.Msgs.SelectClientToRemove" xml:space="preserve"><value>Selectează un client de eliminat.</value></data>
+<data name="Cli.Msgs.ConfigNotLoaded" xml:space="preserve"><value>Configurația nu a fost încărcată.</value></data>
+<data name="Cli.Msgs.Saved" xml:space="preserve"><value>Configurația de acces clienți a fost salvată și aplicată.</value></data>
+<data name="Cli.Msgs.ApplyFailed" xml:space="preserve"><value>Aplicarea a eșuat: {0}</value></data>
+<data name="Cli.Msgs.Error" xml:space="preserve"><value>Eroare: {0}</value></data>
+<data name="Page.Firewall" xml:space="preserve"><value>Paravan de protecție</value></data>
+<data name="Fw.Rule" xml:space="preserve"><value>Regulă paravan de protecție PrintPilotProxy</value></data>
+<data name="Fw.RuleName" xml:space="preserve"><value>Nume regulă:</value></data>
+<data name="Fw.Status" xml:space="preserve"><value>Stare:</value></data>
+<data name="Fw.Port" xml:space="preserve"><value>Port:</value></data>
+<data name="Fw.Protocol" xml:space="preserve"><value>Protocol:</value></data>
+<data name="Fw.LocalScope" xml:space="preserve"><value>Domeniu local:</value></data>
+<data name="Fw.RuleExists" xml:space="preserve"><value>Regula există</value></data>
+<data name="Fw.RuleNotFound" xml:space="preserve"><value>Regula nu a fost găsită</value></data>
+<data name="Fw.ServiceUnavailable" xml:space="preserve"><value>Serviciu indisponibil</value></data>
+<data name="Fw.ProtocolTcp" xml:space="preserve"><value>TCP</value></data>
+<data name="Fw.DirectionInbound" xml:space="preserve"><value>De intrare</value></data>
+<data name="Fw.Msgs.CreateUpdate" xml:space="preserve"><value>✔  Creează / actualizează regula</value></data>
+<data name="Fw.Msgs.RemoveRule" xml:space="preserve"><value>✖  Elimină regula</value></data>
+<data name="Fw.Msgs.LoadError" xml:space="preserve"><value>Eroare la încărcarea stării paravanului: {0}</value></data>
+<data name="Fw.Msgs.Applied" xml:space="preserve"><value>Regula paravanului a fost aplicată cu succes.</value></data>
+<data name="Fw.Msgs.Removed" xml:space="preserve"><value>Regula paravanului a fost eliminată.</value></data>
+<data name="Fw.Msgs.Failed" xml:space="preserve"><value>Eșec: {0}</value></data>
+<data name="Fw.Msgs.Error" xml:space="preserve"><value>Eroare: {0}</value></data>
+<data name="Page.Service" xml:space="preserve"><value>Serviciu</value></data>
+<data name="Svc.Header" xml:space="preserve"><value>Serviciu Windows și motor proxy</value></data>
+<data name="Svc.ServiceStatus" xml:space="preserve"><value>Stare serviciu:</value></data>
+<data name="Svc.StartupType" xml:space="preserve"><value>Tip pornire:</value></data>
+<data name="Svc.ProxyState" xml:space="preserve"><value>Stare proxy:</value></data>
+<data name="Svc.Listening" xml:space="preserve"><value>Ascultare:</value></data>
+<data name="Svc.Uptime" xml:space="preserve"><value>Timp de funcționare:</value></data>
+<data name="Svc.TotalRequests" xml:space="preserve"><value>Total cereri:</value></data>
+<data name="Svc.TotalErrors" xml:space="preserve"><value>Total erori:</value></data>
+<data name="Svc.ActiveConnections" xml:space="preserve"><value>Conexiuni active:</value></data>
+<data name="Svc.NotInstalled" xml:space="preserve"><value>Neinstalat</value></data>
+<data name="Svc.Unavailable" xml:space="preserve"><value>Indisponibil</value></data>
+<data name="Svc.AutoRestart" xml:space="preserve"><value>Repornire automată la defecțiuni ale motorului proxy</value></data>
+<data name="Svc.StartService" xml:space="preserve"><value>▶  Pornire serviciu</value></data>
+<data name="Svc.StopService" xml:space="preserve"><value>⏹  Oprire serviciu</value></data>
+<data name="Svc.RestartService" xml:space="preserve"><value>↺  Repornire serviciu</value></data>
+<data name="Svc.ApplyRecovery" xml:space="preserve"><value>Aplică setarea de recuperare</value></data>
+<data name="Svc.Msgs.Started" xml:space="preserve"><value>Serviciul Windows a fost pornit.</value></data>
+<data name="Svc.Msgs.Stopped" xml:space="preserve"><value>Serviciul Windows a fost oprit.</value></data>
+<data name="Svc.Msgs.Restarted" xml:space="preserve"><value>Serviciul Windows a fost repornit.</value></data>
+<data name="Svc.Msgs.ServiceRequired" xml:space="preserve"><value>Serviciul Windows trebuie să ruleze pentru a actualiza setările de recuperare.</value></data>
+<data name="Svc.Msgs.RecoveryUpdated" xml:space="preserve"><value>Setarea de recuperare a motorului proxy a fost actualizată.</value></data>
+<data name="Page.Logs" xml:space="preserve"><value>Jurnale</value></data>
+<data name="Logs.File" xml:space="preserve"><value>Fișier: {0}</value></data>
+<data name="Logs.NoDirectory" xml:space="preserve"><value>(Dosarul jurnalelor nu există încă.)</value></data>
+<data name="Logs.NoFiles" xml:space="preserve"><value>(Nu s-au găsit fișiere jurnal.)</value></data>
+<data name="Logs.OpenFolder" xml:space="preserve"><value>📁  Deschide dosarul</value></data>
+<data name="Logs.Copy" xml:space="preserve"><value>📋  Copiază</value></data>
+<data name="Logs.ClearView" xml:space="preserve"><value>🧹  Curăță vizualizarea</value></data>
+<data name="Logs.Msgs.Loaded" xml:space="preserve"><value>Încărcat {0} rânduri din {1}</value></data>
+<data name="Logs.Msgs.LoadError" xml:space="preserve"><value>Eroare la încărcarea jurnalelor: {0}</value></data>
+<data name="Logs.Msgs.ViewCleared" xml:space="preserve"><value>Vizualizarea a fost curățată. Fișierele jurnal nu sunt afectate.</value></data>
+<data name="Logs.Msgs.OpenFolderFailed" xml:space="preserve"><value>Nu s-a putut deschide dosarul jurnalelor: {0}</value></data>
+<data name="Logs.Msgs.Copied" xml:space="preserve"><value>Conținutul jurnalului a fost copiat în clipboard.</value></data>
+<data name="Logs.Msgs.CopyFailed" xml:space="preserve"><value>Copierea a eșuat: {0}</value></data>
+<data name="Page.Diagnostics" xml:space="preserve"><value>Diagnoză</value></data>
+<data name="Diag.RunAll" xml:space="preserve"><value>▶  Rulează toate verificările</value></data>
+<data name="Diag.Overall" xml:space="preserve"><value>General: </value></data>
+<data name="Diag.Running" xml:space="preserve"><value>Se rulează diagnoza...</value></data>
+<data name="Diag.ServiceConnection" xml:space="preserve"><value>Conexiune la serviciu</value></data>
+<data name="Diag.ServiceConnectionDesc" xml:space="preserve"><value>Poate aplicația să se conecteze la serviciul Windows printr-un nume de canal?</value></data>
+<data name="Diag.Connected" xml:space="preserve"><value>Conectat cu succes la serviciu.</value></data>
+<data name="Diag.CannotConnect" xml:space="preserve"><value>Nu se poate conecta. Este serviciul PrintPilotProxy pornit?</value></data>
+<data name="Diag.StartServiceHint" xml:space="preserve"><value>Porniți serviciul: sc start PrintPilotProxy</value></data>
+<data name="Diag.ConfigValid" xml:space="preserve"><value>Configurație validă</value></data>
+<data name="Diag.ConfigValidDesc" xml:space="preserve"><value>Este fișierul de configurație proxy valid?</value></data>
+<data name="Diag.CouldNotLoadConfig" xml:space="preserve"><value>Nu s-a putut încărca configurația.</value></data>
+<data name="Diag.EnsureServiceRunning" xml:space="preserve"><value>Asigurați-vă că serviciul rulează.</value></data>
+<data name="Diag.ConfigValidOk" xml:space="preserve"><value>Configurația este validă.</value></data>
+<data name="Diag.ConfigErrors" xml:space="preserve"><value>{0} erori: {1}</value></data>
+<data name="Diag.FixConfigErrors" xml:space="preserve"><value>Remediați erorile de configurație.</value></data>
+<data name="Diag.ProxyEngineState" xml:space="preserve"><value>Stare motor proxy</value></data>
+<data name="Diag.ProxyEngineStateDesc" xml:space="preserve"><value>Rulează motorul proxy?</value></data>
+<data name="Diag.ServiceNotReachable" xml:space="preserve"><value>Serviciu inaccesibil.</value></data>
+<data name="Diag.StartService" xml:space="preserve"><value>Porniți serviciul.</value></data>
+<data name="Diag.RunningOn" xml:space="preserve"><value>Rulează pe {0}.</value></data>
+<data name="Diag.StateIs" xml:space="preserve"><value>Stare: {0}.</value></data>
+<data name="Diag.UseServicePage" xml:space="preserve"><value>Folosiți pagina Serviciu pentru a porni proxy-ul.</value></data>
+<data name="Diag.ConfigFileDisk" xml:space="preserve"><value>Fișier configurație pe disc</value></data>
+<data name="Diag.ConfigFileDiskDesc" xml:space="preserve"><value>Există fișierul de configurație?</value></data>
+<data name="Diag.FoundPath" xml:space="preserve"><value>Găsit: {0}</value></data>
+<data name="Diag.NotFoundPath" xml:space="preserve"><value>Negăsit: {0}</value></data>
+<data name="Diag.RunInstaller" xml:space="preserve"><value>Rulați programul de instalare sau porniți o dată serviciul pentru a crea valorile implicite.</value></data>
+<data name="Diag.LogDirWritable" xml:space="preserve"><value>Dosar jurnale scribil</value></data>
+<data name="Diag.LogDirWritableDesc" xml:space="preserve"><value>Este dosarul jurnalelor scribil?</value></data>
+<data name="Diag.LogDirMissing" xml:space="preserve"><value>Lipsă: {0}</value></data>
+<data name="Diag.StartServiceCreatesDirs" xml:space="preserve"><value>Porniți serviciul pentru a crea dosarele necesare.</value></data>
+<data name="Diag.LogDirWritableOk" xml:space="preserve"><value>Scribil: {0}</value></data>
+<data name="Diag.LogDirNotWritable" xml:space="preserve"><value>Dosarul jurnalelor nu este scribil.</value></data>
+<data name="Diag.CheckPermissions" xml:space="preserve"><value>Verificați permisiunile în dosarul ProgramData PrintPilotProxy.</value></data>
+<data name="Diag.PortAvailability" xml:space="preserve"><value>Disponibilitate port proxy</value></data>
+<data name="Diag.PortAvailabilityDesc" xml:space="preserve"><value>Este portul proxy disponibil (sau ocupat de un proxy activ)?</value></data>
+<data name="Diag.CouldNotLoadConfigShort" xml:space="preserve"><value>Nu s-a putut încărca configurația.</value></data>
+<data name="Diag.PortBound" xml:space="preserve"><value>Portul {0} este ocupat de un proxy activ.</value></data>
+<data name="Diag.PortAvailable" xml:space="preserve"><value>Portul {0} este disponibil.</value></data>
+<data name="Diag.PortInUse" xml:space="preserve"><value>Portul {0} este folosit de un alt proces.</value></data>
+<data name="Diag.ChangePortHint" xml:space="preserve"><value>Schimbați portul proxy în Setări de rețea sau opriți aplicația în conflict.</value></data>
+<data name="Diag.NetworkAdapters" xml:space="preserve"><value>Adapatori de rețea</value></data>
+<data name="Diag.NetworkAdaptersDesc" xml:space="preserve"><value>Sunt disponibile adapatori de rețea privați?</value></data>
+<data name="Diag.AdaptersDetected" xml:space="preserve"><value>Detectați {0} adapatori.</value></data>
+<data name="Diag.NoAdapters" xml:space="preserve"><value>Nu s-au găsit adapatori de rețea.</value></data>
+<data name="Diag.CheckNetworkConfig" xml:space="preserve"><value>Verificați configurația de rețea.</value></data>
+<data name="Diag.FirewallRule" xml:space="preserve"><value>Regulă paravan</value></data>
+<data name="Diag.FirewallRuleDesc" xml:space="preserve"><value>Există regula paravanului PrintPilotProxy?</value></data>
+<data name="Diag.CouldNotQueryFirewall" xml:space="preserve"><value>Nu s-a putut interoga starea paravanului.</value></data>
+<data name="Diag.FirewallRuleExists" xml:space="preserve"><value>Regula paravanului există.</value></data>
+<data name="Diag.FirewallRuleMissing" xml:space="preserve"><value>Regula paravanului lipsește.</value></data>
+<data name="Diag.CreateRuleHint" xml:space="preserve"><value>Accesați pagina Paravan de protecție și faceți clic pe &apos;Creează / actualizează regula&apos;.</value></data>
+<data name="Diag.IpcPipe" xml:space="preserve"><value>Canal IPC cu nume</value></data>
+<data name="Diag.IpcPipeDesc" xml:space="preserve"><value>Răspunde serverul de canale cu nume?</value></data>
+<data name="Diag.IpcResponding" xml:space="preserve"><value>Canalul IPC cu nume răspunde.</value></data>
+<data name="Diag.IpcNotResponding" xml:space="preserve"><value>IPC nu răspunde.</value></data>
+<data name="Diag.RestartService" xml:space="preserve"><value>Reporniți serviciul PrintPilotProxy.</value></data>
+<data name="Diag.AllPassed" xml:space="preserve"><value>Toate {0} verificările au trecut.</value></data>
+<data name="Diag.PassedFailed" xml:space="preserve"><value>{0} au trecut, {0} au eșuat.</value></data>
+<data name="Diag.RunError" xml:space="preserve"><value>Eroare la diagnoză: {0}</value></data>
+<data name="Diag.Exception" xml:space="preserve"><value>Excepție: {0}</value></data>
+<data name="Diag.CheckLogs" xml:space="preserve"><value>Verificați jurnalele aplicației pentru detalii.</value></data>
+<data name="Page.Language" xml:space="preserve"><value>Limbă</value></data>
+<data name="Lang.Title" xml:space="preserve"><value>Limbă interfață</value></data>
+<data name="Lang.Description" xml:space="preserve"><value>Alegeți limba interfeței PrintPilotProxy. Modificările sunt instantanee și salvate cu configurația.</value></data>
+<data name="Lang.SystemDefault" xml:space="preserve"><value>Implicită sistem  (urmărește Windows)</value></data>
+<data name="Lang.Applied" xml:space="preserve"><value>Limba a fost schimbată cu succes.</value></data>
+<data name="Lang.ApplyFailed" xml:space="preserve"><value>Schimbarea limbii a eșuat: {0}</value></data>
+<data name="Lang.LoadFailed" xml:space="preserve"><value>Nu s-a putut încărca setările de limbă din serviciu.</value></data>
+<data name="Page.Security" xml:space="preserve"><value>Securitate</value></data>
+<data name="Sec.Title" xml:space="preserve"><value>Audit de securitate</value></data>
+<data name="Sec.Description" xml:space="preserve"><value>Revizuire automată a configurației proxy și a suprafeței de ascultare pentru a menține rețeaua de imprimare sigură.</value></data>
+<data name="Sec.Overall" xml:space="preserve"><value>General: {0}</value></data>
+<data name="Sec.RerunAudit" xml:space="preserve"><value>⇄  Reexecută auditul</value></data>
+<data name="Sec.Level.Secure" xml:space="preserve"><value>Securizat</value></data>
+<data name="Sec.Level.Info" xml:space="preserve"><value>Informare</value></data>
+<data name="Sec.Level.Warning" xml:space="preserve"><value>Avertizare</value></data>
+<data name="Sec.Level.Critical" xml:space="preserve"><value>Critic</value></data>
+<data name="Sec.Msgs.AuditFailed" xml:space="preserve"><value>Nu s-a putut prelua auditul de securitate din serviciu.</value></data>
+<data name="Sec.Check.Sec001.Name" xml:space="preserve"><value>Acces public restricționat</value></data>
+<data name="Sec.Check.Sec001.Desc" xml:space="preserve"><value>Proxy-ul nu ar trebui să asculte pe toate interfețele, cu excepția cazului în care este necesar.</value></data>
+<data name="Sec.Check.Sec001.MsgPass" xml:space="preserve"><value>Proxy-ul este legat de o interfață specifică.</value></data>
+<data name="Sec.Check.Sec001.MsgFail" xml:space="preserve"><value>Proxy-ul ascultă pe toate interfețele (0.0.0.0). Legați-l la o adresă IP specifică.</value></data>
+<data name="Sec.Check.Sec001.Fix" xml:space="preserve"><value>Setați adresa de ascultare la adresa IP a interfeței de rețea specificate.</value></data>
+<data name="Sec.Check.Sec002.Name" xml:space="preserve"><value>Accesul clienților restricționat</value></data>
+<data name="Sec.Check.Sec002.Desc" xml:space="preserve"><value>Accesul ar trebui restricționat la clienți specificați.</value></data>
+<data name="Sec.Check.Sec002.MsgPass" xml:space="preserve"><value>Configurați {0} client(i) autorizați.</value></data>
+<data name="Sec.Check.Sec002.MsgFail" xml:space="preserve"><value>Accesul clienților este setat pe &apos;permite tuturor&apos; — orice dispozitiv din rețea poate folosi acest proxy.</value></data>
+<data name="Sec.Check.Sec002.MsgEmpty" xml:space="preserve"><value>Niciun client autorizat configurat. Proxy-ul va respinge toate conexiunile.</value></data>
+<data name="Sec.Check.Sec002.Fix" xml:space="preserve"><value>Configurați clienți autorizați specifici.</value></data>
+<data name="Sec.Check.Sec002.FixEmpty" xml:space="preserve"><value>Adăugați cel puțin un client autorizat.</value></data>
+<data name="Sec.Check.Sec003.Name" xml:space="preserve"><value>Interceptare HTTPS dezactivată</value></data>
+<data name="Sec.Check.Sec003.Desc" xml:space="preserve"><value>Traficul HTTPS este tunelat fără inspecție, menținând criptarea end-to-end.</value></data>
+<data name="Sec.Check.Sec003.MsgPass" xml:space="preserve"><value>Interceptarea HTTPS nu este implementată; traficul HTTPS este transmis prin tunel CONNECT.</value></data>
+<data name="Sec.Check.Sec004.Name" xml:space="preserve"><value>Aliniere paravan</value></data>
+<data name="Sec.Check.Sec004.Desc" xml:space="preserve"><value>Paravanul ar trebui să restricționeze accesul la portul proxy.</value></data>
+<data name="Sec.Check.Sec004.MsgPass" xml:space="preserve"><value>Proxy-ul este legat de o interfață specifică.</value></data>
+<data name="Sec.Check.Sec004.MsgFail" xml:space="preserve"><value>Luați în considerare restricționarea accesului paravanului Windows la portul proxy.</value></data>
+<data name="Sec.Check.Sec004.Fix" xml:space="preserve"><value>Configurați o regulă paravan Windows care restricționează accesul la adresele IP ale clienților autorizați.</value></data>
+<data name="Sec.Check.Sec005.Name" xml:space="preserve"><value>Porturi țintă restricționate</value></data>
+<data name="Sec.Check.Sec005.Desc" xml:space="preserve"><value>Doar porturi țintă specificate ar trebui permise.</value></data>
+<data name="Sec.Check.Sec005.MsgPass" xml:space="preserve"><value>Porturile țintă restricționate la: {0}</value></data>
+<data name="Sec.Check.Sec005.MsgFail" xml:space="preserve"><value>Restricțiile de porturi țintă sunt dezactivate; orice port țintă este permis.</value></data>
+<data name="Sec.Check.Sec005.Fix" xml:space="preserve"><value>Activați restricțiile de porturi țintă în setările de securitate.</value></data>
+<data name="Sec.Check.Sec006.Name" xml:space="preserve"><value>Fără reguli largi de subrețea</value></data>
+<data name="Sec.Check.Sec006.Desc" xml:space="preserve"><value>Intrările clienților autorizați nu ar trebui să fie prea largi.</value></data>
+<data name="Sec.Check.Sec006.MsgPass" xml:space="preserve"><value>Nicio subrețea prea largă configurată.</value></data>
+<data name="Sec.Check.Sec006.MsgFailAllowAll" xml:space="preserve"><value>Modul &apos;permite tuturor&apos; este activat.</value></data>
+<data name="Sec.Check.Sec006.MsgFailBroad" xml:space="preserve"><value>Detectați {0} subrețele largi: {1}</value></data>
+<data name="Sec.Check.Sec006.FixAllowAll" xml:space="preserve"><value>Comutați pe modul listă de permisie.</value></data>
+<data name="Sec.Check.Sec006.FixBroad" xml:space="preserve"><value>Îngustați intervalele CIDR ale clienților pentru a reduce suprafața de atac.</value></data>
+<data name="Sec.Check.Sec007.Name" xml:space="preserve"><value>Configurație validă</value></data>
+<data name="Sec.Check.Sec007.Desc" xml:space="preserve"><value>Configurația trebuie să treacă toate verificările de validare.</value></data>
+<data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>Configurația este validă.</value></data>
+<data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} erori de configurație: {1}</value></data>
+<data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Remediați erorile de configurație de mai sus.</value></data>
+</root>

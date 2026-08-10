@@ -17,6 +17,9 @@ public sealed class DiagnosticResult
     /// <summary>Whether the test passed.</summary>
     public bool Passed { get; set; }
 
+    /// <summary>Distinguishes a non-fatal warning from an actual failed check.</summary>
+    public DiagnosticOutcome Outcome { get; set; } = DiagnosticOutcome.Pass;
+
     /// <summary>Detailed result message.</summary>
     public string Message { get; set; } = string.Empty;
 
@@ -28,6 +31,13 @@ public sealed class DiagnosticResult
 
     /// <summary>When the test was run.</summary>
     public DateTimeOffset TestedAt { get; set; } = DateTimeOffset.UtcNow;
+}
+
+public enum DiagnosticOutcome
+{
+    Pass,
+    Warning,
+    Fail
 }
 
 /// <summary>
@@ -71,6 +81,9 @@ public sealed class FirewallRule
     /// <summary>Remote addresses allowed (CIDR or specific IPs).</summary>
     public List<string> RemoteAddresses { get; set; } = new();
 
+    /// <summary>Local addresses allowed.</summary>
+    public List<string> LocalAddresses { get; set; } = new();
+
     /// <summary>Whether the rule is enabled.</summary>
     public bool Enabled { get; set; } = true;
 
@@ -79,6 +92,19 @@ public sealed class FirewallRule
 
     /// <summary>Action (Allow/Block).</summary>
     public string Action { get; set; } = "Allow";
+
+    /// <summary>Windows interface scope (LAN, Wireless, RAS, or Any).</summary>
+    public string InterfaceScope { get; set; } = "Any";
+}
+
+/// <summary>
+/// Names reserved for firewall rules owned by PrintPilotProxy. Keeping one
+/// stable name makes updates idempotent and guarantees that uninstall removes
+/// only rules created by this product.
+/// </summary>
+public static class FirewallRuleNames
+{
+    public const string ManagedRule = "PrintPilotProxy";
 }
 
 /// <summary>
@@ -124,4 +150,22 @@ public enum ServiceStatus
 
     /// <summary>Service is paused.</summary>
     Paused
+}
+
+/// <summary>Configured Windows Service start mode.</summary>
+public enum ServiceStartupType
+{
+    Unknown,
+    Automatic,
+    AutomaticDelayed,
+    Manual,
+    Disabled
+}
+
+/// <summary>Actual service-control-manager state exposed to the administration UI.</summary>
+public sealed class PlatformServiceInfo
+{
+    public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
+    public ServiceStartupType StartupType { get; set; } = ServiceStartupType.Unknown;
+    public string? ErrorMessage { get; set; }
 }

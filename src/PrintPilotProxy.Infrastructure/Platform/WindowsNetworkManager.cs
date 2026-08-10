@@ -18,9 +18,9 @@ namespace PrintPilotProxy.Infrastructure.Platform
         private readonly ILogger<WindowsNetworkManager> _logger;
         private readonly HttpClient _httpClient;
 
-        public WindowsNetworkManager(ILogger<WindowsNetworkManager> logger)
+        public WindowsNetworkManager(ILogger<WindowsNetworkManager>? logger = null)
         {
-            _logger = logger;
+            _logger = logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<WindowsNetworkManager>.Instance;
             _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
         }
 
