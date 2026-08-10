@@ -64,6 +64,11 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             ResetRunStatistics();
             _proxyServer = new ProxyServer(userTrustRootCertificate: false);
             
+            // Generate and store certificate in ProgramData instead of Program Files
+            var dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "PrintPilotProxy");
+            if (!Directory.Exists(dataFolder)) Directory.CreateDirectory(dataFolder);
+            _proxyServer.CertificateManager.RootCertificateName = "PrintPilotProxyRoot";
+            _proxyServer.CertificateManager.PfxFilePath = Path.Combine(dataFolder, "rootCert.pfx");
             _proxyServer.ExceptionFunc = async (exception) =>
             {
                 Interlocked.Increment(ref _totalErrors);

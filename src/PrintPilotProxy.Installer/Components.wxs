@@ -9,6 +9,10 @@
     <ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">
       <Component Id="AppExeComponent" Guid="B89F2A14-4321-4A56-9BDE-123456789001" Bitness="always64">
         <File Id="PrintPilotProxy.App.exe" Source="$(var.StagingDir)\App\PrintPilotProxy.App.exe" KeyPath="yes" />
+        <util:RemoveFolderEx Id="CleanInstallFolderOnUninstall"
+                             Property="INSTALLFOLDER"
+                             On="uninstall"
+                             Condition="REMOVE=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE" />
       </Component>
 
       <Component Id="D3DCompiler" Guid="B89F2A14-4321-4A56-9BDE-123456789002" Bitness="always64">

@@ -108,6 +108,49 @@
             </Grid>
         </Border>
 
+        <!-- Client Access Mode & Security -->
+        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="Güvenlik &amp; Erişim" Style="{StaticResource SubheaderTextBlockStyle}" />
+                <TextBlock Text="İstemci erişim kurallarını ve hedef port kısıtlamalarını yapılandırın."
+                           Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,0,0,12" />
+
+                <!-- Client Access -->
+                <TextBlock Text="Erişim Modu:" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" Margin="0,0,0,6" />
+                <RadioButton Content="Tüm İstemcilere İzin Ver (AllowAll)"
+                             IsChecked="{Binding ClientAccessAllowAll}"
+                             Foreground="{StaticResource TextBrush}" Margin="0,0,0,6" />
+                <RadioButton Content="Sadece İzin Verilenler (AllowList)"
+                             IsChecked="{Binding ClientAccessAllowList}"
+                             Foreground="{StaticResource TextBrush}" Margin="0,0,0,12" />
+
+                <!-- Port Restrictions -->
+                <TextBlock Text="Hedef Port Kısıtlamaları:" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" Margin="0,0,0,6" />
+                <CheckBox Content="Tüm hedef portlara izin ver (Önerilmez)"
+                          IsChecked="{Binding AllowAllDestinationPorts}"
+                          Foreground="{StaticResource TextBrush}" Margin="0,0,0,8" />
+                <StackPanel Margin="24,0,0,0">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="IsEnabled" Value="True" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AllowAllDestinationPorts}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="İzin Verilen Portlar (Virgül ile ayırın):" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding AllowedDestinationPortsText, UpdateSourceTrigger=PropertyChanged}"
+                             Background="{StaticResource DarkBackgroundBrush}"
+                             Foreground="{StaticResource TextBrush}"
+                             BorderBrush="{StaticResource AccentBrush}"
+                             Padding="8,6" Height="32"
+                             VerticalContentAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
         <!-- Status message -->
         <TextBlock Text="{Binding StatusMessage}"
                    Margin="0,0,0,12"

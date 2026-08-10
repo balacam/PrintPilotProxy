@@ -74,11 +74,11 @@ public sealed class ListenerSettings
     /// <summary>
     /// Listener mode.
     /// </summary>
-    public ListenerMode Mode { get; set; } = ListenerMode.Auto;
+    public ListenerMode Mode { get; set; } = ListenerMode.AllInterfaces;
     /// <summary>
     /// IP address to listen on. Required only for <see cref="ListenerMode.SpecificAddress"/> mode.
     /// </summary>
-    public string? ListenAddress { get; set; } = null;
+    public string? ListenAddress { get; set; } = "0.0.0.0";
 
     /// <summary>
     /// Friendly adapter name selected by the administrator. Required only for
@@ -139,7 +139,7 @@ public sealed class SecuritySettings
     /// Whether destination port restrictions are enabled.
     /// When false, all destination ports are allowed (less secure).
     /// </summary>
-    public bool DestinationPortRestrictionsEnabled { get; set; } = true;
+    public bool DestinationPortRestrictionsEnabled { get; set; } = false;
 
     /// <summary>
     /// Whether proxy authentication is required (optional, in addition to IP ACL).

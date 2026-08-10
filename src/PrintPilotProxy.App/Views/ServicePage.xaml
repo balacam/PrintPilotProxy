@@ -95,7 +95,8 @@
         </TextBlock>
 
         <!-- Control Buttons -->
-        <StackPanel Orientation="Horizontal">
+        <TextBlock Text="Windows Servis Kontrolü (Yönetici İzni Gerekir):" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" Margin="0,0,0,6" />
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
             <Button Content="{loc:Loc Key=Svc.StartService}"
                     Command="{Binding StartServiceCommand}"
                     IsEnabled="{Binding CanStart}"
@@ -113,6 +114,31 @@
             <Button Content="{loc:Loc Key=Svc.RestartService}"
                     Command="{Binding RestartServiceCommand}"
                     IsEnabled="{Binding CanRestart}"
+                    Background="{StaticResource AccentBrush}"
+                    Foreground="White"
+                    Padding="20,10"
+                    Margin="0,0,12,0" />
+        </StackPanel>
+
+        <TextBlock Text="Proxy Motoru Kontrolü:" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" Margin="0,0,0,6" />
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Motoru Başlat"
+                    Command="{Binding StartProxyEngineCommand}"
+                    IsEnabled="{Binding CanStartProxyEngine}"
+                    Background="#1E5E2E"
+                    Foreground="White"
+                    Padding="20,10"
+                    Margin="0,0,12,0" />
+            <Button Content="Motoru Durdur"
+                    Command="{Binding StopProxyEngineCommand}"
+                    IsEnabled="{Binding CanStopProxyEngine}"
+                    Background="#5A2020"
+                    Foreground="White"
+                    Padding="20,10"
+                    Margin="0,0,12,0" />
+            <Button Content="Motoru Yeniden Başlat"
+                    Command="{Binding RestartProxyEngineCommand}"
+                    IsEnabled="{Binding CanRestartProxyEngine}"
                     Background="{StaticResource AccentBrush}"
                     Foreground="White"
                     Padding="20,10"

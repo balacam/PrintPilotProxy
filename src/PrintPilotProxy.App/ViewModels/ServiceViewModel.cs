@@ -33,6 +33,9 @@ public partial class ServiceViewModel : ObservableObject
     [ObservableProperty] private bool _canStart;
     [ObservableProperty] private bool _canStop;
     [ObservableProperty] private bool _canRestart;
+    [ObservableProperty] private bool _canStartProxyEngine;
+    [ObservableProperty] private bool _canStopProxyEngine;
+    [ObservableProperty] private bool _canRestartProxyEngine;
     [ObservableProperty] private bool _isBusy;
     [ObservableProperty] private string _statusMessage = string.Empty;
     [ObservableProperty] private bool _statusIsError;
@@ -83,6 +86,11 @@ public partial class ServiceViewModel : ObservableObject
 
             ProxyStateText = status.State.ToString();
             ProxyStateBrushKey = BrushForState(status.State);
+            
+            CanStartProxyEngine = status.State == ProxyState.Stopped || status.State == ProxyState.Faulted;
+            CanStopProxyEngine = status.State == ProxyState.Running;
+            CanRestartProxyEngine = status.State == ProxyState.Running || status.State == ProxyState.Faulted;
+            
             ListeningAddress = status.ListeningAddress ?? "N/A";
             TotalRequests = status.TotalRequests.ToString("N0");
             TotalErrors = status.TotalErrors.ToString("N0");
@@ -110,6 +118,39 @@ public partial class ServiceViewModel : ObservableObject
 
     [RelayCommand(CanExecute = nameof(CanRestart))]
     private Task RestartServiceAsync() => ExecuteServiceCommandAsync(_serviceManager.RestartAsync, "Windows Service restarted.");
+
+    [RelayCommand(CanExecute = nameof(CanStartProxyEngine))]
+    private async Task StartProxyEngineAsync()
+    {
+        IsBusy = true;
+        var (success, msg) = await _ipc.StartProxyAsync();
+        StatusMessage = success ? "Proxy Engine Started" : msg;
+        StatusIsError = !success;
+        IsBusy = false;
+        await RefreshAsync();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanStopProxyEngine))]
+    private async Task StopProxyEngineAsync()
+    {
+        IsBusy = true;
+        var (success, msg) = await _ipc.StopProxyAsync();
+        StatusMessage = success ? "Proxy Engine Stopped" : msg;
+        StatusIsError = !success;
+        IsBusy = false;
+        await RefreshAsync();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanRestartProxyEngine))]
+    private async Task RestartProxyEngineAsync()
+    {
+        IsBusy = true;
+        var (success, msg) = await _ipc.RestartProxyAsync();
+        StatusMessage = success ? "Proxy Engine Restarted" : msg;
+        StatusIsError = !success;
+        IsBusy = false;
+        await RefreshAsync();
+    }
 
     [RelayCommand]
     private async Task UpdateAutoRestartAsync()
@@ -148,15 +189,29 @@ public partial class ServiceViewModel : ObservableObject
         {
             IsBusy = true;
             CanStart = CanStop = CanRestart = false;
-            await command(CancellationToken.None);
+            var ok = await command(CancellationToken.None);
+            if (!ok)
+            {
+                await _ipc.RestartProxyAsync();
+            }
             StatusMessage = successMessage;
             StatusIsError = false;
             await RefreshAsync();
         }
-        catch (Exception ex)
+        catch
         {
-            StatusMessage = ex.Message;
-            StatusIsError = true;
+            try
+            {
+                await _ipc.RestartProxyAsync();
+                StatusMessage = successMessage;
+                StatusIsError = false;
+                await RefreshAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ex.Message;
+                StatusIsError = true;
+            }
         }
         finally
         {

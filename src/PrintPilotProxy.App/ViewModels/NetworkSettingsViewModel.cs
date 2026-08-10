@@ -58,6 +58,14 @@ public partial class NetworkSettingsViewModel : ObservableObject
     [ObservableProperty] private bool _statusIsError = false;
     [ObservableProperty] private bool _isDirty = false;
 
+    // ─── Security & Access ───────────────────────────────────────────────────
+
+    [ObservableProperty] private bool _allowAllDestinationPorts = true;
+    [ObservableProperty] private string _allowedDestinationPortsText = "80, 443";
+
+    [ObservableProperty] private bool _clientAccessAllowAll = true;
+    [ObservableProperty] private bool _clientAccessAllowList = false;
+
     private ProxyConfiguration? _originalConfig;
 
     public NetworkSettingsViewModel(IpcClientService ipc)
@@ -97,6 +105,18 @@ public partial class NetworkSettingsViewModel : ObservableObject
     partial void OnConnectionTimeoutSecondsChanged(string value) => IsDirty = true;
     partial void OnSpecificIpAddressChanged(string value) => IsDirty = true;
     partial void OnSelectedAdapterChanged(AdapterItem? value) => IsDirty = true;
+    partial void OnAllowAllDestinationPortsChanged(bool value) => IsDirty = true;
+    partial void OnAllowedDestinationPortsTextChanged(string value) => IsDirty = true;
+    partial void OnClientAccessAllowAllChanged(bool value)
+    {
+        if (value) ClientAccessAllowList = false;
+        IsDirty = true;
+    }
+    partial void OnClientAccessAllowListChanged(bool value)
+    {
+        if (value) ClientAccessAllowAll = false;
+        IsDirty = true;
+    }
 
     // ─── Load ────────────────────────────────────────────────────────────────
 
@@ -165,6 +185,12 @@ public partial class NetworkSettingsViewModel : ObservableObject
         ProxyPort = config.Listener.Port.ToString();
         MaxConnections = config.Listener.MaxConnections.ToString();
         ConnectionTimeoutSeconds = config.Listener.ConnectionTimeoutSeconds.ToString();
+
+        AllowAllDestinationPorts = !config.Security.DestinationPortRestrictionsEnabled;
+        AllowedDestinationPortsText = string.Join(", ", config.Security.AllowedDestinationPorts);
+
+        ClientAccessAllowAll = config.ClientAccess.Mode == ClientAccessMode.AllowAll;
+        ClientAccessAllowList = config.ClientAccess.Mode == ClientAccessMode.AllowList;
     }
 
     // ─── Validate ────────────────────────────────────────────────────────────
@@ -262,6 +288,25 @@ public partial class NetworkSettingsViewModel : ObservableObject
             current.Listener.Port = port;
             current.Listener.MaxConnections = maxConn;
             current.Listener.ConnectionTimeoutSeconds = timeout;
+
+            // ── Update Security & Access ──
+            current.Security.DestinationPortRestrictionsEnabled = !AllowAllDestinationPorts;
+            var portStrings = AllowedDestinationPortsText.Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var ports = new List<int>();
+            foreach (var ps in portStrings)
+            {
+                if (int.TryParse(ps, out var p) && p > 0 && p <= 65535)
+                {
+                    ports.Add(p);
+                }
+            }
+            if (ports.Any())
+            {
+                current.Security.AllowedDestinationPorts = ports;
+            }
+
+            current.ClientAccess.Mode = ClientAccessAllowAll ? ClientAccessMode.AllowAll : ClientAccessMode.AllowList;
+
             current.LastModified = DateTimeOffset.UtcNow;
 
             // ── Send to service ──
@@ -270,6 +315,7 @@ public partial class NetworkSettingsViewModel : ObservableObject
             {
                 _originalConfig = current;
                 IsDirty = false;
+                await _ipc.RestartProxyAsync();
                 SetStatus(LocalizationService.Instance["Net.Msgs.Applied"], isError: false);
             }
             else
