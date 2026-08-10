@@ -82,11 +82,23 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
         {
             try
             {
-                await using var stream = CreateSecureServerStream();
+                var stream = CreateSecureServerStream();
                 await stream.WaitForConnectionAsync(cancellationToken);
 
-                // Keep ownership of the stream until the client disconnects.
-                await HandleConnectionAsync(stream, cancellationToken);
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await using (stream)
+                        {
+                            await HandleConnectionAsync(stream, cancellationToken);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error handling IPC client connection.");
+                    }
+                }, cancellationToken);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {

@@ -10,10 +10,15 @@ using PrintPilotProxy.App.ViewModels;
 using PrintPilotProxy.App.Views;
 using WF = System.Windows.Forms;
 
+using System.Threading;
+
 namespace PrintPilotProxy.App;
 
 public partial class App : Application
 {
+    private static Mutex? _mutex;
+    private static EventWaitHandle? _eventWaitHandle;
+
     public IServiceProvider Services { get; }
 
     private MainWindow? _mainWindow;
@@ -27,6 +32,38 @@ public partial class App : Application
 
     protected override async void OnStartup(StartupEventArgs e)
     {
+        const string mutexName = @"Global\PrintPilotProxy_App_SingleInstance_Mutex";
+        const string eventName = @"Global\PrintPilotProxy_App_SingleInstance_Event";
+
+        _mutex = new Mutex(true, mutexName, out bool isNewInstance);
+        if (!isNewInstance)
+        {
+            // Signal existing instance to show its window
+            try
+            {
+                using var eventHandle = EventWaitHandle.OpenExisting(eventName);
+                eventHandle.Set();
+            }
+            catch { }
+
+            Shutdown();
+            return;
+        }
+
+        // Listen for signals from future instances attempting to launch
+        try
+        {
+            _eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset, eventName);
+            Task.Run(() =>
+            {
+                while (_eventWaitHandle.WaitOne())
+                {
+                    Dispatcher.Invoke(ShowMainWindow);
+                }
+            });
+        }
+        catch { }
+
         base.OnStartup(e);
 
         // Apply saved language preference before showing UI
@@ -45,6 +82,9 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        _eventWaitHandle?.Dispose();
+        _mutex?.ReleaseMutex();
+        _mutex?.Dispose();
         _notifyIcon?.Dispose();
         base.OnExit(e);
     }

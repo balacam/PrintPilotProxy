@@ -23,50 +23,68 @@
                            Foreground="{StaticResource AccentBrush}"
                            FontSize="16" />
 
-                <Button Content="🏠  {loc:Loc Key=Nav.Dashboard}"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="Dashboard"
-                        Style="{StaticResource NavButtonStyle}" />
+                <Button Command="{Binding NavigateCommand}" CommandParameter="Dashboard" Style="{StaticResource NavButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🏠" Margin="0,0,8,0"/>
+                        <TextBlock Text="{loc:Loc Key=Nav.Dashboard}"/>
+                    </StackPanel>
+                </Button>
 
-                <Button Content="🌐  {loc:Loc Key=Nav.NetworkSettings}"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="NetworkSettings"
-                        Style="{StaticResource NavButtonStyle}" />
+                <Button Command="{Binding NavigateCommand}" CommandParameter="NetworkSettings" Style="{StaticResource NavButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🌐" Margin="0,0,8,0"/>
+                        <TextBlock Text="{loc:Loc Key=Nav.NetworkSettings}"/>
+                    </StackPanel>
+                </Button>
 
-                <Button Content="👥  {loc:Loc Key=Nav.AllowedClients}"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="AllowedClients"
-                        Style="{StaticResource NavButtonStyle}" />
+                <Button Command="{Binding NavigateCommand}" CommandParameter="AllowedClients" Style="{StaticResource NavButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="👥" Margin="0,0,8,0"/>
+                        <TextBlock Text="{loc:Loc Key=Nav.AllowedClients}"/>
+                    </StackPanel>
+                </Button>
 
-                <Button Content="🔥  {loc:Loc Key=Nav.Firewall}"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="Firewall"
-                        Style="{StaticResource NavButtonStyle}" />
+                <Button Command="{Binding NavigateCommand}" CommandParameter="Firewall" Style="{StaticResource NavButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🔥" Margin="0,0,8,0"/>
+                        <TextBlock Text="{loc:Loc Key=Nav.Firewall}"/>
+                    </StackPanel>
+                </Button>
 
-                <Button Content="⚙️  {loc:Loc Key=Nav.Service}"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="Service"
-                        Style="{StaticResource NavButtonStyle}" />
+                <Button Command="{Binding NavigateCommand}" CommandParameter="Service" Style="{StaticResource NavButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⚙️" Margin="0,0,8,0"/>
+                        <TextBlock Text="{loc:Loc Key=Nav.Service}"/>
+                    </StackPanel>
+                </Button>
 
-                <Button Content="📋  {loc:Loc Key=Nav.Logs}"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="Logs"
-                        Style="{StaticResource NavButtonStyle}" />
+                <Button Command="{Binding NavigateCommand}" CommandParameter="Logs" Style="{StaticResource NavButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📋" Margin="0,0,8,0"/>
+                        <TextBlock Text="{loc:Loc Key=Nav.Logs}"/>
+                    </StackPanel>
+                </Button>
 
-                <Button Content="🔍  {loc:Loc Key=Nav.Diagnostics}"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="Diagnostics"
-                        Style="{StaticResource NavButtonStyle}" />
+                <Button Command="{Binding NavigateCommand}" CommandParameter="Diagnostics" Style="{StaticResource NavButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🔍" Margin="0,0,8,0"/>
+                        <TextBlock Text="{loc:Loc Key=Nav.Diagnostics}"/>
+                    </StackPanel>
+                </Button>
 
-                <Button Content="🛡️  {loc:Loc Key=Nav.Security}"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="Security"
-                        Style="{StaticResource NavButtonStyle}" />
+                <Button Command="{Binding NavigateCommand}" CommandParameter="Security" Style="{StaticResource NavButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🛡️" Margin="0,0,8,0"/>
+                        <TextBlock Text="{loc:Loc Key=Nav.Security}"/>
+                    </StackPanel>
+                </Button>
 
-                <Button Content="🌍  {loc:Loc Key=Nav.Language}"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="Language"
-                        Style="{StaticResource NavButtonStyle}" />
+                <Button Command="{Binding NavigateCommand}" CommandParameter="Language" Style="{StaticResource NavButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🌍" Margin="0,0,8,0"/>
+                        <TextBlock Text="{loc:Loc Key=Nav.Language}"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Border>
 
