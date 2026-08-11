@@ -460,40 +460,51 @@ public sealed class ProxyWorker : BackgroundService
 
     private async Task ConfigureFirewallAsync(ProxyConfiguration configuration, CancellationToken cancellationToken)
     {
-        if (!configuration.Firewall.RuleEnabled)
+        try
         {
-            await _firewallManager.RemoveRuleAsync(FirewallRuleNames.ManagedRule, cancellationToken);
-            return;
+            if (!configuration.Firewall.RuleEnabled)
+            {
+                if (_firewallManager.HasPermission)
+                {
+                    await _firewallManager.RemoveRuleAsync(FirewallRuleNames.ManagedRule, cancellationToken);
+                }
+                return;
+            }
+
+            if (!_firewallManager.HasPermission)
+            {
+                _logger.LogWarning("Skipping Windows Firewall rule configuration because process lacks administrator permission to manage Windows Firewall.");
+                return;
+            }
+
+            var localAddresses = configuration.Listener.Mode == ListenerMode.AllInterfaces
+                ? new List<string>()
+                : (await ResolveListenerAddressesAsync(configuration, cancellationToken))
+                    .Select(address => address.ToString())
+                    .ToList();
+            var remoteAddresses = configuration.ClientAccess.Mode == ClientAccessMode.AllowList
+                ? configuration.ClientAccess.AllowedClients
+                    .Where(client => client.Enabled)
+                    .Select(client => client.IpOrCidr)
+                    .ToList()
+                : new List<string>();
+
+            await _firewallManager.CreateRuleAsync(new FirewallRule
+            {
+                Name = FirewallRuleNames.ManagedRule,
+                Protocol = "TCP",
+                Port = configuration.Listener.Port,
+                Direction = "Inbound",
+                Action = "Allow",
+                LocalAddresses = localAddresses,
+                RemoteAddresses = remoteAddresses,
+                InterfaceScope = configuration.Firewall.InterfaceScope
+            }, cancellationToken);
         }
-
-        if (!_firewallManager.HasPermission)
+        catch (Exception ex)
         {
-            throw new UnauthorizedAccessException("The PrintPilotProxy service lacks permission to manage the Windows Firewall.");
+            _logger.LogWarning(ex, "Failed to update Windows Firewall rule during configuration sync.");
         }
-
-        var localAddresses = configuration.Listener.Mode == ListenerMode.AllInterfaces
-            ? new List<string>()
-            : (await ResolveListenerAddressesAsync(configuration, cancellationToken))
-                .Select(address => address.ToString())
-                .ToList();
-        var remoteAddresses = configuration.ClientAccess.Mode == ClientAccessMode.AllowList
-            ? configuration.ClientAccess.AllowedClients
-                .Where(client => client.Enabled)
-                .Select(client => client.IpOrCidr)
-                .ToList()
-            : new List<string>();
-
-        await _firewallManager.CreateRuleAsync(new FirewallRule
-        {
-            Name = FirewallRuleNames.ManagedRule,
-            Protocol = "TCP",
-            Port = configuration.Listener.Port,
-            Direction = "Inbound",
-            Action = "Allow",
-            LocalAddresses = localAddresses,
-            RemoteAddresses = remoteAddresses,
-            InterfaceScope = configuration.Firewall.InterfaceScope
-        }, cancellationToken);
     }
 
     private static bool RequiresProxyRestart(ProxyConfiguration before, ProxyConfiguration after)

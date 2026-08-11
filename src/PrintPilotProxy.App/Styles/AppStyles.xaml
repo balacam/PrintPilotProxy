@@ -8,6 +8,7 @@
     <conv:BoolToVisibilityConverter    x:Key="BoolToVisibilityConverter" />
     <conv:InverseBooleanConverter      x:Key="InverseBooleanConverter" />
     <conv:BrushKeyToColorConverter     x:Key="BrushKeyToColorConverter" />
+    <conv:EqualityToBooleanConverter   x:Key="EqualityToBooleanConverter" />
 
     <!-- ─── Colors ─────────────────────────────────────────────────────────── -->
     <Color x:Key="DarkBackgroundColor">#1E1E2E</Color>
@@ -42,16 +43,16 @@
     </Style>
 
     <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="FontSize"     Value="22" />
+        <Setter Property="FontSize"     Value="20" />
         <Setter Property="FontWeight"   Value="SemiBold" />
-        <Setter Property="Margin"       Value="0,0,0,16" />
+        <Setter Property="Margin"       Value="0,0,0,12" />
         <Setter Property="Foreground"   Value="{StaticResource TextBrush}" />
     </Style>
 
     <Style x:Key="SubheaderTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="FontSize"   Value="15" />
+        <Setter Property="FontSize"   Value="14" />
         <Setter Property="FontWeight" Value="Medium" />
-        <Setter Property="Margin"     Value="0,0,0,8" />
+        <Setter Property="Margin"     Value="0,0,0,6" />
         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
     </Style>
 
@@ -63,12 +64,18 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor"      Value="Hand" />
         <Setter Property="FontFamily"  Value="Segoe UI" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="4">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -83,13 +90,43 @@
         </Setter>
     </Style>
 
-    <Style x:Key="NavButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Background"              Value="Transparent" />
+    <Style x:Key="NavButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding"                 Value="16,10" />
-        <Setter Property="Margin"                  Value="4,1" />
-        <Setter Property="FontSize"                Value="13" />
-        <Setter Property="VerticalAlignment"       Value="Top" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="14,9" />
+        <Setter Property="Margin" Value="6,2" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="3,0,0,0"
+                            BorderBrush="Transparent"
+                            CornerRadius="6">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#333A3A50" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="Tag" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#256C63FF" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- ─── TextBox ────────────────────────────────────────────────────────── -->
@@ -177,8 +214,8 @@
     <Style x:Key="CardStyle" TargetType="Border">
         <Setter Property="Background"   Value="{StaticResource PanelBackgroundBrush}" />
         <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="Padding"      Value="16" />
-        <Setter Property="Margin"       Value="0,0,0,8" />
+        <Setter Property="Padding"      Value="14,12" />
+        <Setter Property="Margin"       Value="0,0,0,10" />
         <Setter Property="Effect">
             <Setter.Value>
                 <DropShadowEffect Color="Black" Opacity="0.15" BlurRadius="8" ShadowDepth="1" />

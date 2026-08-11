@@ -36,6 +36,7 @@ public partial class MainViewModel : ObservableObject
     private readonly DispatcherTimer _timer;
 
     [ObservableProperty] private object? _currentPage;
+    [ObservableProperty] private string _currentPageName = "Dashboard";
     [ObservableProperty] private string _proxyStatus = "Unknown";
     [ObservableProperty] private string _listenAddress = "N/A";
     [ObservableProperty] private bool _isConnectedToService = false;
@@ -149,7 +150,10 @@ public partial class MainViewModel : ObservableObject
 
             DiagnosticLogger.Log($"[9. IPC Connection Attempted] IsConnected={_ipc.IsConnected}");
             CurrentPage = view;
-            DiagnosticLogger.Log($"[10. Navigation Complete] CurrentPage set to '{viewType.Name}'");
+            CurrentPageName = requestedName.Equals("ProxySettings", StringComparison.OrdinalIgnoreCase) || requestedName.Equals("Settings", StringComparison.OrdinalIgnoreCase)
+                ? "NetworkSettings"
+                : requestedName;
+            DiagnosticLogger.Log($"[10. Navigation Complete] CurrentPage set to '{viewType.Name}' (CurrentPageName='{CurrentPageName}')");
         }
         catch (Exception ex)
         {

@@ -74,6 +74,7 @@ public class ConfigurationValidatorTests
     public void Validate_InvalidDestinationPort_ReturnsError(int port)
     {
         var config = new ProxyConfiguration();
+        config.Security.DestinationPortRestrictionsEnabled = true;
         config.Security.AllowedDestinationPorts.Add(port);
         var result = ConfigurationValidator.Validate(config);
         result.Should().NotBeEmpty();

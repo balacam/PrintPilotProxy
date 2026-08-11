@@ -36,6 +36,13 @@ Write-Host "Creating directories..."
 if (!(Test-Path $InstallDir)) { New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null }
 if (!(Test-Path $DataDir)) { New-Item -ItemType Directory -Path $DataDir -Force | Out-Null }
 
+Write-Host "Configuring folder permissions for $DataDir..."
+try {
+    icacls $DataDir /grant "*S-1-5-32-545:(OI)(CI)M" /T /Q | Out-Null
+} catch {
+    Write-Warning "Could not update folder ACLs on $DataDir."
+}
+
 # 3. Copy binaries (Assumes this script is run from the extracted release ZIP)
 $BinDir = Join-Path $PSScriptRoot "bin"
 if (Test-Path $BinDir) {

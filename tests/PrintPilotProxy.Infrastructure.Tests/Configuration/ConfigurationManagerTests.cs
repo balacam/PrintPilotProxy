@@ -84,4 +84,27 @@ public class ConfigurationManagerTests
         config.ClientAccess.AllowedClients.Should().HaveCount(1);
         config.ClientAccess.AllowedClients[0].Name.Should().Be("Test Client");
     }
+
+    [Fact]
+    public async Task SaveAsync_WhenFileIsReadOnly_ClearsReadOnlyAttributeAndSucceeds()
+    {
+        var initialConfig = new ProxyConfiguration { SchemaVersion = 2 };
+        await _manager.SaveAsync(initialConfig);
+
+        // Mark the file read-only
+        File.SetAttributes(_testConfigPath, FileAttributes.ReadOnly);
+
+        initialConfig.Listener.Port = 9090;
+        await _manager.SaveAsync(initialConfig);
+
+        var loaded = await _manager.LoadAsync();
+        loaded.Listener.Port.Should().Be(9090);
+
+        // Cleanup
+        if (File.Exists(_testConfigPath))
+        {
+            File.SetAttributes(_testConfigPath, FileAttributes.Normal);
+            File.Delete(_testConfigPath);
+        }
+    }
 }

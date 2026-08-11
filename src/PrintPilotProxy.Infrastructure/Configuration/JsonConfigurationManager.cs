@@ -139,12 +139,21 @@ namespace PrintPilotProxy.Infrastructure.Configuration
             string json = JsonSerializer.Serialize(configuration, _jsonOptions);
             var configurationPath = _pathProvider.ConfigurationFilePath;
 
-            using (var fs = new FileStream(configurationPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+            ClearFileReadOnlyAttribute(configurationPath);
+
+            var tempFilePath = configurationPath + ".tmp";
+            ClearFileReadOnlyAttribute(tempFilePath);
+
+            using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
             using (var writer = new StreamWriter(fs, System.Text.Encoding.UTF8))
             {
                 await writer.WriteAsync(json.AsMemory(), cancellationToken);
                 await writer.FlushAsync(cancellationToken);
             }
+
+            File.Move(tempFilePath, configurationPath, overwrite: true);
+            ClearFileReadOnlyAttribute(configurationPath);
+
             _logger.LogInformation("Configuration saved successfully.");
         }
 
@@ -167,14 +176,35 @@ namespace PrintPilotProxy.Infrastructure.Configuration
 
                 string fileName = $"config_backup_{DateTime.Now:yyyyMMdd_HHmmss}.json";
                 string destPath = Path.Combine(_pathProvider.BackupDirectory, fileName);
+                ClearFileReadOnlyAttribute(destPath);
                 
                 File.Copy(sourcePath, destPath, overwrite: true);
+                ClearFileReadOnlyAttribute(destPath);
                 _logger.LogInformation("Configuration backed up to {Path}", destPath);
                 return destPath;
             }
             finally
             {
                 _semaphore.Release();
+            }
+        }
+
+        private static void ClearFileReadOnlyAttribute(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    var attributes = File.GetAttributes(filePath);
+                    if ((attributes & FileAttributes.ReadOnly) != 0)
+                    {
+                        File.SetAttributes(filePath, attributes & ~FileAttributes.ReadOnly);
+                    }
+                }
+            }
+            catch
+            {
+                // Best-effort attribute clearance
             }
         }
 

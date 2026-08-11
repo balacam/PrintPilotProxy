@@ -46,7 +46,7 @@ public class NetworkSettingsViewModelTests
             new DiscoveredNetworkInterface
             {
                 Name = "Ethernet", IsPrivate = true, IsOperational = true,
-                Addresses = new List<IPAddress> { IPAddress.Parse("192.168.1.100") }
+                Addresses = new List<string> { "192.168.1.100" }
             }
         };
         var ifacesJson = System.Text.Json.JsonSerializer.Serialize(ifaces,

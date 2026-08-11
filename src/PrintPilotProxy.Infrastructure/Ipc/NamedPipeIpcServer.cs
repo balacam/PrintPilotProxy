@@ -266,32 +266,49 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
             throw new PlatformNotSupportedException("The PrintPilotProxy management pipe is implemented for Windows only.");
         }
 
-        var pipeSecurity = new PipeSecurity();
-        pipeSecurity.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
+        try
+        {
+            var pipeSecurity = new PipeSecurity();
+            pipeSecurity.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
 
-        const PipeAccessRights managementAccess = PipeAccessRights.ReadWrite;
-        pipeSecurity.AddAccessRule(new PipeAccessRule(
-            new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null),
-            managementAccess,
-            AccessControlType.Allow));
-        pipeSecurity.AddAccessRule(new PipeAccessRule(
-            new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null),
-            managementAccess,
-            AccessControlType.Allow));
-        pipeSecurity.AddAccessRule(new PipeAccessRule(
-            new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null),
-            managementAccess,
-            AccessControlType.Allow));
+            // LocalSystem and BuiltinAdministrators require FullControl (which includes PipeAccessRights.CreateNewInstance)
+            pipeSecurity.AddAccessRule(new PipeAccessRule(
+                new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null),
+                PipeAccessRights.FullControl,
+                AccessControlType.Allow));
+            pipeSecurity.AddAccessRule(new PipeAccessRule(
+                new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null),
+                PipeAccessRights.FullControl,
+                AccessControlType.Allow));
 
-        return NamedPipeServerStreamAcl.Create(
-            PipeName,
-            PipeDirection.InOut,
-            NamedPipeServerStream.MaxAllowedServerInstances,
-            PipeTransmissionMode.Byte,
-            PipeOptions.Asynchronous,
-            inBufferSize: 4096,
-            outBufferSize: 4096,
-            pipeSecurity);
+            // Authenticated users require ReadWrite + CreateNewInstance to connect and allow subsequent instances
+            pipeSecurity.AddAccessRule(new PipeAccessRule(
+                new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null),
+                PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance,
+                AccessControlType.Allow));
+
+            return NamedPipeServerStreamAcl.Create(
+                PipeName,
+                PipeDirection.InOut,
+                NamedPipeServerStream.MaxAllowedServerInstances,
+                PipeTransmissionMode.Byte,
+                PipeOptions.Asynchronous,
+                inBufferSize: 4096,
+                outBufferSize: 4096,
+                pipeSecurity);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            // Fallback to standard server stream with default system pipe security if ACL creation fails
+            return new NamedPipeServerStream(
+                PipeName,
+                PipeDirection.InOut,
+                NamedPipeServerStream.MaxAllowedServerInstances,
+                PipeTransmissionMode.Byte,
+                PipeOptions.Asynchronous,
+                4096,
+                4096);
+        }
     }
 
     public async ValueTask DisposeAsync() => await StopAsync();
