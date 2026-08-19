@@ -167,11 +167,19 @@ public partial class NetworkSettingsViewModel : ObservableObject
 
     private void ApplyConfigToUi(ProxyConfiguration config)
     {
-        ModeAuto            = config.Listener.Mode == ListenerMode.Auto;
-        ModeSpecificAdapter = config.Listener.Mode == ListenerMode.SpecificAddress
-                              && DetectedAdapters.Any(a => a.IpAddress == config.Listener.ListenAddress);
-        ModeSpecificIp      = config.Listener.Mode == ListenerMode.SpecificAddress
-                              && !ModeSpecificAdapter;
+        var isAuto = config.Listener.Mode == ListenerMode.Auto || config.Listener.Mode == ListenerMode.AllInterfaces;
+        var isAdapter = config.Listener.Mode == ListenerMode.SpecificAdapter
+                        || (config.Listener.Mode == ListenerMode.SpecificAddress && DetectedAdapters.Any(a => a.IpAddress == config.Listener.ListenAddress));
+        var isSpecificIp = config.Listener.Mode == ListenerMode.SpecificAddress && !isAdapter;
+
+        if (!isAuto && !isAdapter && !isSpecificIp)
+        {
+            isAuto = true;
+        }
+
+        ModeAuto            = isAuto;
+        ModeSpecificAdapter = isAdapter;
+        ModeSpecificIp      = isSpecificIp;
 
         if (ModeSpecificAdapter || ModeSpecificIp)
         {

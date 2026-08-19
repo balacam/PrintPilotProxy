@@ -94,6 +94,10 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
                             await HandleConnectionAsync(stream, cancellationToken);
                         }
                     }
+                    catch (OperationCanceledException)
+                    {
+                        // Normal client disconnect or service shutdown
+                    }
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Error handling IPC client connection.");

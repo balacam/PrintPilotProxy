@@ -3,27 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:loc="clr-namespace:PrintPilotProxy.App.Localization">
     <StackPanel>
-        <TextBlock Text="{loc:Loc Key=Page.Security}" Style="{StaticResource HeaderTextBlockStyle}" />
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="SECURITY POSTURE" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+            <TextBlock Text="{loc:Loc Key=Page.Security}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
+        </StackPanel>
 
-        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12">
-            <StackPanel>
-                <TextBlock Text="{loc:Loc Key=Sec.Title}"
-                           Style="{StaticResource SubheaderTextBlockStyle}" />
-                <TextBlock Text="{loc:Loc Key=Sec.Description}"
-                           Foreground="{StaticResource TextBrush}" Opacity="0.7"
-                           Margin="0,4,0,12" TextWrapping="Wrap" />
+        <!-- Security summary -->
+        <Border Style="{StaticResource HeroCardStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                <!-- Overall Status -->
-                <Border Background="{StaticResource PanelBackgroundBrush}" CornerRadius="8"
-                        Padding="16,10" Margin="0,0,0,12">
+                <Border Width="52" Height="52" Margin="0,0,15,0" Background="{StaticResource AccentSoftBrush}" CornerRadius="14">
+                    <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="22" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{loc:Loc Key=Sec.Title}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0" />
+                    <TextBlock Text="{loc:Loc Key=Sec.Description}" Style="{StaticResource MutedTextBlockStyle}" Margin="0,4,0,10" TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🛡️" FontSize="18" Margin="0,0,10,0" VerticalAlignment="Center" />
-                        <TextBlock Text="{Binding OverallStatus}"
-                                   FontSize="14" FontWeight="SemiBold"
-                                   VerticalAlignment="Center">
+                        <Ellipse Width="9" Height="9" Margin="0,0,8,0" VerticalAlignment="Center">
+                            <Ellipse.Style>
+                                <Style TargetType="{x:Type Ellipse}">
+                                    <Setter Property="Fill" Value="{StaticResource WarningBrush}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="SuccessBrush">
+                                            <Setter Property="Fill" Value="{StaticResource SuccessBrush}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="ErrorBrush">
+                                            <Setter Property="Fill" Value="{StaticResource ErrorBrush}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
+                        <TextBlock Text="{Binding OverallStatus}" FontSize="15" FontWeight="SemiBold">
                             <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="SuccessBrush">
                                             <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
@@ -31,103 +51,81 @@
                                         <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="ErrorBrush">
                                             <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="WarningBrush">
-                                            <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
-                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
                     </StackPanel>
-                </Border>
-            </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Margin="22,0,0,0" VerticalAlignment="Center">
+                    <Button Content="{loc:Loc Key=Sec.RerunAudit}"
+                            Command="{Binding RunAuditCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}" />
+                    <TextBlock Text="{loc:Loc Key=Diag.Running}"
+                               Margin="0,8,0,0"
+                               HorizontalAlignment="Center"
+                               Foreground="{StaticResource WarningBrush}"
+                               FontSize="11"
+                               Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+            </Grid>
         </Border>
 
-        <!-- Re-run Button -->
-        <Button Content="{loc:Loc Key=Sec.RerunAudit}"
-                Command="{Binding RunAuditCommand}"
-                Padding="16,8" Margin="0,0,0,12" />
-
-        <!-- Loading Indicator -->
-        <TextBlock Text="{loc:Loc Key=Diag.Running}"
-                   Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
-                   Foreground="{StaticResource WarningBrush}" Margin="0,0,0,12" />
-
-        <!-- Check Results -->
+        <!-- Audit results -->
         <ItemsControl ItemsSource="{Binding Checks}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Style="{StaticResource CardStyle}" Margin="0,0,0,8" Padding="16,12">
+                    <Border Style="{StaticResource CardStyle}" Margin="0,0,0,10" Padding="16,14">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
 
-                            <!-- Pass/Fail Icon -->
-                            <TextBlock Grid.Column="0" Grid.RowSpan="3"
-                                       FontSize="20" VerticalAlignment="Top"
-                                       Margin="0,0,12,0">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="⚠" />
+                            <Border Width="40" Height="40" Margin="0,0,13,0" CornerRadius="10" VerticalAlignment="Top">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="Background" Value="{StaticResource WarningSurfaceBrush}" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Passed}" Value="True">
-                                                <Setter Property="Text" Value="✔" />
+                                                <Setter Property="Background" Value="{StaticResource SuccessSurfaceBrush}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                                </Border.Style>
+                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Text" Value="&#xE814;" />
+                                            <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Passed}" Value="True">
+                                                    <Setter Property="Text" Value="&#xE73E;" />
+                                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
 
-                            <!-- Name + Level -->
-                            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
-                                           FontSize="14" Foreground="{StaticResource TextBrush}" />
-                                <Border CornerRadius="4" Padding="8,2" Margin="10,0,0,0"
-                                        VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding LevelLabel}" FontSize="11" FontWeight="SemiBold"
-                                               Foreground="White" />
-                                    <Border.Background>
-                                        <SolidColorBrush Color="{Binding LevelBrushKey, Converter={StaticResource BrushKeyToColorConverter}, FallbackValue=#555555}" />
-                                    </Border.Background>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                                <TextBlock Text="{Binding Description}" Style="{StaticResource MutedTextBlockStyle}" Margin="0,4,0,7" TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding Message}" FontSize="12" Foreground="{StaticResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                                <Border Margin="0,9,0,0" Padding="10,7" Background="{StaticResource WarningSurfaceBrush}" CornerRadius="6" Visibility="{Binding Remediation, Converter={StaticResource StringToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Remediation}" Foreground="{StaticResource WarningBrush}" FontSize="12" TextWrapping="Wrap" />
                                 </Border>
                             </StackPanel>
 
-                            <!-- Description -->
-                            <TextBlock Grid.Column="1" Grid.Row="1"
-                                       Text="{Binding Description}"
-                                       Foreground="{StaticResource TextBrush}" Opacity="0.7"
-                                       FontSize="12" Margin="0,4,0,0" TextWrapping="Wrap" />
-
-                            <!-- Message -->
-                            <TextBlock Grid.Column="1" Grid.Row="2"
-                                       Text="{Binding Message}"
-                                       Foreground="{StaticResource TextBrush}"
-                                       FontSize="12" Margin="0,6,0,0" TextWrapping="Wrap" />
-
-                            <!-- Remediation -->
-                            <TextBlock Grid.Column="1" Grid.Row="3"
-                                       Text="{Binding Remediation}"
-                                       Foreground="{StaticResource WarningBrush}"
-                                       FontSize="12" Margin="0,4,0,0" TextWrapping="Wrap">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Remediation}" Value="">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                            <Border Grid.Column="2" CornerRadius="6" Padding="9,4" Margin="14,0,0,0" VerticalAlignment="Top">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{Binding LevelBrushKey, Converter={StaticResource BrushKeyToColorConverter}, FallbackValue=#555555}" />
+                                </Border.Background>
+                                <TextBlock Text="{Binding LevelLabel}" FontSize="10" FontWeight="SemiBold" Foreground="White" />
+                            </Border>
                         </Grid>
                     </Border>
                 </DataTemplate>

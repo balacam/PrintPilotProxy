@@ -13,15 +13,15 @@
 <data name="Common.Private" xml:space="preserve"><value>Privé</value></data>
 <data name="Common.Public" xml:space="preserve"><value>Openbaar</value></data>
 <data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
-<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Dashboard</value></data>
-<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Netwerkinstellingen</value></data>
-<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Toegestane clients</value></data>
-<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Firewall</value></data>
-<data name="Nav.Service" xml:space="preserve"><value>⚙️  Service</value></data>
-<data name="Nav.Logs" xml:space="preserve"><value>📋  Logs</value></data>
-<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnose</value></data>
-<data name="Nav.Security" xml:space="preserve"><value>🛡️  Beveiliging</value></data>
-<data name="Nav.Language" xml:space="preserve"><value>🌍  Taal</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>Netwerkinstellingen</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>Toegestane clients</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>Firewall</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>Service</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>Logs</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>Diagnose</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>Beveiliging</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>Taal</value></data>
 <data name="MainWindow.Status" xml:space="preserve"><value>Status: </value></data>
 <data name="MainWindow.Listen" xml:space="preserve"><value>Luister: </value></data>
 <data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>SERVICE NIET BESCHIKBAAR</value></data>
@@ -52,7 +52,7 @@
 <data name="Page.NetworkSettings" xml:space="preserve"><value>Netwerkinstellingen</value></data>
 <data name="Net.ListenerMode" xml:space="preserve"><value>Luistermodus</value></data>
 <data name="Net.ChooseInterface" xml:space="preserve"><value>Kies het netwerkinterface waarop de proxy luistert.</value></data>
-<data name="Net.ModeAuto" xml:space="preserve"><value>Automatisch  (alle privé-netwerkinterfaces gebruiken)</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Automatisch  (Standaard - alle privé-netwerkinterfaces gebruiken)</value></data>
 <data name="Net.ModeAdapter" xml:space="preserve"><value>Specifieke netwerkadapter  (kiezen uit gedetecteerde adapters)</value></data>
 <data name="Net.ModeSpecificIp" xml:space="preserve"><value>Specifiek IP-adres  (handmatig invoeren)</value></data>
 <data name="Net.PortAndLimits" xml:space="preserve"><value>Poort en limieten</value></data>
@@ -266,4 +266,46 @@
 <data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>De configuratie is geldig.</value></data>
 <data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} configuratiefout(en): {1}</value></data>
 <data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Corrigeer de bovenstaande configuratiefouten.</value></data>
+
+  <data name="Net.SecurityAndAccess" xml:space="preserve"><value>Beveiliging &amp; Toegang</value></data>
+  <data name="Net.SecurityAndAccessDesc" xml:space="preserve"><value>Configureer regels voor clienttoegang en bestemmingspoortbeperkingen.</value></data>
+  <data name="Net.AccessMode" xml:space="preserve"><value>Toegangsmodus</value></data>
+  <data name="Net.ClientAccessAllowAll" xml:space="preserve"><value>Alle clients toestaan (AllowAll)</value></data>
+  <data name="Net.ClientAccessAllowList" xml:space="preserve"><value>Alleen toegestane lijst (AllowList)</value></data>
+  <data name="Net.DestinationPortRestrictions" xml:space="preserve"><value>Bestemmingspoortbeperkingen</value></data>
+  <data name="Net.AllowAllDestinationPorts" xml:space="preserve"><value>Alle bestemmingspoorten toestaan (Niet aanbevolen)</value></data>
+  <data name="Net.AllowedPortsWithHint" xml:space="preserve"><value>Toegestane poorten (door komma&apos;s gescheiden)</value></data>
+  <data name="Cli.ColEnabled" xml:space="preserve"><value>Ingeschakeld</value></data>
+  <data name="Cli.ColName" xml:space="preserve"><value>Naam</value></data>
+  <data name="Cli.ColIpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+  <data name="Cli.ColDescription" xml:space="preserve"><value>Beschrijving</value></data>
+  <data name="Dash.ColTime" xml:space="preserve"><value>Tijd</value></data>
+  <data name="Dash.ColClientIp" xml:space="preserve"><value>Client-IP</value></data>
+  <data name="Dash.ColMethod" xml:space="preserve"><value>Methode</value></data>
+  <data name="Dash.ColDestination" xml:space="preserve"><value>Bestemming</value></data>
+  <data name="Dash.ColStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="Diag.OverallDesc" xml:space="preserve"><value>Diagnostische gereedheid en connectiviteitscontroles</value></data>
+  <data name="Logs.ClientAccessLogs" xml:space="preserve"><value>Clientverbindingslogboeken</value></data>
+  <data name="Logs.ServiceSystemLogs" xml:space="preserve"><value>Servicesysteemlogboeken</value></data>
+  <data name="Logs.ClientTraffic" xml:space="preserve"><value>Clientverkeer</value></data>
+  <data name="Logs.LiveView" xml:space="preserve"><value>Liveweergave</value></data>
+  <data name="Logs.ServiceOutput" xml:space="preserve"><value>Service-uitvoer</value></data>
+  <data name="Logs.Streaming" xml:space="preserve"><value>Streaming</value></data>
+  <data name="Logs.ColTime" xml:space="preserve"><value>Tijd</value></data>
+  <data name="Logs.ColClientIp" xml:space="preserve"><value>Client-IP</value></data>
+  <data name="Logs.ColMethod" xml:space="preserve"><value>Methode</value></data>
+  <data name="Logs.ColDestination" xml:space="preserve"><value>Bestemmingsadres</value></data>
+  <data name="Logs.ColStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="Svc.WindowsServiceControl" xml:space="preserve"><value>Windows-servicebeheer</value></data>
+  <data name="Svc.RequiresAdmin" xml:space="preserve"><value>Beheerdersrechten vereist</value></data>
+  <data name="Svc.ProxyEngineControl" xml:space="preserve"><value>Proxy-enginebeheer</value></data>
+  <data name="Svc.StartEngine" xml:space="preserve"><value>▶  Engine starten</value></data>
+  <data name="Svc.StopEngine" xml:space="preserve"><value>⏹  Engine stoppen</value></data>
+  <data name="Svc.RestartEngine" xml:space="preserve"><value>↺  Engine opnieuw starten</value></data>
+  <data name="Svc.NoteLabel" xml:space="preserve"><value>Opmerking:</value></data>
+  <data name="Svc.NoteText" xml:space="preserve"><value>Deze besturingselementen beheren de daadwerkelijke Windows-service. De proxy-engine blijft draaien wanneer dit venster wordt gesloten.</value></data>
+  <data name="Svc.Msgs.EngineStarted" xml:space="preserve"><value>Proxy-engine gestart.</value></data>
+  <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Proxy-engine gestopt.</value></data>
+  <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Proxy-engine opnieuw gestart.</value></data>
+  <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Uitvoeren van opdracht mislukt.</value></data>
 </root>

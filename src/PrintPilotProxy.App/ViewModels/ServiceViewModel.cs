@@ -58,11 +58,13 @@ public partial class ServiceViewModel : ObservableObject
     [ObservableProperty] private string _statusMessage = string.Empty;
     [ObservableProperty] private bool _statusIsError;
 
+    private bool _isRefreshing;
+
     public ServiceViewModel(IpcClientService ipc, IPlatformServiceManager serviceManager)
     {
         _ipc = ipc;
         _serviceManager = serviceManager;
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
         _timer.Tick += async (_, _) => await RefreshAsync();
         _timer.Start();
         _ = RefreshAsync();
@@ -71,6 +73,9 @@ public partial class ServiceViewModel : ObservableObject
     [RelayCommand]
     private async Task RefreshAsync()
     {
+        if (_isRefreshing || IsBusy) return;
+        _isRefreshing = true;
+
         try
         {
             var service = await _serviceManager.GetInfoAsync();
@@ -134,6 +139,7 @@ public partial class ServiceViewModel : ObservableObject
         }
         finally
         {
+            _isRefreshing = false;
             StartServiceCommand.NotifyCanExecuteChanged();
             StopServiceCommand.NotifyCanExecuteChanged();
             RestartServiceCommand.NotifyCanExecuteChanged();
@@ -144,20 +150,20 @@ public partial class ServiceViewModel : ObservableObject
     }
 
     [RelayCommand(CanExecute = nameof(CanStart))]
-    private Task StartServiceAsync() => ExecuteServiceCommandAsync(_serviceManager.StartAsync, "Windows Service started.");
+    private Task StartServiceAsync() => ExecuteServiceCommandAsync(_serviceManager.StartAsync, LocalizationService.Instance["Svc.Msgs.Started"]);
 
     [RelayCommand(CanExecute = nameof(CanStop))]
-    private Task StopServiceAsync() => ExecuteServiceCommandAsync(_serviceManager.StopAsync, "Windows Service stopped.");
+    private Task StopServiceAsync() => ExecuteServiceCommandAsync(_serviceManager.StopAsync, LocalizationService.Instance["Svc.Msgs.Stopped"]);
 
     [RelayCommand(CanExecute = nameof(CanRestart))]
-    private Task RestartServiceAsync() => ExecuteServiceCommandAsync(_serviceManager.RestartAsync, "Windows Service restarted.");
+    private Task RestartServiceAsync() => ExecuteServiceCommandAsync(_serviceManager.RestartAsync, LocalizationService.Instance["Svc.Msgs.Restarted"]);
 
     [RelayCommand(CanExecute = nameof(CanStartProxyEngine))]
     private async Task StartProxyEngineAsync()
     {
         IsBusy = true;
         var (success, msg) = await _ipc.StartProxyAsync();
-        StatusMessage = success ? "Proxy Engine Started" : msg;
+        StatusMessage = success ? LocalizationService.Instance["Svc.Msgs.EngineStarted"] : msg;
         StatusIsError = !success;
         IsBusy = false;
         await RefreshAsync();
@@ -168,7 +174,7 @@ public partial class ServiceViewModel : ObservableObject
     {
         IsBusy = true;
         var (success, msg) = await _ipc.StopProxyAsync();
-        StatusMessage = success ? "Proxy Engine Stopped" : msg;
+        StatusMessage = success ? LocalizationService.Instance["Svc.Msgs.EngineStopped"] : msg;
         StatusIsError = !success;
         IsBusy = false;
         await RefreshAsync();
@@ -179,7 +185,7 @@ public partial class ServiceViewModel : ObservableObject
     {
         IsBusy = true;
         var (success, msg) = await _ipc.RestartProxyAsync();
-        StatusMessage = success ? "Proxy Engine Restarted" : msg;
+        StatusMessage = success ? LocalizationService.Instance["Svc.Msgs.EngineRestarted"] : msg;
         StatusIsError = !success;
         IsBusy = false;
         await RefreshAsync();
@@ -194,13 +200,13 @@ public partial class ServiceViewModel : ObservableObject
             var configuration = await _ipc.GetConfigurationAsync();
             if (configuration is null)
             {
-                throw new InvalidOperationException("The Windows Service must be running to update engine recovery settings.");
+                throw new InvalidOperationException(LocalizationService.Instance["Svc.Msgs.ServiceRequired"]);
             }
 
             configuration.Service.AutoRestartOnFailure = AutoRestartOnFailure;
             configuration.LastModified = DateTimeOffset.UtcNow;
             var (success, message) = await _ipc.UpdateConfigurationAsync(configuration);
-            StatusMessage = success ? "Proxy engine recovery setting updated." : message;
+            StatusMessage = success ? LocalizationService.Instance["Svc.Msgs.RecoveryUpdated"] : message;
             StatusIsError = !success;
         }
         catch (Exception ex)
@@ -223,8 +229,22 @@ public partial class ServiceViewModel : ObservableObject
             IsBusy = true;
             CanStart = CanStop = CanRestart = false;
             var ok = await command(CancellationToken.None);
-            StatusMessage = ok ? successMessage : "Command execution failed.";
+            StatusMessage = ok ? successMessage : LocalizationService.Instance["Svc.Msgs.CommandFailed"];
             StatusIsError = !ok;
+
+            if (ok)
+            {
+                // Wait for the Windows Service IPC endpoint to start responding (up to 8s)
+                for (int i = 0; i < 16; i++)
+                {
+                    await Task.Delay(500);
+                    var probe = await _ipc.GetStatusAsync();
+                    if (probe != null)
+                    {
+                        break;
+                    }
+                }
+            }
         }
         catch (Exception ex)
         {

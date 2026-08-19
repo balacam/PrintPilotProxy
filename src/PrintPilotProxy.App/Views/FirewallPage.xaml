@@ -3,97 +3,161 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:loc="clr-namespace:PrintPilotProxy.App.Localization">
     <StackPanel>
-        <TextBlock Text="{loc:Loc Key=Page.Firewall}" Style="{StaticResource HeaderTextBlockStyle}" />
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="NETWORK SECURITY" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+            <TextBlock Text="{loc:Loc Key=Page.Firewall}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
+        </StackPanel>
 
-        <!-- Status Card -->
-        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12">
+        <!-- Firewall rule status -->
+        <Border Style="{StaticResource HeroCardStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" MinWidth="180"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1.1*" />
+                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="1.5*" />
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
 
-                <TextBlock Grid.ColumnSpan="2" Text="{loc:Loc Key=Fw.Rule}"
-                           Style="{StaticResource SubheaderTextBlockStyle}" />
+                <Border Width="52" Height="52" Margin="0,0,15,0" Background="{StaticResource AccentSoftBrush}" CornerRadius="14" VerticalAlignment="Top">
+                    <TextBlock Text="&#xE83D;" FontFamily="Segoe MDL2 Assets" FontSize="22" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Loc Key=Fw.RuleName}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,4"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding RuleName}" Foreground="{StaticResource TextBrush}" Margin="0,4,0,4"/>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="{loc:Loc Key=Fw.Rule}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,0,0,4" />
+                    <TextBlock Text="{Binding RuleName}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" />
+                    <Border Margin="0,14,0,0" Padding="10,6" CornerRadius="7" HorizontalAlignment="Left">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Background" Value="{StaticResource ErrorSurfaceBrush}" />
+                                <Setter Property="BorderBrush" Value="#6F3043" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RuleExists}" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource SuccessSurfaceBrush}" />
+                                        <Setter Property="BorderBrush" Value="#2B6E5D" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="7" Height="7" Margin="0,0,7,0" VerticalAlignment="Center">
+                                <Ellipse.Style>
+                                    <Style TargetType="{x:Type Ellipse}">
+                                        <Setter Property="Fill" Value="{StaticResource ErrorBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RuleExists}" Value="True">
+                                                <Setter Property="Fill" Value="{StaticResource SuccessBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <TextBlock Text="{Binding RuleStatus}" FontSize="11" FontWeight="SemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RuleExists}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc Key=Fw.Status}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,4"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding RuleStatus}" Margin="0,4,0,4">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RuleExists}" Value="True">
-                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <Border Grid.Column="2" Width="1" Margin="22,0" Background="#34486A" HorizontalAlignment="Center" />
 
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="{loc:Loc Key=Fw.Port}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,4"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding RulePort}" Foreground="{StaticResource TextBrush}" Margin="0,4,0,4"/>
+                <Grid Grid.Column="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:Loc Key=Fw.Protocol}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,4"/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RuleProtocol}" Foreground="{StaticResource TextBrush}" Margin="0,4,0,4"/>
-
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="{loc:Loc Key=Fw.LocalScope}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,4,0,0"/>
-                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding RuleScope}" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Fw.Port}" Style="{StaticResource MetricLabelTextBlockStyle}" />
+                            <TextBlock Text="{Binding RulePort}" Margin="0,5,0,0" FontSize="17" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Fw.Protocol}" Style="{StaticResource MetricLabelTextBlockStyle}" />
+                            <TextBlock Text="{Binding RuleProtocol}" Margin="0,5,0,0" FontSize="17" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Fw.LocalScope}" Style="{StaticResource MetricLabelTextBlockStyle}" />
+                            <TextBlock Text="{Binding RuleScope}" Margin="0,5,0,0" FontFamily="Cascadia Mono, Consolas" FontSize="12" Foreground="{StaticResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
             </Grid>
         </Border>
 
-        <!-- Notice -->
-        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12" Background="#2A2A20">
-            <TextBlock Foreground="{StaticResource WarningBrush}" FontSize="12" TextWrapping="Wrap">
-                <Run FontWeight="Bold">Note:</Run>
-                <Run> Creating or removing firewall rules requires Administrator privileges. The service manages this rule automatically on startup. Use the buttons below to manually control the rule.</Run>
-            </TextBlock>
+        <!-- Privilege note -->
+        <Border Style="{StaticResource WarningCardStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{StaticResource WarningBrush}" Margin="0,1,12,0" />
+                <TextBlock Grid.Column="1" Foreground="{StaticResource SecondaryTextBrush}" FontSize="12" TextWrapping="Wrap">
+                    <Run FontWeight="SemiBold" Foreground="{StaticResource WarningBrush}">Note: </Run>
+                    <Run>Creating or removing firewall rules requires Administrator privileges. The service manages this rule automatically on startup. Use the controls below for manual management.</Run>
+                </TextBlock>
+            </Grid>
         </Border>
 
-        <!-- Status Message -->
-        <TextBlock Text="{Binding StatusMessage}"
-                   Margin="0,0,0,12"
-                   TextWrapping="Wrap"
-                   Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+        <!-- Result message -->
+        <Border Margin="0,0,0,16" Padding="13,10" BorderThickness="1" CornerRadius="8" Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Background" Value="{StaticResource SuccessSurfaceBrush}" />
+                    <Setter Property="BorderBrush" Value="#2B6E5D" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding StatusIsError}" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                            <Setter Property="Background" Value="{StaticResource ErrorSurfaceBrush}" />
+                            <Setter Property="BorderBrush" Value="#6F3043" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </TextBlock.Style>
-        </TextBlock>
+            </Border.Style>
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatusIsError}" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Border>
 
-        <!-- Buttons -->
-        <StackPanel Orientation="Horizontal">
-            <Button Content="{loc:Loc Key=Fw.Msgs.CreateUpdate}"
-                    Command="{Binding ApplyRuleCommand}"
-                    Background="{StaticResource AccentBrush}"
-                    Foreground="White"
-                    Padding="16,8"
-                    Margin="0,0,12,0" />
-            <Button Content="{loc:Loc Key=Fw.Msgs.RemoveRule}"
-                    Command="{Binding RemoveRuleCommand}"
-                    Background="#5A2020"
-                    Foreground="White"
-                    Padding="16,8"
-                    Margin="0,0,12,0" />
-            <Button Content="{loc:Loc Key=Action.Refresh}"
-                    Command="{Binding LoadCommand}"
-                    Padding="16,8" />
-        </StackPanel>
+        <!-- Actions -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="{loc:Loc Key=Action.Refresh}" Command="{Binding LoadCommand}" Style="{StaticResource GhostButtonStyle}" Margin="0,0,10,0" />
+                <Button Content="{loc:Loc Key=Fw.Msgs.RemoveRule}" Command="{Binding RemoveRuleCommand}" Style="{StaticResource DangerButtonStyle}" Margin="0,0,10,0" />
+                <Button Content="{loc:Loc Key=Fw.Msgs.CreateUpdate}" Command="{Binding ApplyRuleCommand}" Style="{StaticResource PrimaryButtonStyle}" />
+            </StackPanel>
+        </Grid>
     </StackPanel>
 </UserControl>

@@ -13,15 +13,15 @@
 <data name="Common.Private" xml:space="preserve"><value>Privat</value></data>
 <data name="Common.Public" xml:space="preserve"><value>Publik</value></data>
 <data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
-<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Kontrollpanel</value></data>
-<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Nätverksinställningar</value></data>
-<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Tillåtna klienter</value></data>
-<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Brandvägg</value></data>
-<data name="Nav.Service" xml:space="preserve"><value>⚙️  Tjänst</value></data>
-<data name="Nav.Logs" xml:space="preserve"><value>📋  Loggar</value></data>
-<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnostik</value></data>
-<data name="Nav.Security" xml:space="preserve"><value>🛡️  Säkerhet</value></data>
-<data name="Nav.Language" xml:space="preserve"><value>🌍  Språk</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>Kontrollpanel</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>Nätverksinställningar</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>Tillåtna klienter</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>Brandvägg</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>Tjänst</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>Loggar</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>Diagnostik</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>Säkerhet</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>Språk</value></data>
 <data name="MainWindow.Status" xml:space="preserve"><value>Status: </value></data>
 <data name="MainWindow.Listen" xml:space="preserve"><value>Lyssnar: </value></data>
 <data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>TJÄNSTEN EJ TILLGÄNGLIG</value></data>
@@ -52,7 +52,7 @@
 <data name="Page.NetworkSettings" xml:space="preserve"><value>Nätverksinställningar</value></data>
 <data name="Net.ListenerMode" xml:space="preserve"><value>Lyssningsläge</value></data>
 <data name="Net.ChooseInterface" xml:space="preserve"><value>Välj nätverksgränssnitt som proxyn lyssnar på.</value></data>
-<data name="Net.ModeAuto" xml:space="preserve"><value>Automatiskt  (använd alla privata nätverksgränssnitt)</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Automatiskt  (Standard - använd alla privata nätverksgränssnitt)</value></data>
 <data name="Net.ModeAdapter" xml:space="preserve"><value>Angiven adapter  (välj bland upptäckta adaptere)</value></data>
 <data name="Net.ModeSpecificIp" xml:space="preserve"><value>Angiven IP-adress  (ange manuellt)</value></data>
 <data name="Net.PortAndLimits" xml:space="preserve"><value>Port och gränser</value></data>
@@ -266,4 +266,46 @@
 <data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>Konfigurationen är giltig.</value></data>
 <data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} konfigurationsfel: {1}</value></data>
 <data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Åtgärda ovannämnda konfigurationsfel.</value></data>
+
+  <data name="Net.SecurityAndAccess" xml:space="preserve"><value>Säkerhet &amp; åtkomst</value></data>
+  <data name="Net.SecurityAndAccessDesc" xml:space="preserve"><value>Konfigurera regler för klientåtkomst och destinationsportbegränsningar.</value></data>
+  <data name="Net.AccessMode" xml:space="preserve"><value>Åtkomstläge</value></data>
+  <data name="Net.ClientAccessAllowAll" xml:space="preserve"><value>Tillåt alla klienter (AllowAll)</value></data>
+  <data name="Net.ClientAccessAllowList" xml:space="preserve"><value>Endast tillåtna (AllowList)</value></data>
+  <data name="Net.DestinationPortRestrictions" xml:space="preserve"><value>Destinationsportbegränsningar</value></data>
+  <data name="Net.AllowAllDestinationPorts" xml:space="preserve"><value>Tillåt alla destinationsportar (Rekommenderas inte)</value></data>
+  <data name="Net.AllowedPortsWithHint" xml:space="preserve"><value>Tillåtna portar (kommaseparerade)</value></data>
+  <data name="Cli.ColEnabled" xml:space="preserve"><value>Aktiverad</value></data>
+  <data name="Cli.ColName" xml:space="preserve"><value>Namn</value></data>
+  <data name="Cli.ColIpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+  <data name="Cli.ColDescription" xml:space="preserve"><value>Beskrivning</value></data>
+  <data name="Dash.ColTime" xml:space="preserve"><value>Tid</value></data>
+  <data name="Dash.ColClientIp" xml:space="preserve"><value>Klient-IP</value></data>
+  <data name="Dash.ColMethod" xml:space="preserve"><value>Metod</value></data>
+  <data name="Dash.ColDestination" xml:space="preserve"><value>Destination</value></data>
+  <data name="Dash.ColStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="Diag.OverallDesc" xml:space="preserve"><value>Diagnostisk beredskap och anslutningskontroller</value></data>
+  <data name="Logs.ClientAccessLogs" xml:space="preserve"><value>Klientanslutningsloggar</value></data>
+  <data name="Logs.ServiceSystemLogs" xml:space="preserve"><value>Tjänstens systemloggar</value></data>
+  <data name="Logs.ClientTraffic" xml:space="preserve"><value>Klienttrafik</value></data>
+  <data name="Logs.LiveView" xml:space="preserve"><value>Live-vy</value></data>
+  <data name="Logs.ServiceOutput" xml:space="preserve"><value>Tjänstutdata</value></data>
+  <data name="Logs.Streaming" xml:space="preserve"><value>Strömning</value></data>
+  <data name="Logs.ColTime" xml:space="preserve"><value>Tid</value></data>
+  <data name="Logs.ColClientIp" xml:space="preserve"><value>Klient-IP</value></data>
+  <data name="Logs.ColMethod" xml:space="preserve"><value>Metod</value></data>
+  <data name="Logs.ColDestination" xml:space="preserve"><value>Destinationsadress</value></data>
+  <data name="Logs.ColStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="Svc.WindowsServiceControl" xml:space="preserve"><value>Styrning av Windows-tjänst</value></data>
+  <data name="Svc.RequiresAdmin" xml:space="preserve"><value>Kräver administratörsbehörighet</value></data>
+  <data name="Svc.ProxyEngineControl" xml:space="preserve"><value>Styrning av proxymotor</value></data>
+  <data name="Svc.StartEngine" xml:space="preserve"><value>▶  Starta motor</value></data>
+  <data name="Svc.StopEngine" xml:space="preserve"><value>⏹  Stoppa motor</value></data>
+  <data name="Svc.RestartEngine" xml:space="preserve"><value>↺  Starta om motor</value></data>
+  <data name="Svc.NoteLabel" xml:space="preserve"><value>Obs:</value></data>
+  <data name="Svc.NoteText" xml:space="preserve"><value>Dessa kontroller hanterar den faktiska Windows-tjänsten. Proxymotorn fortsätter att köras när detta administrationsfönster stängs.</value></data>
+  <data name="Svc.Msgs.EngineStarted" xml:space="preserve"><value>Proxymotor startad.</value></data>
+  <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Proxymotor stoppad.</value></data>
+  <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Proxymotor omstartad.</value></data>
+  <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Kommandokörningen misslyckades.</value></data>
 </root>

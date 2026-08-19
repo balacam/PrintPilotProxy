@@ -46,7 +46,7 @@ public partial class MainViewModel : ObservableObject
         _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
 
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
         _timer.Tick += async (_, _) => await UpdateStatusAsync();
         _timer.Start();
 
@@ -54,8 +54,13 @@ public partial class MainViewModel : ObservableObject
         Navigate("Dashboard");
     }
 
+    private bool _isUpdatingStatus;
+
     private async Task UpdateStatusAsync()
     {
+        if (_isUpdatingStatus) return;
+        _isUpdatingStatus = true;
+
         try
         {
             var status = await _ipc.GetStatusAsync();
@@ -77,6 +82,10 @@ public partial class MainViewModel : ObservableObject
             IsConnectedToService = false;
             ProxyStatus = LocalizationService.Instance["MainWindow.ServiceUnavailable"];
             ListenAddress = LocalizationService.Instance["Common.Na"];
+        }
+        finally
+        {
+            _isUpdatingStatus = false;
         }
     }
 

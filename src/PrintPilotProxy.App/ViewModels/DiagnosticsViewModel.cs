@@ -234,12 +234,21 @@ public partial class DiagnosticItem : ObservableObject
 {
     [ObservableProperty] private string _name = string.Empty;
     [ObservableProperty] private string _description = string.Empty;
-    [ObservableProperty] private bool   _passed = false;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StatusIcon))]
+    [NotifyPropertyChangedFor(nameof(StatusBrushKey))]
+    private bool _passed = false;
+
     [ObservableProperty] private string _message = string.Empty;
     [ObservableProperty] private string _remediation = string.Empty;
     [ObservableProperty] private string _duration = string.Empty;
-    [ObservableProperty] private bool   _isRunning = false;
 
-    public string StatusIcon      => IsRunning ? "⏳" : (Passed ? "✔" : "✘");
-    public string StatusBrushKey  => IsRunning ? "WarningBrush" : (Passed ? "SuccessBrush" : "ErrorBrush");
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StatusIcon))]
+    [NotifyPropertyChangedFor(nameof(StatusBrushKey))]
+    private bool _isRunning = false;
+
+    public string StatusIcon     => IsRunning ? "\uE895" : (Passed ? "\uE73E" : "\uE7BA");
+    public string StatusBrushKey => IsRunning ? "WarningBrush" : (Passed ? "SuccessBrush" : "ErrorBrush");
 }

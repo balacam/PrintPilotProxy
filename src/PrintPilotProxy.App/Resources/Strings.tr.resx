@@ -13,15 +13,15 @@
 <data name="Common.Private" xml:space="preserve"><value>Özel</value></data>
 <data name="Common.Public" xml:space="preserve"><value>Herkese açık</value></data>
 <data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
-<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Gösterge Paneli</value></data>
-<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Ağ Ayarları</value></data>
-<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  İzin Verilen İstemciler</value></data>
-<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Güvenlik Duvarı</value></data>
-<data name="Nav.Service" xml:space="preserve"><value>⚙️  Hizmet</value></data>
-<data name="Nav.Logs" xml:space="preserve"><value>📋  Günlükler</value></data>
-<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Tanılama</value></data>
-<data name="Nav.Security" xml:space="preserve"><value>🛡️  Güvenlik</value></data>
-<data name="Nav.Language" xml:space="preserve"><value>🌍  Dil</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>Gösterge Paneli</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>Ağ Ayarları</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>İzin Verilen İstemciler</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>Güvenlik Duvarı</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>Hizmet</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>Günlükler</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>Tanılama</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>Güvenlik</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>Dil</value></data>
 <data name="MainWindow.Status" xml:space="preserve"><value>Durum: </value></data>
 <data name="MainWindow.Listen" xml:space="preserve"><value>Dinleme: </value></data>
 <data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>HİZMET KULLANILAMIYOR</value></data>
@@ -52,7 +52,7 @@
 <data name="Page.NetworkSettings" xml:space="preserve"><value>Ağ Ayarları</value></data>
 <data name="Net.ListenerMode" xml:space="preserve"><value>Dinleme Modu</value></data>
 <data name="Net.ChooseInterface" xml:space="preserve"><value>Proxy&apos;nin dinlediği ağ arayüzünü seçin.</value></data>
-<data name="Net.ModeAuto" xml:space="preserve"><value>Otomatik  (tüm özel ağ arayüzlerini kullan)</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Otomatik  (Varsayılan - tüm özel ağ arayüzlerini kullan)</value></data>
 <data name="Net.ModeAdapter" xml:space="preserve"><value>Belirli Ağ Adaptörü  (algılanan adaptörlerden seç)</value></data>
 <data name="Net.ModeSpecificIp" xml:space="preserve"><value>Belirli IP Adresi  (elle girin)</value></data>
 <data name="Net.PortAndLimits" xml:space="preserve"><value>Port ve Sınırlar</value></data>
@@ -266,4 +266,46 @@
 <data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>Yapılandırma geçerli.</value></data>
 <data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} yapılandırma hatası: {1}</value></data>
 <data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Yukarıda listelenen yapılandırma hatalarını düzeltin.</value></data>
+
+  <data name="Net.SecurityAndAccess" xml:space="preserve"><value>Güvenlik &amp; Erişim</value></data>
+  <data name="Net.SecurityAndAccessDesc" xml:space="preserve"><value>İstemci erişim kurallarını ve hedef port kısıtlamalarını yapılandırın.</value></data>
+  <data name="Net.AccessMode" xml:space="preserve"><value>Erişim Modu</value></data>
+  <data name="Net.ClientAccessAllowAll" xml:space="preserve"><value>Tüm İstemcilere İzin Ver (AllowAll)</value></data>
+  <data name="Net.ClientAccessAllowList" xml:space="preserve"><value>Sadece İzin Verilenler (AllowList)</value></data>
+  <data name="Net.DestinationPortRestrictions" xml:space="preserve"><value>Hedef Port Kısıtlamaları</value></data>
+  <data name="Net.AllowAllDestinationPorts" xml:space="preserve"><value>Tüm hedef portlara izin ver (Önerilmez)</value></data>
+  <data name="Net.AllowedPortsWithHint" xml:space="preserve"><value>İzin Verilen Portlar (virgülle ayırın)</value></data>
+  <data name="Cli.ColEnabled" xml:space="preserve"><value>Etkin</value></data>
+  <data name="Cli.ColName" xml:space="preserve"><value>Ad</value></data>
+  <data name="Cli.ColIpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+  <data name="Cli.ColDescription" xml:space="preserve"><value>Açıklama</value></data>
+  <data name="Dash.ColTime" xml:space="preserve"><value>Zaman</value></data>
+  <data name="Dash.ColClientIp" xml:space="preserve"><value>İstemci IP</value></data>
+  <data name="Dash.ColMethod" xml:space="preserve"><value>Metot</value></data>
+  <data name="Dash.ColDestination" xml:space="preserve"><value>Hedef</value></data>
+  <data name="Dash.ColStatus" xml:space="preserve"><value>Durum</value></data>
+  <data name="Diag.OverallDesc" xml:space="preserve"><value>Tanılama hazırlığı ve bağlantı denetimleri</value></data>
+  <data name="Logs.ClientAccessLogs" xml:space="preserve"><value>İstemci Bağlantı Günlükleri</value></data>
+  <data name="Logs.ServiceSystemLogs" xml:space="preserve"><value>Servis Sistem Logları</value></data>
+  <data name="Logs.ClientTraffic" xml:space="preserve"><value>İstemci Trafiği</value></data>
+  <data name="Logs.LiveView" xml:space="preserve"><value>Canlı görünüm</value></data>
+  <data name="Logs.ServiceOutput" xml:space="preserve"><value>Servis Çıktısı</value></data>
+  <data name="Logs.Streaming" xml:space="preserve"><value>Akış</value></data>
+  <data name="Logs.ColTime" xml:space="preserve"><value>Zaman</value></data>
+  <data name="Logs.ColClientIp" xml:space="preserve"><value>İstemci IP</value></data>
+  <data name="Logs.ColMethod" xml:space="preserve"><value>Metot</value></data>
+  <data name="Logs.ColDestination" xml:space="preserve"><value>Hedef Adres</value></data>
+  <data name="Logs.ColStatus" xml:space="preserve"><value>Durum</value></data>
+  <data name="Svc.WindowsServiceControl" xml:space="preserve"><value>Windows Servis Kontrolü</value></data>
+  <data name="Svc.RequiresAdmin" xml:space="preserve"><value>Yönetici izni gerektirir</value></data>
+  <data name="Svc.ProxyEngineControl" xml:space="preserve"><value>Proxy Motoru Kontrolü</value></data>
+  <data name="Svc.StartEngine" xml:space="preserve"><value>▶  Motoru Başlat</value></data>
+  <data name="Svc.StopEngine" xml:space="preserve"><value>⏹  Motoru Durdur</value></data>
+  <data name="Svc.RestartEngine" xml:space="preserve"><value>↺  Motoru Yeniden Başlat</value></data>
+  <data name="Svc.NoteLabel" xml:space="preserve"><value>Not:</value></data>
+  <data name="Svc.NoteText" xml:space="preserve"><value>Bu kontroller asıl Windows Servisini raporlar ve yönetir. Bu yönetim penceresi kapatıldığında proxy motoru arka planda çalışmaya devam eder.</value></data>
+  <data name="Svc.Msgs.EngineStarted" xml:space="preserve"><value>Proxy motoru başlatıldı.</value></data>
+  <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Proxy motoru durduruldu.</value></data>
+  <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Proxy motoru yeniden başlatıldı.</value></data>
+  <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Komut yürütme başarısız oldu.</value></data>
 </root>

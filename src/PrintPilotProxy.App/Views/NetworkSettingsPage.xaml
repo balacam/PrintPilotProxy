@@ -9,192 +9,257 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+
     <StackPanel>
-        <TextBlock Text="{loc:Loc Key=Page.NetworkSettings}" Style="{StaticResource HeaderTextBlockStyle}" />
+        <!-- Page heading -->
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="CONFIGURATION" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+            <TextBlock Text="{loc:Loc Key=Page.NetworkSettings}"
+                       Style="{StaticResource HeaderTextBlockStyle}"
+                       Margin="0" />
+        </StackPanel>
 
-        <!-- Listener Mode -->
-        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12">
+        <!-- Listener mode -->
+        <Border Style="{StaticResource CardStyle}">
             <StackPanel>
-                <TextBlock Text="{loc:Loc Key=Net.ListenerMode}" Style="{StaticResource SubheaderTextBlockStyle}" />
-                <TextBlock Text="{loc:Loc Key=Net.ChooseInterface}"
-                           Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,0,0,12" />
+                <Grid Margin="0,0,0,18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="38" Height="38" Margin="0,0,12,0" Background="{StaticResource AccentSoftBrush}" CornerRadius="10">
+                        <TextBlock Text="&#xE839;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="16"
+                                   Foreground="{StaticResource AccentHoverBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{loc:Loc Key=Net.ListenerMode}"
+                                   Style="{StaticResource SubheaderTextBlockStyle}"
+                                   Margin="0" />
+                        <TextBlock Text="{loc:Loc Key=Net.ChooseInterface}"
+                                   Style="{StaticResource MutedTextBlockStyle}"
+                                   Margin="0,3,0,0" />
+                    </StackPanel>
+                </Grid>
 
-                <RadioButton Content="{loc:Loc Key=Net.ModeAuto}"
-                             IsChecked="{Binding ModeAuto}"
-                             Foreground="{StaticResource TextBrush}" Margin="0,0,0,8" />
+                <Border Style="{StaticResource InsetPanelStyle}" Margin="0,0,0,10">
+                    <RadioButton Content="{loc:Loc Key=Net.ModeAuto}"
+                                 GroupName="ListenerModeGroup"
+                                 IsChecked="{Binding ModeAuto}" />
+                </Border>
 
-                <RadioButton Content="{loc:Loc Key=Net.ModeAdapter}"
-                             IsChecked="{Binding ModeSpecificAdapter}"
-                             Foreground="{StaticResource TextBrush}" Margin="0,0,0,8" />
+                <Border Style="{StaticResource InsetPanelStyle}" Margin="0,0,0,10">
+                    <StackPanel>
+                        <RadioButton Content="{loc:Loc Key=Net.ModeAdapter}"
+                                     GroupName="ListenerModeGroup"
+                                     IsChecked="{Binding ModeSpecificAdapter}" />
+                        <ComboBox ItemsSource="{Binding DetectedAdapters}"
+                                  SelectedItem="{Binding SelectedAdapter}"
+                                  IsEnabled="{Binding IsAdapterSelectionEnabled}"
+                                  Margin="27,12,0,0" />
+                    </StackPanel>
+                </Border>
 
-                <ComboBox ItemsSource="{Binding DetectedAdapters}"
-                          SelectedItem="{Binding SelectedAdapter}"
-                          IsEnabled="{Binding IsAdapterSelectionEnabled}"
-                          Margin="24,0,0,12"
-                          Background="{StaticResource DarkBackgroundBrush}"
-                          Foreground="{StaticResource TextBrush}"
-                          Height="30" />
-
-                <RadioButton Content="{loc:Loc Key=Net.ModeSpecificIp}"
-                             IsChecked="{Binding ModeSpecificIp}"
-                             Foreground="{StaticResource TextBrush}" Margin="0,0,0,6" />
-
-                <TextBox Text="{Binding SpecificIpAddress, UpdateSourceTrigger=PropertyChanged}"
-                         IsEnabled="{Binding IsSpecificIpEnabled}"
-                         Margin="24,0,0,0"
-                         Background="{StaticResource DarkBackgroundBrush}"
-                         Foreground="{StaticResource TextBrush}"
-                         BorderBrush="{StaticResource AccentBrush}"
-                         Padding="8,6"
-                         Height="32"
-                         VerticalContentAlignment="Center"
-                         Tag="e.g. 192.168.1.100"
-                         Style="{StaticResource PlaceholderTextBoxStyle}" />
+                <Border Style="{StaticResource InsetPanelStyle}">
+                    <StackPanel>
+                        <RadioButton Content="{loc:Loc Key=Net.ModeSpecificIp}"
+                                     GroupName="ListenerModeGroup"
+                                     IsChecked="{Binding ModeSpecificIp}" />
+                        <TextBox Text="{Binding SpecificIpAddress, UpdateSourceTrigger=PropertyChanged}"
+                                 IsEnabled="{Binding IsSpecificIpEnabled}"
+                                 Margin="27,12,0,0"
+                                 Tag="e.g. 192.168.1.100"
+                                 Style="{StaticResource PlaceholderTextBoxStyle}" />
+                    </StackPanel>
+                </Border>
             </StackPanel>
         </Border>
 
-        <!-- Port & Limits -->
-        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.ColumnSpan="3" Text="{loc:Loc Key=Net.PortAndLimits}"
-                           Style="{StaticResource SubheaderTextBlockStyle}" />
-
-                <!-- Proxy Port -->
-                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,0">
-                    <TextBlock Text="{loc:Loc Key=Net.ProxyPort}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,0,0,4" />
-                    <TextBox Text="{Binding ProxyPort, UpdateSourceTrigger=PropertyChanged}"
-                             Background="{StaticResource DarkBackgroundBrush}"
-                             Foreground="{StaticResource TextBrush}"
-                             BorderBrush="{StaticResource AccentBrush}"
-                             Padding="8,6" Height="32"
-                             VerticalContentAlignment="Center" />
-                    <TextBlock Text="{loc:Loc Key=Net.DefaultPort}" Foreground="{StaticResource TextBrush}" Opacity="0.5" FontSize="11" Margin="0,3,0,0"/>
-                </StackPanel>
-
-                <!-- Max Connections -->
-                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,12,0">
-                    <TextBlock Text="{loc:Loc Key=Net.MaxConnections}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,0,0,4" />
-                    <TextBox Text="{Binding MaxConnections, UpdateSourceTrigger=PropertyChanged}"
-                             Background="{StaticResource DarkBackgroundBrush}"
-                             Foreground="{StaticResource TextBrush}"
-                             BorderBrush="{StaticResource AccentBrush}"
-                             Padding="8,6" Height="32"
-                             VerticalContentAlignment="Center" />
-                    <TextBlock Text="{loc:Loc Key=Net.DefaultConnections}" Foreground="{StaticResource TextBrush}" Opacity="0.5" FontSize="11" Margin="0,3,0,0"/>
-                </StackPanel>
-
-                <!-- Connection Timeout -->
-                <StackPanel Grid.Row="1" Grid.Column="2">
-                    <TextBlock Text="{loc:Loc Key=Net.TimeoutSeconds}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,0,0,4" />
-                    <TextBox Text="{Binding ConnectionTimeoutSeconds, UpdateSourceTrigger=PropertyChanged}"
-                             Background="{StaticResource DarkBackgroundBrush}"
-                             Foreground="{StaticResource TextBrush}"
-                             BorderBrush="{StaticResource AccentBrush}"
-                             Padding="8,6" Height="32"
-                             VerticalContentAlignment="Center" />
-                    <TextBlock Text="{loc:Loc Key=Net.DefaultTimeout}" Foreground="{StaticResource TextBrush}" Opacity="0.5" FontSize="11" Margin="0,3,0,0"/>
-                </StackPanel>
-            </Grid>
-        </Border>
-
-        <!-- Client Access Mode & Security -->
-        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,10">
+        <!-- Port and connection limits -->
+        <Border Style="{StaticResource CardStyle}">
             <StackPanel>
-                <TextBlock Text="Güvenlik &amp; Erişim" Style="{StaticResource SubheaderTextBlockStyle}" />
-                <TextBlock Text="İstemci erişim kurallarını ve hedef port kısıtlamalarını yapılandırın."
-                           Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,0,0,10" />
+                <Grid Margin="0,0,0,18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="38" Height="38" Margin="0,0,12,0" Background="{StaticResource InfoSurfaceBrush}" CornerRadius="10">
+                        <TextBlock Text="&#xE9F9;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="16"
+                                   Foreground="{StaticResource InfoBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                    <TextBlock Grid.Column="1"
+                               Text="{loc:Loc Key=Net.PortAndLimits}"
+                               Style="{StaticResource SubheaderTextBlockStyle}"
+                               Margin="0"
+                               VerticalAlignment="Center" />
+                </Grid>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!-- Client Access -->
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="Erişim Modu:" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" Margin="0,0,0,6" />
-                        <RadioButton Content="Tüm İstemcilere İzin Ver (AllowAll)"
-                                     IsChecked="{Binding ClientAccessAllowAll}"
-                                     Foreground="{StaticResource TextBrush}" Margin="0,0,0,6" />
-                        <RadioButton Content="Sadece İzin Verilenler (AllowList)"
-                                     IsChecked="{Binding ClientAccessAllowList}"
-                                     Foreground="{StaticResource TextBrush}" />
-                    </StackPanel>
-
-                    <!-- Port Restrictions -->
-                    <StackPanel Grid.Column="2">
-                        <TextBlock Text="Hedef Port Kısıtlamaları:" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" Margin="0,0,0,6" />
-                        <CheckBox Content="Tüm hedef portlara izin ver (Önerilmez)"
-                                  IsChecked="{Binding AllowAllDestinationPorts}"
-                                  Foreground="{StaticResource TextBrush}" Margin="0,0,0,6" />
-                        <StackPanel Margin="0,4,0,0">
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
-                                    <Setter Property="IsEnabled" Value="True" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding AllowAllDestinationPorts}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style>
-                            <TextBlock Text="İzin Verilen Portlar (Virgül ile ayırın):" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,0,0,4" FontSize="11" />
-                            <TextBox Text="{Binding AllowedDestinationPortsText, UpdateSourceTrigger=PropertyChanged}"
-                                     Background="{StaticResource DarkBackgroundBrush}"
-                                     Foreground="{StaticResource TextBrush}"
-                                     BorderBrush="{StaticResource AccentBrush}"
-                                     Padding="6,4" Height="28"
-                                     VerticalContentAlignment="Center" />
+                    <Border Grid.Column="0" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Net.ProxyPort}" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                            <TextBox Text="{Binding ProxyPort, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="{loc:Loc Key=Net.DefaultPort}" Style="{StaticResource HelperTextBlockStyle}" />
                         </StackPanel>
-                    </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="2" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Net.MaxConnections}" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                            <TextBox Text="{Binding MaxConnections, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="{loc:Loc Key=Net.DefaultConnections}" Style="{StaticResource HelperTextBlockStyle}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="4" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Net.TimeoutSeconds}" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                            <TextBox Text="{Binding ConnectionTimeoutSeconds, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="{loc:Loc Key=Net.DefaultTimeout}" Style="{StaticResource HelperTextBlockStyle}" />
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </StackPanel>
         </Border>
 
-        <!-- Status message -->
-        <TextBlock Text="{Binding StatusMessage}"
-                   Margin="0,0,0,12"
-                   TextWrapping="Wrap"
-                   Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+        <!-- Access and destination security -->
+        <Border Style="{StaticResource CardStyle}">
+            <StackPanel>
+                <Grid Margin="0,0,0,18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="38" Height="38" Margin="0,0,12,0" Background="{StaticResource SuccessSurfaceBrush}" CornerRadius="10">
+                        <TextBlock Text="&#xE72E;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="16"
+                                   Foreground="{StaticResource SuccessBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{loc:Loc Key=Net.SecurityAndAccess}"
+                                   Style="{StaticResource SubheaderTextBlockStyle}"
+                                   Margin="0" />
+                        <TextBlock Text="{loc:Loc Key=Net.SecurityAndAccessDesc}"
+                                   Style="{StaticResource MutedTextBlockStyle}"
+                                   Margin="0,3,0,0" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Net.AccessMode}" Style="{StaticResource FieldLabelTextBlockStyle}" Margin="0,0,0,12" />
+                            <RadioButton Content="{loc:Loc Key=Net.ClientAccessAllowAll}"
+                                         GroupName="ClientAccessGroup"
+                                         IsChecked="{Binding ClientAccessAllowAll}"
+                                         Margin="0,0,0,12" />
+                            <RadioButton Content="{loc:Loc Key=Net.ClientAccessAllowList}"
+                                         GroupName="ClientAccessGroup"
+                                         IsChecked="{Binding ClientAccessAllowList}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="2" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Net.DestinationPortRestrictions}" Style="{StaticResource FieldLabelTextBlockStyle}" Margin="0,0,0,12" />
+                            <CheckBox Content="{loc:Loc Key=Net.AllowAllDestinationPorts}"
+                                      IsChecked="{Binding AllowAllDestinationPorts}"
+                                      Margin="0,0,0,13" />
+                            <StackPanel>
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Setter Property="IsEnabled" Value="True" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AllowAllDestinationPorts}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <TextBlock Text="{loc:Loc Key=Net.AllowedPortsWithHint}" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                                <TextBox Text="{Binding AllowedDestinationPortsText, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Contextual result message -->
+        <Border Margin="0,0,0,16"
+                Padding="13,10"
+                BorderThickness="1"
+                CornerRadius="8"
+                Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Background" Value="{StaticResource SuccessSurfaceBrush}" />
+                    <Setter Property="BorderBrush" Value="#2B6E5D" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding StatusIsError}" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                            <Setter Property="Background" Value="{StaticResource ErrorSurfaceBrush}" />
+                            <Setter Property="BorderBrush" Value="#6F3043" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </TextBlock.Style>
-        </TextBlock>
+            </Border.Style>
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatusIsError}" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Border>
 
-        <!-- Buttons -->
-        <StackPanel Orientation="Horizontal">
-            <Button Content="{loc:Loc Key=Action.Apply}"
-                    Command="{Binding ApplyCommand}"
-                    Background="{StaticResource AccentBrush}"
-                    Foreground="White"
-                    Padding="20,8"
-                    Margin="0,0,12,0" />
-            <Button Content="{loc:Loc Key=Action.Reset}"
-                    Command="{Binding ResetCommand}"
-                    Padding="20,8"
-                    Margin="0,0,12,0" />
-            <Button Content="{loc:Loc Key=Action.Reload}"
-                    Command="{Binding LoadCommand}"
-                    Padding="20,8" />
-        </StackPanel>
+        <!-- Actions -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="{loc:Loc Key=Action.Reload}"
+                        Command="{Binding LoadCommand}"
+                        Style="{StaticResource GhostButtonStyle}"
+                        Margin="0,0,10,0" />
+                <Button Content="{loc:Loc Key=Action.Reset}"
+                        Command="{Binding ResetCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Margin="0,0,10,0" />
+                <Button Content="{loc:Loc Key=Action.Apply}"
+                        Command="{Binding ApplyCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}" />
+            </StackPanel>
+        </Grid>
     </StackPanel>
 </UserControl>

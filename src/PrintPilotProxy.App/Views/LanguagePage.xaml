@@ -3,83 +3,91 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:loc="clr-namespace:PrintPilotProxy.App.Localization">
     <StackPanel>
-        <TextBlock Text="{loc:Loc Key=Page.Language}" Style="{StaticResource HeaderTextBlockStyle}" />
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="PREFERENCES" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+            <TextBlock Text="{loc:Loc Key=Page.Language}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
+        </StackPanel>
 
-        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12">
-            <StackPanel>
-                <TextBlock Text="{loc:Loc Key=Lang.Title}"
-                           Style="{StaticResource SubheaderTextBlockStyle}" />
-                <TextBlock Text="{loc:Loc Key=Lang.Description}"
-                           Foreground="{StaticResource TextBrush}" Opacity="0.7"
-                           Margin="0,4,0,12" TextWrapping="Wrap" />
+        <Border Style="{StaticResource CardStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.05*" />
+                    <ColumnDefinition Width="28" />
+                    <ColumnDefinition Width="1.4*" />
+                </Grid.ColumnDefinitions>
 
-                <ListBox ItemsSource="{Binding Languages}"
-                         SelectedItem="{Binding SelectedLanguage}"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         MaxHeight="320"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding DisplayName}"
-                                       Foreground="{StaticResource TextBrush}"
-                                       Padding="8,6"
-                                       FontSize="14" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListBoxItem">
-                                        <Border x:Name="Bd"
-                                                Background="Transparent"
-                                                Padding="12,6"
-                                                CornerRadius="6"
-                                                Margin="0,1">
-                                            <ContentPresenter />
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#1AFFFFFF" />
-                                            </Trigger>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentBrush}" />
-                                                <Setter Property="Foreground" Value="White" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
-            </StackPanel>
+                <StackPanel Grid.Column="0">
+                    <Border Width="44" Height="44" Margin="0,0,0,15" HorizontalAlignment="Left" Background="{StaticResource AccentSoftBrush}" CornerRadius="12">
+                        <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="19" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <TextBlock Text="{loc:Loc Key=Lang.Title}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,0,0,7" />
+                    <TextBlock Text="{loc:Loc Key=Lang.Description}" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" />
+                </StackPanel>
+
+                <Border Grid.Column="1" Width="1" Margin="13,0" Background="{StaticResource BorderBrush}" HorizontalAlignment="Center" />
+
+                <Border Grid.Column="2" Style="{StaticResource InsetPanelStyle}" Padding="8">
+                    <ListBox ItemsSource="{Binding Languages}"
+                             SelectedItem="{Binding SelectedLanguage}"
+                             MaxHeight="360"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="30" Height="30" Margin="0,0,11,0" Background="#561C2A48" CornerRadius="8">
+                                        <TextBlock Text="&#xE8C1;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" FontSize="13" FontWeight="Medium" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="2" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource SuccessBrush}" VerticalAlignment="Center" Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+            </Grid>
         </Border>
 
-        <TextBlock Text="{Binding StatusMessage}"
-                   Margin="0,0,0,12"
-                   TextWrapping="Wrap"
-                   Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+        <Border Margin="0,0,0,16" Padding="13,10" BorderThickness="1" CornerRadius="8" Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Background" Value="{StaticResource SuccessSurfaceBrush}" />
+                    <Setter Property="BorderBrush" Value="#2B6E5D" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding StatusIsError}" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                            <Setter Property="Background" Value="{StaticResource ErrorSurfaceBrush}" />
+                            <Setter Property="BorderBrush" Value="#6F3043" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </TextBlock.Style>
-        </TextBlock>
+            </Border.Style>
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatusIsError}" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Border>
 
-        <StackPanel Orientation="Horizontal">
-            <Button Content="{loc:Loc Key=Action.Apply}"
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1"
+                    Content="{loc:Loc Key=Action.Apply}"
                     Command="{Binding ApplyCommand}"
-                    Background="{StaticResource AccentBrush}"
-                    Foreground="White"
-                    Padding="16,8"
-                    Margin="0,0,12,0" />
-        </StackPanel>
+                    Style="{StaticResource PrimaryButtonStyle}" />
+        </Grid>
     </StackPanel>
 </UserControl>

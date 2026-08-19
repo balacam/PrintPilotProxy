@@ -33,10 +33,12 @@ public partial class DashboardViewModel : ObservableObject
 
     public ObservableCollection<ActivityLogEntry> RecentActivities { get; } = new();
 
+    private bool _isRefreshing;
+
     public DashboardViewModel(IpcClientService ipc)
     {
         _ipc = ipc;
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
         _timer.Tick += async (_, _) => await RefreshAsync();
         _timer.Start();
         _ = RefreshAsync();
@@ -45,6 +47,9 @@ public partial class DashboardViewModel : ObservableObject
     [RelayCommand]
     private async Task RefreshAsync()
     {
+        if (_isRefreshing) return;
+        _isRefreshing = true;
+
         try
         {
             IsLoading = true;
@@ -103,6 +108,7 @@ public partial class DashboardViewModel : ObservableObject
         finally
         {
             IsLoading = false;
+            _isRefreshing = false;
         }
     }
 

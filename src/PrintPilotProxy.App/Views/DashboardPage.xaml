@@ -9,6 +9,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -17,118 +18,296 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Header row -->
-        <DockPanel Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="{loc:Loc Key=Page.Dashboard}" Style="{StaticResource HeaderTextBlockStyle}" DockPanel.Dock="Left" Margin="0" />
-            <Button Content="{loc:Loc Key=Action.Refresh}"
+        <!-- Page heading -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="OVERVIEW" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+                <TextBlock Text="{loc:Loc Key=Page.Dashboard}"
+                           Style="{StaticResource HeaderTextBlockStyle}"
+                           Margin="0" />
+            </StackPanel>
+            <Button Grid.Column="1"
+                    Content="{loc:Loc Key=Action.Refresh}"
                     Command="{Binding RefreshCommand}"
-                    HorizontalAlignment="Right"
-                    Padding="12,6"
-                    Background="{StaticResource AccentBrush}"
-                    Foreground="White" />
-        </DockPanel>
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    VerticalAlignment="Center" />
+        </Grid>
 
-        <!-- Status cards -->
-        <UniformGrid Columns="4" Grid.Row="1" Margin="0,0,0,12">
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Loc Key=Dash.ProxyState}" Foreground="{StaticResource TextBrush}" Opacity="0.6" FontSize="11"/>
-                    <TextBlock Text="{Binding ProxyState}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ProxyState}" Value="Running">
-                                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ProxyState}" Value="Stopped">
-                                        <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ProxyState}" Value="Faulted">
-                                        <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Loc Key=Dash.Uptime}" Foreground="{StaticResource TextBrush}" Opacity="0.6" FontSize="11"/>
-                    <TextBlock Text="{Binding UptimeString}" FontSize="18" FontWeight="Bold" Margin="0,4,0,0" Foreground="{StaticResource TextBrush}" />
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Loc Key=Dash.TotalRequests}" Foreground="{StaticResource TextBrush}" Opacity="0.6" FontSize="11"/>
-                    <TextBlock Text="{Binding TotalRequests}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0" Foreground="{StaticResource TextBrush}" />
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Loc Key=Dash.Errors}" Foreground="{StaticResource TextBrush}" Opacity="0.6" FontSize="11"/>
-                    <TextBlock Text="{Binding TotalErrors}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0" Foreground="{StaticResource ErrorBrush}" />
-                </StackPanel>
-            </Border>
-        </UniformGrid>
+        <!-- Primary proxy state -->
+        <Border Grid.Row="1" Style="{StaticResource HeroCardStyle}" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.25*" />
+                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="1.75*" />
+                </Grid.ColumnDefinitions>
 
-        <!-- Config summary row -->
-        <UniformGrid Columns="4" Grid.Row="2" Margin="0,0,0,16">
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Loc Key=Dash.ListeningAddress}" Foreground="{StaticResource TextBrush}" Opacity="0.6" FontSize="11"/>
-                    <TextBlock Text="{Binding ListeningAddress}" FontSize="13" Margin="0,4,0,0" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap"/>
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Loc Key=Dash.AccessMode}" Foreground="{StaticResource TextBrush}" Opacity="0.6" FontSize="11"/>
-                    <TextBlock Text="{Binding AccessMode}" FontSize="13" FontWeight="SemiBold" Margin="0,4,0,0" Foreground="{StaticResource TextBrush}" />
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Loc Key=Dash.AllowedClients}" Foreground="{StaticResource TextBrush}" Opacity="0.6" FontSize="11"/>
-                    <TextBlock Text="{Binding AllowedClientsCount}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0" Foreground="{StaticResource TextBrush}" />
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Loc Key=Dash.AllowedPorts}" Foreground="{StaticResource TextBrush}" Opacity="0.6" FontSize="11"/>
-                    <TextBlock Text="{Binding AllowedPorts}" FontSize="12" Margin="0,4,0,0" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap"/>
-                </StackPanel>
-            </Border>
-        </UniformGrid>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="54"
+                            Height="54"
+                            Margin="0,0,15,0"
+                            Background="{StaticResource AccentSoftBrush}"
+                            BorderBrush="#3B4C84"
+                            BorderThickness="1"
+                            CornerRadius="14">
+                        <TextBlock Text="&#xE968;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="22"
+                                   Foreground="{StaticResource AccentHoverBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{loc:Loc Key=Dash.ProxyState}"
+                                   Style="{StaticResource MetricLabelTextBlockStyle}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <Ellipse Width="9" Height="9" Margin="0,0,8,0" VerticalAlignment="Center">
+                                <Ellipse.Style>
+                                    <Style TargetType="{x:Type Ellipse}">
+                                        <Setter Property="Fill" Value="{StaticResource WarningBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProxyState}" Value="Running">
+                                                <Setter Property="Fill" Value="{StaticResource SuccessBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ProxyState}" Value="Stopped">
+                                                <Setter Property="Fill" Value="{StaticResource ErrorBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ProxyState}" Value="Faulted">
+                                                <Setter Property="Fill" Value="{StaticResource ErrorBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <TextBlock Text="{Binding ProxyState}"
+                                       FontSize="22"
+                                       FontWeight="SemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProxyState}" Value="Running">
+                                                <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ProxyState}" Value="Stopped">
+                                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ProxyState}" Value="Faulted">
+                                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
 
-        <!-- Recent Activity -->
-        <Border Style="{StaticResource CardStyle}" Grid.Row="3">
+                <Border Grid.Column="1"
+                        Width="1"
+                        Margin="18,0"
+                        Background="#34486A"
+                        HorizontalAlignment="Center" />
+
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.15*" />
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="0.85*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="{loc:Loc Key=Dash.ListeningAddress}"
+                                   Style="{StaticResource MetricLabelTextBlockStyle}" />
+                        <TextBlock Text="{Binding ListeningAddress}"
+                                   Margin="0,5,0,0"
+                                   FontFamily="Cascadia Mono, Consolas"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextBrush}"
+                                   TextWrapping="Wrap"
+                                   ToolTip="{Binding ListeningAddress}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2">
+                        <TextBlock Text="{loc:Loc Key=Dash.AccessMode}"
+                                   Style="{StaticResource MetricLabelTextBlockStyle}" />
+                        <TextBlock Text="{Binding AccessMode}"
+                                   Margin="0,5,0,0"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextBrush}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                        <TextBlock Text="{loc:Loc Key=Dash.AllowedPorts}"
+                                   Style="{StaticResource MetricLabelTextBlockStyle}" />
+                        <TextBlock Text="{Binding AllowedPorts}"
+                                   Margin="0,5,0,0"
+                                   FontFamily="Cascadia Mono, Consolas"
+                                   FontSize="12"
+                                   Foreground="{StaticResource SecondaryTextBrush}"
+                                   TextWrapping="Wrap"
+                                   ToolTip="{Binding AllowedPorts}" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Operational metrics -->
+        <Grid Grid.Row="2" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource MetricCardStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{loc:Loc Key=Dash.Uptime}" Style="{StaticResource MetricLabelTextBlockStyle}" VerticalAlignment="Center" />
+                        <Border Grid.Column="1" Width="30" Height="30" Background="{StaticResource AccentSoftBrush}" CornerRadius="8">
+                            <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <TextBlock Grid.Row="1" Text="{Binding UptimeString}" Style="{StaticResource MetricValueTextBlockStyle}" VerticalAlignment="Bottom" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource MetricCardStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{loc:Loc Key=Dash.TotalRequests}" Style="{StaticResource MetricLabelTextBlockStyle}" VerticalAlignment="Center" />
+                        <Border Grid.Column="1" Width="30" Height="30" Background="{StaticResource InfoSurfaceBrush}" CornerRadius="8">
+                            <TextBlock Text="&#xE8FD;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource InfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <TextBlock Grid.Row="1" Text="{Binding TotalRequests}" Style="{StaticResource MetricValueTextBlockStyle}" VerticalAlignment="Bottom" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="4" Style="{StaticResource MetricCardStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{loc:Loc Key=Dash.AllowedClients}" Style="{StaticResource MetricLabelTextBlockStyle}" VerticalAlignment="Center" />
+                        <Border Grid.Column="1" Width="30" Height="30" Background="{StaticResource SuccessSurfaceBrush}" CornerRadius="8">
+                            <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource SuccessBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <TextBlock Grid.Row="1" Text="{Binding AllowedClientsCount}" Style="{StaticResource MetricValueTextBlockStyle}" VerticalAlignment="Bottom" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="6" Style="{StaticResource MetricCardStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{loc:Loc Key=Dash.Errors}" Style="{StaticResource MetricLabelTextBlockStyle}" VerticalAlignment="Center" />
+                        <Border Grid.Column="1" Width="30" Height="30" Background="{StaticResource ErrorSurfaceBrush}" CornerRadius="8">
+                            <TextBlock Text="&#xEA39;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource ErrorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding TotalErrors}"
+                               Style="{StaticResource MetricValueTextBlockStyle}"
+                               Foreground="{StaticResource ErrorBrush}"
+                               VerticalAlignment="Bottom" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Recent activity -->
+        <Border Grid.Row="3" Style="{StaticResource CardStyle}" Margin="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="12" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="{loc:Loc Key=Dash.RecentActivity}" Style="{StaticResource SubheaderTextBlockStyle}" />
-                <DataGrid Grid.Row="1"
-                          ItemsSource="{Binding RecentActivities}"
-                          AutoGenerateColumns="False"
-                          IsReadOnly="True"
-                          Background="Transparent"
-                          Foreground="{StaticResource TextBrush}"
-                          RowBackground="{StaticResource PanelBackgroundBrush}"
-                          AlternatingRowBackground="{StaticResource DarkBackgroundBrush}"
-                          HeadersVisibility="Column"
-                          GridLinesVisibility="None"
-                          BorderThickness="0"
-                          MinHeight="120">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Time"        Binding="{Binding Time}"        Width="80" />
-                        <DataGridTextColumn Header="Client IP"   Binding="{Binding ClientIp}"    Width="130" />
-                        <DataGridTextColumn Header="Method"      Binding="{Binding Method}"      Width="70" />
-                        <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" Width="*" />
-                        <DataGridTextColumn Header="Status"      Binding="{Binding Status}"      Width="70" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="32" Height="32" Margin="0,0,11,0" Background="{StaticResource AccentSoftBrush}" CornerRadius="8">
+                            <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Text="{loc:Loc Key=Dash.RecentActivity}"
+                                   Style="{StaticResource SubheaderTextBlockStyle}"
+                                   Margin="0"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+
+                <Border Grid.Row="2"
+                        Background="{StaticResource DarkBackgroundBrush}"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="9"
+                        ClipToBounds="True">
+                    <DataGrid ItemsSource="{Binding RecentActivities}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              MinHeight="190">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{loc:Loc Key=Dash.ColTime}" Binding="{Binding Time}" Width="92" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Dash.ColClientIp}" Binding="{Binding ClientIp}" Width="140" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Dash.ColMethod}" Binding="{Binding Method}" Width="86" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Dash.ColDestination}" Binding="{Binding Destination}" Width="*" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Dash.ColStatus}" Binding="{Binding Status}" Width="88" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
             </Grid>
         </Border>
     </Grid>

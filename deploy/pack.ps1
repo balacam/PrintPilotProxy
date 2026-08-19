@@ -13,6 +13,10 @@ if ([string]::IsNullOrWhiteSpace($Version)) {
 
 Write-Host "==> Packaging version: $Version" -ForegroundColor Cyan
 
+Write-Host "==> Stopping running instances if any..." -ForegroundColor Cyan
+Get-Process PrintPilotProxy.App -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+Get-Process PrintPilotProxy.Cli -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+
 Write-Host "==> Cleaning publish directory..." -ForegroundColor Cyan
 if (Test-Path "publish") { Get-ChildItem "publish" | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue }
 New-Item "publish/staging/App" -ItemType Directory -Force | Out-Null

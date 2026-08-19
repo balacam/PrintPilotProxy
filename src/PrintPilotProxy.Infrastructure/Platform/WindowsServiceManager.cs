@@ -221,7 +221,8 @@ public sealed class WindowsServiceManager : IPlatformServiceManager
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
             }
         };
 
@@ -241,7 +242,8 @@ public sealed class WindowsServiceManager : IPlatformServiceManager
                     Arguments = arguments,
                     Verb = "runas",
                     UseShellExecute = true,
-                    CreateNoWindow = true
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
                 });
                 if (elevatedProcess != null)
                 {

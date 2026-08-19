@@ -24,7 +24,7 @@ namespace PrintPilotProxy.Infrastructure
             services.AddTransient<ISecurityAuditor, SecurityAuditor>();
 
             services.AddSingleton<IIpcServer, NamedPipeIpcServer>();
-            services.AddTransient<IIpcClient, NamedPipeIpcClient>();
+            services.AddSingleton<IIpcClient, NamedPipeIpcClient>();
             services.AddSingleton<IIpcSecurityValidator, IpcSecurityValidator>();
 
             return services;

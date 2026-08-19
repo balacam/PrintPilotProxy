@@ -9,164 +9,228 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <StackPanel>
-        <TextBlock Text="{loc:Loc Key=Page.Service}" Style="{StaticResource HeaderTextBlockStyle}" />
 
-        <!-- Status Card -->
-        <Border Style="{StaticResource CardStyle}" Margin="0,0,0,12">
+    <StackPanel>
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="OPERATIONS" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+            <TextBlock Text="{loc:Loc Key=Page.Service}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
+        </StackPanel>
+
+        <!-- Live status overview -->
+        <Border Style="{StaticResource HeroCardStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" MinWidth="180"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1.1*" />
+                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="1.9*" />
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
 
-                <TextBlock Grid.ColumnSpan="2" Text="{loc:Loc Key=Svc.Header}"
-                           Style="{StaticResource SubheaderTextBlockStyle}" />
+                <StackPanel Grid.Column="0">
+                    <Grid Margin="0,0,0,18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Width="46" Height="46" Margin="0,0,13,0" Background="{StaticResource AccentSoftBrush}" CornerRadius="12">
+                            <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="19" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Loc Key=Svc.Header}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0" />
+                            <TextBlock Text="{loc:Loc Key=Svc.ServiceStatus}" Style="{StaticResource MetricLabelTextBlockStyle}" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Grid>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Loc Key=Svc.ServiceStatus}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,5,0,5"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding WindowsServiceState}" FontSize="16" FontWeight="SemiBold" Margin="0,5,0,5" Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock Text="{Binding WindowsServiceState}" FontSize="22" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                    <TextBlock Text="{Binding StartupType, StringFormat={}{0}}" Margin="0,5,0,0" FontSize="12" Foreground="{StaticResource MutedTextBrush}" />
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc Key=Svc.StartupType}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,5,0,5"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding StartupType}" Margin="0,5,0,5" Foreground="{StaticResource TextBrush}"/>
+                    <Border Margin="0,18,0,0" Padding="12,9" Background="#66101B30" BorderBrush="#34486A" BorderThickness="1" CornerRadius="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{loc:Loc Key=Svc.ProxyState}" Style="{StaticResource MetricLabelTextBlockStyle}" VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="1" Text="{Binding ProxyStateText}" FontWeight="SemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProxyStateText}" Value="RUNNING">
+                                                <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ProxyStateText}" Value="STOPPED">
+                                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ProxyStateText}" Value="FAULTED">
+                                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                </StackPanel>
 
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="{loc:Loc Key=Svc.ProxyState}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,5,0,5"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ProxyStateText}" FontSize="16" FontWeight="SemiBold" Margin="0,5,0,5">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                            <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProxyStateText}" Value="RUNNING">
-                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ProxyStateText}" Value="STOPPED">
-                                    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ProxyStateText}" Value="FAULTED">
-                                    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <Border Grid.Column="1" Width="1" Margin="22,0" Background="#34486A" HorizontalAlignment="Center" />
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:Loc Key=Svc.Listening}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,5,0,5"/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ListeningAddress}" Foreground="{StaticResource TextBrush}" Margin="0,5,0,5"/>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="{loc:Loc Key=Svc.Uptime}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,5,0,5"/>
-                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Uptime}" Foreground="{StaticResource TextBrush}" Margin="0,5,0,5"/>
-
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="{loc:Loc Key=Svc.TotalRequests}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,5,0,5"/>
-                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding TotalRequests}" Foreground="{StaticResource TextBrush}" Margin="0,5,0,5"/>
-
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="{loc:Loc Key=Svc.TotalErrors}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,5,0,5"/>
-                <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding TotalErrors}" Foreground="{StaticResource ErrorBrush}" Margin="0,5,0,5"/>
-
-                <TextBlock Grid.Row="8" Grid.Column="0" Text="{loc:Loc Key=Svc.ActiveConnections}" Foreground="{StaticResource TextBrush}" Opacity="0.7" Margin="0,5,0,0"/>
-                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding ActiveConnections}" Foreground="{StaticResource TextBrush}" Margin="0,5,0,0"/>
+                    <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Svc.Listening}" Style="{StaticResource MetricLabelTextBlockStyle}" />
+                            <TextBlock Text="{Binding ListeningAddress}" Margin="0,5,0,0" FontFamily="Cascadia Mono, Consolas" FontSize="12" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Svc.Uptime}" Style="{StaticResource MetricLabelTextBlockStyle}" />
+                            <TextBlock Text="{Binding Uptime}" Margin="0,5,0,0" FontSize="17" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Svc.TotalRequests}" Style="{StaticResource MetricLabelTextBlockStyle}" />
+                            <TextBlock Text="{Binding TotalRequests}" Margin="0,5,0,0" FontSize="19" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc Key=Svc.TotalErrors}" Style="{StaticResource MetricLabelTextBlockStyle}" />
+                            <TextBlock Text="{Binding TotalErrors}" Margin="0,5,0,0" FontSize="19" FontWeight="SemiBold" Foreground="{StaticResource ErrorBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource InsetPanelStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{loc:Loc Key=Svc.ActiveConnections}" Style="{StaticResource MetricLabelTextBlockStyle}" VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="1" Text="{Binding ActiveConnections}" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource InfoBrush}" VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+                </Grid>
             </Grid>
         </Border>
 
-        <!-- Status Message -->
-        <TextBlock Text="{Binding StatusMessage}"
-                   Margin="0,0,0,12"
-                   TextWrapping="Wrap"
-                   Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+        <!-- Result message -->
+        <Border Margin="0,0,0,16" Padding="13,10" BorderThickness="1" CornerRadius="8" Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Background" Value="{StaticResource SuccessSurfaceBrush}" />
+                    <Setter Property="BorderBrush" Value="#2B6E5D" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding StatusIsError}" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                            <Setter Property="Background" Value="{StaticResource ErrorSurfaceBrush}" />
+                            <Setter Property="BorderBrush" Value="#6F3043" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </TextBlock.Style>
-        </TextBlock>
-
-        <!-- Control Buttons -->
-        <TextBlock Text="Windows Servis Kontrolü (Yönetici İzni Gerekir):" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" Margin="0,0,0,6" />
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-            <Button Content="{loc:Loc Key=Svc.StartService}"
-                    Command="{Binding StartServiceCommand}"
-                    IsEnabled="{Binding CanStart}"
-                    Background="#1E5E2E"
-                    Foreground="White"
-                    Padding="20,10"
-                    Margin="0,0,12,0" />
-            <Button Content="{loc:Loc Key=Svc.StopService}"
-                    Command="{Binding StopServiceCommand}"
-                    IsEnabled="{Binding CanStop}"
-                    Background="#5A2020"
-                    Foreground="White"
-                    Padding="20,10"
-                    Margin="0,0,12,0" />
-            <Button Content="{loc:Loc Key=Svc.RestartService}"
-                    Command="{Binding RestartServiceCommand}"
-                    IsEnabled="{Binding CanRestart}"
-                    Background="{StaticResource AccentBrush}"
-                    Foreground="White"
-                    Padding="20,10"
-                    Margin="0,0,12,0" />
-        </StackPanel>
-
-        <TextBlock Text="Proxy Motoru Kontrolü:" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" Margin="0,0,0,6" />
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Motoru Başlat"
-                    Command="{Binding StartProxyEngineCommand}"
-                    IsEnabled="{Binding CanStartProxyEngine}"
-                    Background="#1E5E2E"
-                    Foreground="White"
-                    Padding="20,10"
-                    Margin="0,0,12,0" />
-            <Button Content="Motoru Durdur"
-                    Command="{Binding StopProxyEngineCommand}"
-                    IsEnabled="{Binding CanStopProxyEngine}"
-                    Background="#5A2020"
-                    Foreground="White"
-                    Padding="20,10"
-                    Margin="0,0,12,0" />
-            <Button Content="Motoru Yeniden Başlat"
-                    Command="{Binding RestartProxyEngineCommand}"
-                    IsEnabled="{Binding CanRestartProxyEngine}"
-                    Background="{StaticResource AccentBrush}"
-                    Foreground="White"
-                    Padding="20,10"
-                    Margin="0,0,12,0" />
-            <Button Content="{loc:Loc Key=Action.Refresh}"
-                    Command="{Binding RefreshCommand}"
-                    Padding="20,10" />
-        </StackPanel>
-
-        <Border Style="{StaticResource CardStyle}" Margin="0,16,0,0">
-            <StackPanel Orientation="Horizontal">
-                <CheckBox Content="{loc:Loc Key=Svc.AutoRestart}"
-                          IsChecked="{Binding AutoRestartOnFailure}"
-                          Foreground="{StaticResource TextBrush}"
-                          VerticalAlignment="Center" />
-                <Button Content="{loc:Loc Key=Svc.ApplyRecovery}"
-                        Command="{Binding UpdateAutoRestartCommand}"
-                        Margin="16,0,0,0"
-                        Padding="12,6" />
-            </StackPanel>
+            </Border.Style>
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatusIsError}" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
         </Border>
 
-        <!-- Info -->
-        <Border Style="{StaticResource CardStyle}" Margin="0,16,0,0" Background="#1A1A2E">
-            <TextBlock Foreground="{StaticResource TextBrush}" Opacity="0.7" FontSize="12" TextWrapping="Wrap">
-                <Run FontWeight="SemiBold">Note:</Run>
-                <Run> These controls report and manage the actual Windows Service. The proxy engine continues running when this administration window is closed.</Run>
-            </TextBlock>
+        <!-- Controls -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Width="36" Height="36" Margin="0,0,11,0" Background="{StaticResource AccentSoftBrush}" CornerRadius="9">
+                            <TextBlock Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Loc Key=Svc.WindowsServiceControl}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0" />
+                            <TextBlock Text="{loc:Loc Key=Svc.RequiresAdmin}" Style="{StaticResource MutedTextBlockStyle}" Margin="0,2,0,0" />
+                        </StackPanel>
+                    </Grid>
+                    <WrapPanel Margin="0,0,0,17">
+                        <Button Content="{loc:Loc Key=Svc.StartService}" Command="{Binding StartServiceCommand}" IsEnabled="{Binding CanStart}" Style="{StaticResource SuccessButtonStyle}" Margin="0,0,9,9" />
+                        <Button Content="{loc:Loc Key=Svc.StopService}" Command="{Binding StopServiceCommand}" IsEnabled="{Binding CanStop}" Style="{StaticResource DangerButtonStyle}" Margin="0,0,9,9" />
+                        <Button Content="{loc:Loc Key=Svc.RestartService}" Command="{Binding RestartServiceCommand}" IsEnabled="{Binding CanRestart}" Style="{StaticResource PrimaryButtonStyle}" Margin="0,0,9,9" />
+                    </WrapPanel>
+                    <Border Style="{StaticResource InsetPanelStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Content="{loc:Loc Key=Svc.AutoRestart}" IsChecked="{Binding AutoRestartOnFailure}" VerticalAlignment="Center" />
+                            <Button Grid.Column="1" Content="{loc:Loc Key=Svc.ApplyRecovery}" Command="{Binding UpdateAutoRestartCommand}" Style="{StaticResource ToolbarButtonStyle}" Margin="12,0,0,0" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border Width="36" Height="36" Margin="0,0,11,0" Background="{StaticResource InfoSurfaceBrush}" CornerRadius="9">
+                            <TextBlock Text="&#xE968;" FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="{StaticResource InfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{loc:Loc Key=Svc.ProxyEngineControl}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0" VerticalAlignment="Center" />
+                        <Button Grid.Column="2" Content="{loc:Loc Key=Action.Refresh}" Command="{Binding RefreshCommand}" Style="{StaticResource ToolbarButtonStyle}" />
+                    </Grid>
+                    <WrapPanel>
+                        <Button Content="{loc:Loc Key=Svc.StartEngine}" Command="{Binding StartProxyEngineCommand}" IsEnabled="{Binding CanStartProxyEngine}" Style="{StaticResource SuccessButtonStyle}" Margin="0,0,9,9" />
+                        <Button Content="{loc:Loc Key=Svc.StopEngine}" Command="{Binding StopProxyEngineCommand}" IsEnabled="{Binding CanStopProxyEngine}" Style="{StaticResource DangerButtonStyle}" Margin="0,0,9,9" />
+                        <Button Content="{loc:Loc Key=Svc.RestartEngine}" Command="{Binding RestartProxyEngineCommand}" IsEnabled="{Binding CanRestartProxyEngine}" Style="{StaticResource PrimaryButtonStyle}" Margin="0,0,9,9" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Style="{StaticResource InfoCardStyle}" Margin="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{StaticResource InfoBrush}" Margin="0,1,12,0" />
+                <TextBlock Grid.Column="1" Style="{StaticResource BodyTextBlockStyle}">
+                    <Run FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="{loc:Loc Key=Svc.NoteLabel}" />
+                    <Run> </Run>
+                    <Run Text="{loc:Loc Key=Svc.NoteText}" />
+                </TextBlock>
+            </Grid>
         </Border>
     </StackPanel>
 </UserControl>

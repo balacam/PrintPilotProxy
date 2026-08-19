@@ -13,15 +13,15 @@
 <data name="Common.Private" xml:space="preserve"><value>Privado</value></data>
 <data name="Common.Public" xml:space="preserve"><value>Público</value></data>
 <data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
-<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Panel de control</value></data>
-<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Configuración de red</value></data>
-<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Clientes permitidos</value></data>
-<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Firewall</value></data>
-<data name="Nav.Service" xml:space="preserve"><value>⚙️  Servicio</value></data>
-<data name="Nav.Logs" xml:space="preserve"><value>📋  Registros</value></data>
-<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnóstico</value></data>
-<data name="Nav.Security" xml:space="preserve"><value>🛡️  Seguridad</value></data>
-<data name="Nav.Language" xml:space="preserve"><value>🌍  Idioma</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>Panel de control</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>Configuración de red</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>Clientes permitidos</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>Firewall</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>Servicio</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>Registros</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>Diagnóstico</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>Seguridad</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>Idioma</value></data>
 <data name="MainWindow.Status" xml:space="preserve"><value>Estado: </value></data>
 <data name="MainWindow.Listen" xml:space="preserve"><value>Escucha: </value></data>
 <data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>SERVICIO NO DISPONIBLE</value></data>
@@ -52,7 +52,7 @@
 <data name="Page.NetworkSettings" xml:space="preserve"><value>Configuración de red</value></data>
 <data name="Net.ListenerMode" xml:space="preserve"><value>Modo de escucha</value></data>
 <data name="Net.ChooseInterface" xml:space="preserve"><value>Elija la interfaz de red en la que escucha el proxy.</value></data>
-<data name="Net.ModeAuto" xml:space="preserve"><value>Automático  (usar todas las interfaces de red privadas)</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Automático  (Predeterminado - usar todas las interfaces de red privadas)</value></data>
 <data name="Net.ModeAdapter" xml:space="preserve"><value>Adaptador de red específico  (elegir entre los adaptadores detectados)</value></data>
 <data name="Net.ModeSpecificIp" xml:space="preserve"><value>Dirección IP específica  (introducir manualmente)</value></data>
 <data name="Net.PortAndLimits" xml:space="preserve"><value>Puerto y límites</value></data>
@@ -266,4 +266,46 @@
 <data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>La configuración es válida.</value></data>
 <data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} error(es) de configuración: {1}</value></data>
 <data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Corrija los errores de configuración indicados arriba.</value></data>
+
+  <data name="Net.SecurityAndAccess" xml:space="preserve"><value>Seguridad y acceso</value></data>
+  <data name="Net.SecurityAndAccessDesc" xml:space="preserve"><value>Configure las reglas de acceso de clientes y restricciones de puerto de destino.</value></data>
+  <data name="Net.AccessMode" xml:space="preserve"><value>Modo de acceso</value></data>
+  <data name="Net.ClientAccessAllowAll" xml:space="preserve"><value>Permitir todos los clientes (AllowAll)</value></data>
+  <data name="Net.ClientAccessAllowList" xml:space="preserve"><value>Solo permitidos (AllowList)</value></data>
+  <data name="Net.DestinationPortRestrictions" xml:space="preserve"><value>Restricciones de puertos de destino</value></data>
+  <data name="Net.AllowAllDestinationPorts" xml:space="preserve"><value>Permitir todos los puertos de destino (No recomendado)</value></data>
+  <data name="Net.AllowedPortsWithHint" xml:space="preserve"><value>Puertos permitidos (separados por comas)</value></data>
+  <data name="Cli.ColEnabled" xml:space="preserve"><value>Habilitado</value></data>
+  <data name="Cli.ColName" xml:space="preserve"><value>Nombre</value></data>
+  <data name="Cli.ColIpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+  <data name="Cli.ColDescription" xml:space="preserve"><value>Descripción</value></data>
+  <data name="Dash.ColTime" xml:space="preserve"><value>Hora</value></data>
+  <data name="Dash.ColClientIp" xml:space="preserve"><value>IP del cliente</value></data>
+  <data name="Dash.ColMethod" xml:space="preserve"><value>Método</value></data>
+  <data name="Dash.ColDestination" xml:space="preserve"><value>Destino</value></data>
+  <data name="Dash.ColStatus" xml:space="preserve"><value>Estado</value></data>
+  <data name="Diag.OverallDesc" xml:space="preserve"><value>Comprobaciones de preparación y conectividad del diagnóstico</value></data>
+  <data name="Logs.ClientAccessLogs" xml:space="preserve"><value>Registros de conexión de clientes</value></data>
+  <data name="Logs.ServiceSystemLogs" xml:space="preserve"><value>Registros del sistema del servicio</value></data>
+  <data name="Logs.ClientTraffic" xml:space="preserve"><value>Tráfico de clientes</value></data>
+  <data name="Logs.LiveView" xml:space="preserve"><value>Vista en vivo</value></data>
+  <data name="Logs.ServiceOutput" xml:space="preserve"><value>Salida del servicio</value></data>
+  <data name="Logs.Streaming" xml:space="preserve"><value>Transmisión</value></data>
+  <data name="Logs.ColTime" xml:space="preserve"><value>Hora</value></data>
+  <data name="Logs.ColClientIp" xml:space="preserve"><value>IP del cliente</value></data>
+  <data name="Logs.ColMethod" xml:space="preserve"><value>Método</value></data>
+  <data name="Logs.ColDestination" xml:space="preserve"><value>Dirección de destino</value></data>
+  <data name="Logs.ColStatus" xml:space="preserve"><value>Estado</value></data>
+  <data name="Svc.WindowsServiceControl" xml:space="preserve"><value>Control del servicio Windows</value></data>
+  <data name="Svc.RequiresAdmin" xml:space="preserve"><value>Requiere privilegios de administrador</value></data>
+  <data name="Svc.ProxyEngineControl" xml:space="preserve"><value>Control del motor proxy</value></data>
+  <data name="Svc.StartEngine" xml:space="preserve"><value>▶  Iniciar motor</value></data>
+  <data name="Svc.StopEngine" xml:space="preserve"><value>⏹  Detener motor</value></data>
+  <data name="Svc.RestartEngine" xml:space="preserve"><value>↺  Reiniciar motor</value></data>
+  <data name="Svc.NoteLabel" xml:space="preserve"><value>Nota:</value></data>
+  <data name="Svc.NoteText" xml:space="preserve"><value>Estos controles gestionan el servicio real de Windows. El motor proxy continúa ejecutándose cuando se cierra esta ventana de administración.</value></data>
+  <data name="Svc.Msgs.EngineStarted" xml:space="preserve"><value>Motor proxy iniciado.</value></data>
+  <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Motor proxy detenido.</value></data>
+  <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Motor proxy reiniciado.</value></data>
+  <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Error al ejecutar el comando.</value></data>
 </root>

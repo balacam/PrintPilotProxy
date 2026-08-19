@@ -17,15 +17,15 @@
   <data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
 
   <!-- Navigation sidebar -->
-  <data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Dashboard</value></data>
-  <data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Network Settings</value></data>
-  <data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Allowed Clients</value></data>
-  <data name="Nav.Firewall" xml:space="preserve"><value>🔥  Firewall</value></data>
-  <data name="Nav.Service" xml:space="preserve"><value>⚙️  Service</value></data>
-  <data name="Nav.Logs" xml:space="preserve"><value>📋  Logs</value></data>
-  <data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnostics</value></data>
-  <data name="Nav.Security" xml:space="preserve"><value>🛡️  Security</value></data>
-  <data name="Nav.Language" xml:space="preserve"><value>🌍  Language</value></data>
+  <data name="Nav.Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Nav.NetworkSettings" xml:space="preserve"><value>Network Settings</value></data>
+  <data name="Nav.AllowedClients" xml:space="preserve"><value>Allowed Clients</value></data>
+  <data name="Nav.Firewall" xml:space="preserve"><value>Firewall</value></data>
+  <data name="Nav.Service" xml:space="preserve"><value>Service</value></data>
+  <data name="Nav.Logs" xml:space="preserve"><value>Logs</value></data>
+  <data name="Nav.Diagnostics" xml:space="preserve"><value>Diagnostics</value></data>
+  <data name="Nav.Security" xml:space="preserve"><value>Security</value></data>
+  <data name="Nav.Language" xml:space="preserve"><value>Language</value></data>
 
   <!-- Main window -->
   <data name="MainWindow.Status" xml:space="preserve"><value>Status: </value></data>
@@ -66,7 +66,7 @@
   <data name="Page.NetworkSettings" xml:space="preserve"><value>Network Settings</value></data>
   <data name="Net.ListenerMode" xml:space="preserve"><value>Listener Mode</value></data>
   <data name="Net.ChooseInterface" xml:space="preserve"><value>Choose which network interface the proxy listens on.</value></data>
-  <data name="Net.ModeAuto" xml:space="preserve"><value>Automatic  (use all private network interfaces)</value></data>
+  <data name="Net.ModeAuto" xml:space="preserve"><value>Automatic  (Default - use all private network interfaces)</value></data>
   <data name="Net.ModeAdapter" xml:space="preserve"><value>Specific Network Adapter  (select from detected adapters)</value></data>
   <data name="Net.ModeSpecificIp" xml:space="preserve"><value>Specific IP Address  (enter manually)</value></data>
   <data name="Net.PortAndLimits" xml:space="preserve"><value>Port &amp; Limits</value></data>
@@ -294,4 +294,46 @@
   <data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>The configuration is valid.</value></data>
   <data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} configuration error(s): {1}</value></data>
   <data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Fix the configuration errors listed above.</value></data>
+
+  <data name="Net.SecurityAndAccess" xml:space="preserve"><value>Security &amp; Access</value></data>
+  <data name="Net.SecurityAndAccessDesc" xml:space="preserve"><value>Configure client access rules and destination port restrictions.</value></data>
+  <data name="Net.AccessMode" xml:space="preserve"><value>Access Mode</value></data>
+  <data name="Net.ClientAccessAllowAll" xml:space="preserve"><value>Allow All Clients (AllowAll)</value></data>
+  <data name="Net.ClientAccessAllowList" xml:space="preserve"><value>Allow Only Listed (AllowList)</value></data>
+  <data name="Net.DestinationPortRestrictions" xml:space="preserve"><value>Destination Port Restrictions</value></data>
+  <data name="Net.AllowAllDestinationPorts" xml:space="preserve"><value>Allow all destination ports (Not recommended)</value></data>
+  <data name="Net.AllowedPortsWithHint" xml:space="preserve"><value>Allowed Ports (comma separated)</value></data>
+  <data name="Cli.ColEnabled" xml:space="preserve"><value>Enabled</value></data>
+  <data name="Cli.ColName" xml:space="preserve"><value>Name</value></data>
+  <data name="Cli.ColIpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+  <data name="Cli.ColDescription" xml:space="preserve"><value>Description</value></data>
+  <data name="Dash.ColTime" xml:space="preserve"><value>Time</value></data>
+  <data name="Dash.ColClientIp" xml:space="preserve"><value>Client IP</value></data>
+  <data name="Dash.ColMethod" xml:space="preserve"><value>Method</value></data>
+  <data name="Dash.ColDestination" xml:space="preserve"><value>Destination</value></data>
+  <data name="Dash.ColStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="Diag.OverallDesc" xml:space="preserve"><value>Diagnostic readiness and connectivity checks</value></data>
+  <data name="Logs.ClientAccessLogs" xml:space="preserve"><value>Client Connection Logs</value></data>
+  <data name="Logs.ServiceSystemLogs" xml:space="preserve"><value>Service System Logs</value></data>
+  <data name="Logs.ClientTraffic" xml:space="preserve"><value>Client Traffic</value></data>
+  <data name="Logs.LiveView" xml:space="preserve"><value>Live view</value></data>
+  <data name="Logs.ServiceOutput" xml:space="preserve"><value>Service Output</value></data>
+  <data name="Logs.Streaming" xml:space="preserve"><value>Streaming</value></data>
+  <data name="Logs.ColTime" xml:space="preserve"><value>Time</value></data>
+  <data name="Logs.ColClientIp" xml:space="preserve"><value>Client IP</value></data>
+  <data name="Logs.ColMethod" xml:space="preserve"><value>Method</value></data>
+  <data name="Logs.ColDestination" xml:space="preserve"><value>Destination</value></data>
+  <data name="Logs.ColStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="Svc.WindowsServiceControl" xml:space="preserve"><value>Windows Service Control</value></data>
+  <data name="Svc.RequiresAdmin" xml:space="preserve"><value>Requires administrator privileges</value></data>
+  <data name="Svc.ProxyEngineControl" xml:space="preserve"><value>Proxy Engine Control</value></data>
+  <data name="Svc.StartEngine" xml:space="preserve"><value>▶  Start Engine</value></data>
+  <data name="Svc.StopEngine" xml:space="preserve"><value>⏹  Stop Engine</value></data>
+  <data name="Svc.RestartEngine" xml:space="preserve"><value>↺  Restart Engine</value></data>
+  <data name="Svc.NoteLabel" xml:space="preserve"><value>Note:</value></data>
+  <data name="Svc.NoteText" xml:space="preserve"><value>These controls report and manage the actual Windows Service. The proxy engine continues running when this administration window is closed.</value></data>
+  <data name="Svc.Msgs.EngineStarted" xml:space="preserve"><value>Proxy engine started.</value></data>
+  <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Proxy engine stopped.</value></data>
+  <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Proxy engine restarted.</value></data>
+  <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Command execution failed.</value></data>
 </root>

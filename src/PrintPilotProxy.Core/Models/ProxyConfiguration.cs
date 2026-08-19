@@ -74,7 +74,7 @@ public sealed class ListenerSettings
     /// <summary>
     /// Listener mode.
     /// </summary>
-    public ListenerMode Mode { get; set; } = ListenerMode.AllInterfaces;
+    public ListenerMode Mode { get; set; } = ListenerMode.Auto;
     /// <summary>
     /// IP address to listen on. Required only for <see cref="ListenerMode.SpecificAddress"/> mode.
     /// </summary>

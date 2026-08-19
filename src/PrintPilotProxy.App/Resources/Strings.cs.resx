@@ -13,15 +13,15 @@
 <data name="Common.Private" xml:space="preserve"><value>Soukromý</value></data>
 <data name="Common.Public" xml:space="preserve"><value>Veřejný</value></data>
 <data name="Common.Milliseconds" xml:space="preserve"><value>{0} ms</value></data>
-<data name="Nav.Dashboard" xml:space="preserve"><value>🏠  Hlavní panel</value></data>
-<data name="Nav.NetworkSettings" xml:space="preserve"><value>🌐  Nastavení sítě</value></data>
-<data name="Nav.AllowedClients" xml:space="preserve"><value>👥  Povolení klienti</value></data>
-<data name="Nav.Firewall" xml:space="preserve"><value>🔥  Brána firewall</value></data>
-<data name="Nav.Service" xml:space="preserve"><value>⚙️  Služba</value></data>
-<data name="Nav.Logs" xml:space="preserve"><value>📋  Protokoly</value></data>
-<data name="Nav.Diagnostics" xml:space="preserve"><value>🔍  Diagnostika</value></data>
-<data name="Nav.Security" xml:space="preserve"><value>🛡️  Zabezpečení</value></data>
-<data name="Nav.Language" xml:space="preserve"><value>🌍  Jazyk</value></data>
+<data name="Nav.Dashboard" xml:space="preserve"><value>Hlavní panel</value></data>
+<data name="Nav.NetworkSettings" xml:space="preserve"><value>Nastavení sítě</value></data>
+<data name="Nav.AllowedClients" xml:space="preserve"><value>Povolení klienti</value></data>
+<data name="Nav.Firewall" xml:space="preserve"><value>Brána firewall</value></data>
+<data name="Nav.Service" xml:space="preserve"><value>Služba</value></data>
+<data name="Nav.Logs" xml:space="preserve"><value>Protokoly</value></data>
+<data name="Nav.Diagnostics" xml:space="preserve"><value>Diagnostika</value></data>
+<data name="Nav.Security" xml:space="preserve"><value>Zabezpečení</value></data>
+<data name="Nav.Language" xml:space="preserve"><value>Jazyk</value></data>
 <data name="MainWindow.Status" xml:space="preserve"><value>Stav: </value></data>
 <data name="MainWindow.Listen" xml:space="preserve"><value>Naslouchání: </value></data>
 <data name="MainWindow.ServiceUnavailable" xml:space="preserve"><value>SLUŽBA NEDOSTUPNÁ</value></data>
@@ -52,7 +52,7 @@
 <data name="Page.NetworkSettings" xml:space="preserve"><value>Nastavení sítě</value></data>
 <data name="Net.ListenerMode" xml:space="preserve"><value>Režim naslouchání</value></data>
 <data name="Net.ChooseInterface" xml:space="preserve"><value>Vyberte síťové rozhraní, které proxy naslouchá.</value></data>
-<data name="Net.ModeAuto" xml:space="preserve"><value>Automatický  (použít všechna soukromá síťová rozhraní)</value></data>
+<data name="Net.ModeAuto" xml:space="preserve"><value>Automatický  (Výchozí - použít všechna soukromá síťová rozhraní)</value></data>
 <data name="Net.ModeAdapter" xml:space="preserve"><value>Konkrétní adaptér  (vyberte z detekovaných adaptérů)</value></data>
 <data name="Net.ModeSpecificIp" xml:space="preserve"><value>Konkrétní IP adresa  (zadejte ručně)</value></data>
 <data name="Net.PortAndLimits" xml:space="preserve"><value>Port a limity</value></data>
@@ -266,4 +266,46 @@
 <data name="Sec.Check.Sec007.MsgPass" xml:space="preserve"><value>Konfigurace je platná.</value></data>
 <data name="Sec.Check.Sec007.MsgFail" xml:space="preserve"><value>{0} chyb konfigurace: {1}</value></data>
 <data name="Sec.Check.Sec007.Fix" xml:space="preserve"><value>Opravte výše uvedené chyby konfigurace.</value></data>
+
+  <data name="Net.SecurityAndAccess" xml:space="preserve"><value>Zabezpečení a přístup</value></data>
+  <data name="Net.SecurityAndAccessDesc" xml:space="preserve"><value>Konfigurace pravidel přístupu klientů a omezení cílových portů.</value></data>
+  <data name="Net.AccessMode" xml:space="preserve"><value>Režim přístupu</value></data>
+  <data name="Net.ClientAccessAllowAll" xml:space="preserve"><value>Povolit všem klientům (AllowAll)</value></data>
+  <data name="Net.ClientAccessAllowList" xml:space="preserve"><value>Pouze povolení (AllowList)</value></data>
+  <data name="Net.DestinationPortRestrictions" xml:space="preserve"><value>Omezení cílových portů</value></data>
+  <data name="Net.AllowAllDestinationPorts" xml:space="preserve"><value>Povolit všechny cílové porty (Nedoporučeno)</value></data>
+  <data name="Net.AllowedPortsWithHint" xml:space="preserve"><value>Povolené porty (oddělené čárkou)</value></data>
+  <data name="Cli.ColEnabled" xml:space="preserve"><value>Povoleno</value></data>
+  <data name="Cli.ColName" xml:space="preserve"><value>Název</value></data>
+  <data name="Cli.ColIpOrCidr" xml:space="preserve"><value>IP / CIDR</value></data>
+  <data name="Cli.ColDescription" xml:space="preserve"><value>Popis</value></data>
+  <data name="Dash.ColTime" xml:space="preserve"><value>Čas</value></data>
+  <data name="Dash.ColClientIp" xml:space="preserve"><value>IP klienta</value></data>
+  <data name="Dash.ColMethod" xml:space="preserve"><value>Metoda</value></data>
+  <data name="Dash.ColDestination" xml:space="preserve"><value>Cíl</value></data>
+  <data name="Dash.ColStatus" xml:space="preserve"><value>Stav</value></data>
+  <data name="Diag.OverallDesc" xml:space="preserve"><value>Kontroly diagnostické připravenosti a konektivity</value></data>
+  <data name="Logs.ClientAccessLogs" xml:space="preserve"><value>Protokoly připojení klientů</value></data>
+  <data name="Logs.ServiceSystemLogs" xml:space="preserve"><value>Systémové protokoly služby</value></data>
+  <data name="Logs.ClientTraffic" xml:space="preserve"><value>Provoz klientů</value></data>
+  <data name="Logs.LiveView" xml:space="preserve"><value>Živý náhled</value></data>
+  <data name="Logs.ServiceOutput" xml:space="preserve"><value>Výstup služby</value></data>
+  <data name="Logs.Streaming" xml:space="preserve"><value>Streamování</value></data>
+  <data name="Logs.ColTime" xml:space="preserve"><value>Čas</value></data>
+  <data name="Logs.ColClientIp" xml:space="preserve"><value>IP klienta</value></data>
+  <data name="Logs.ColMethod" xml:space="preserve"><value>Metoda</value></data>
+  <data name="Logs.ColDestination" xml:space="preserve"><value>Cílová adresa</value></data>
+  <data name="Logs.ColStatus" xml:space="preserve"><value>Stav</value></data>
+  <data name="Svc.WindowsServiceControl" xml:space="preserve"><value>Řízení služby Windows</value></data>
+  <data name="Svc.RequiresAdmin" xml:space="preserve"><value>Vyžaduje oprávnění správce</value></data>
+  <data name="Svc.ProxyEngineControl" xml:space="preserve"><value>Řízení proxy modulu</value></data>
+  <data name="Svc.StartEngine" xml:space="preserve"><value>▶  Spustit modul</value></data>
+  <data name="Svc.StopEngine" xml:space="preserve"><value>⏹  Zastavit modul</value></data>
+  <data name="Svc.RestartEngine" xml:space="preserve"><value>↺  Restartovat modul</value></data>
+  <data name="Svc.NoteLabel" xml:space="preserve"><value>Poznámka:</value></data>
+  <data name="Svc.NoteText" xml:space="preserve"><value>Tyto ovládací prvky spravují skutečnou službu systému Windows. Proxy modul zůstává spuštěný i po zavření tohoto okna.</value></data>
+  <data name="Svc.Msgs.EngineStarted" xml:space="preserve"><value>Proxy modul byl spuštěn.</value></data>
+  <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Proxy modul byl zastaven.</value></data>
+  <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Proxy modul byl restartován.</value></data>
+  <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Provedení příkazu se nezdařilo.</value></data>
 </root>

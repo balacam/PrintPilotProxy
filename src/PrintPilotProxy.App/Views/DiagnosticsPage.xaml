@@ -6,98 +6,132 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*"    />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <DockPanel Grid.Row="0" Margin="0,0,0,12">
-            <TextBlock Text="{loc:Loc Key=Page.Diagnostics}" Style="{StaticResource HeaderTextBlockStyle}" DockPanel.Dock="Left" Margin="0"/>
-            <Button Content="{loc:Loc Key=Diag.RunAll}"
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="SYSTEM HEALTH" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+                <TextBlock Text="{loc:Loc Key=Page.Diagnostics}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
+            </StackPanel>
+            <Button Grid.Column="1"
+                    Content="{loc:Loc Key=Diag.RunAll}"
                     Command="{Binding RunAllCommand}"
-                    HorizontalAlignment="Right"
-                    Background="{StaticResource AccentBrush}"
-                    Foreground="White"
-                    Padding="16,8" />
-        </DockPanel>
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    VerticalAlignment="Center" />
+        </Grid>
 
-        <!-- Overall status -->
-        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,12">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{loc:Loc Key=Diag.Overall}" Foreground="{StaticResource TextBrush}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding OverallStatus}" FontSize="14" FontWeight="Bold" VerticalAlignment="Center">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+        <!-- Overall health -->
+        <Border Grid.Row="1" Style="{StaticResource HeroCardStyle}" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Width="48" Height="48" Margin="0,0,14,0" Background="{StaticResource AccentSoftBrush}" CornerRadius="12">
+                    <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{loc:Loc Key=Diag.Overall}" Style="{StaticResource MetricLabelTextBlockStyle}" />
+                    <TextBlock Text="{loc:Loc Key=Diag.OverallDesc}" Margin="0,4,0,0" Foreground="{StaticResource SecondaryTextBrush}" FontSize="12" />
+                </StackPanel>
+                <Border Grid.Column="2" Padding="14,8" CornerRadius="9" VerticalAlignment="Center">
+                    <Border.Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Background" Value="{StaticResource WarningSurfaceBrush}" />
+                            <Setter Property="BorderBrush" Value="#735D29" />
+                            <Setter Property="BorderThickness" Value="1" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="SuccessBrush">
-                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                    <Setter Property="Background" Value="{StaticResource SuccessSurfaceBrush}" />
+                                    <Setter Property="BorderBrush" Value="#2B6E5D" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="ErrorBrush">
-                                    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                    <Setter Property="Background" Value="{StaticResource ErrorSurfaceBrush}" />
+                                    <Setter Property="BorderBrush" Value="#6F3043" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </StackPanel>
+                    </Border.Style>
+                    <TextBlock Text="{Binding OverallStatus}" FontSize="13" FontWeight="SemiBold">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="SuccessBrush">
+                                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding OverallStatusBrushKey}" Value="ErrorBrush">
+                                        <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Border>
+            </Grid>
         </Border>
 
-        <!-- Results list -->
+        <!-- Diagnostic results -->
         <ItemsControl Grid.Row="2" ItemsSource="{Binding Results}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Style="{StaticResource CardStyle}" Margin="0,0,0,6">
+                    <Border Style="{StaticResource CardStyle}" Margin="0,0,0,10" Padding="16,14">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="36" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <!-- Icon -->
-                            <TextBlock Grid.Column="0"
-                                       Text="{Binding StatusIcon}"
-                                       FontSize="18"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+                            <Border Width="40" Height="40" Margin="0,0,13,0" CornerRadius="10" VerticalAlignment="Top">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="Background" Value="{StaticResource WarningSurfaceBrush}" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding StatusBrushKey}" Value="SuccessBrush">
-                                                <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                                <Setter Property="Background" Value="{StaticResource SuccessSurfaceBrush}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding StatusBrushKey}" Value="ErrorBrush">
-                                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                                <Setter Property="Background" Value="{StaticResource ErrorSurfaceBrush}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                                </Border.Style>
+                                <TextBlock Text="{Binding StatusIcon}" FontFamily="Segoe MDL2 Assets" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding StatusBrushKey}" Value="SuccessBrush">
+                                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding StatusBrushKey}" Value="ErrorBrush">
+                                                    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
 
-                            <!-- Detail -->
-                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                                <DockPanel>
-                                    <TextBlock Text="{Binding Name}"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource TextBrush}"
-                                               DockPanel.Dock="Left" />
-                                    <TextBlock Text="{Binding Duration}"
-                                               Foreground="{StaticResource TextBrush}" Opacity="0.5"
-                                               FontSize="11"
-                                               HorizontalAlignment="Right" />
-                                </DockPanel>
-                                <TextBlock Text="{Binding Description}"
-                                           Foreground="{StaticResource TextBrush}" Opacity="0.6"
-                                           FontSize="11" Margin="0,2,0,2"/>
-                                <TextBlock Text="{Binding Message}"
-                                           Foreground="{StaticResource TextBrush}"
-                                           FontSize="12" TextWrapping="Wrap" />
-                                <TextBlock Text="{Binding Remediation, StringFormat='→ {0}'}"
-                                           Foreground="{StaticResource WarningBrush}"
-                                           FontSize="11" TextWrapping="Wrap"
-                                           Margin="0,2,0,0"
-                                           Visibility="{Binding Remediation, Converter={StaticResource StringToVisibilityConverter}}" />
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                                <TextBlock Text="{Binding Description}" Style="{StaticResource MutedTextBlockStyle}" Margin="0,3,0,7" />
+                                <TextBlock Text="{Binding Message}" FontSize="12" Foreground="{StaticResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                                <Border Margin="0,9,0,0" Padding="10,7" Background="{StaticResource WarningSurfaceBrush}" CornerRadius="6" Visibility="{Binding Remediation, Converter={StaticResource StringToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Remediation, StringFormat='→ {0}'}" Foreground="{StaticResource WarningBrush}" FontSize="11" TextWrapping="Wrap" />
+                                </Border>
                             </StackPanel>
+
+                            <Border Grid.Column="2" Style="{StaticResource StatusNeutralBadgeStyle}" Margin="14,0,0,0" VerticalAlignment="Top">
+                                <TextBlock Text="{Binding Duration}" FontFamily="Cascadia Mono, Consolas" FontSize="10" Foreground="{StaticResource MutedTextBrush}" />
+                            </Border>
                         </Grid>
                     </Border>
                 </DataTemplate>

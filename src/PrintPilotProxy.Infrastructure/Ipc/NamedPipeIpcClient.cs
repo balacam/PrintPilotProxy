@@ -11,8 +11,12 @@ namespace PrintPilotProxy.Infrastructure.Ipc;
 /// <summary>Thread-safe client for the local PrintPilotProxy management pipe.</summary>
 public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposable
 {
+    private const int ConnectTimeoutMs = 3000;
+    private const int IoTimeoutMs = 5000;
+
     private readonly ILogger<NamedPipeIpcClient> _logger;
-    private readonly SemaphoreSlim _requestLock = new(1, 1);
+    private readonly SemaphoreSlim _lock = new(1, 1);
+
     private NamedPipeClientStream? _clientStream;
     private StreamReader? _reader;
     private StreamWriter? _writer;
@@ -37,7 +41,7 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
             var stream = new NamedPipeClientStream(
                 ".", NamedPipeIpcServer.PipeName, PipeDirection.InOut,
                 PipeOptions.Asynchronous | PipeOptions.WriteThrough);
-            await stream.ConnectAsync(5000, cancellationToken);
+            await stream.ConnectAsync(ConnectTimeoutMs, cancellationToken);
 
             _clientStream = stream;
             _reader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: false,
@@ -57,17 +61,58 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
 
     public async Task<IpcMessage> SendAsync(IpcMessage message, CancellationToken cancellationToken = default)
     {
-        await _requestLock.WaitAsync(cancellationToken);
+        // Non-blocking lock acquire: if another call is in progress, fail fast
+        // rather than queueing up and causing cascading timeouts
+        bool acquired = await _lock.WaitAsync(0, cancellationToken);
+        if (!acquired)
+        {
+            throw new TimeoutException("Another IPC request is already in progress.");
+        }
+
         try
         {
-            if (!IsConnected && !await ConnectAsync(cancellationToken))
+            return await SendWithRetryAsync(message, cancellationToken);
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+
+    private async Task<IpcMessage> SendWithRetryAsync(IpcMessage message, CancellationToken cancellationToken)
+    {
+        // First attempt: use existing connection if available
+        try
+        {
+            return await SendCoreAsync(message, cancellationToken);
+        }
+        catch (Exception ex) when (!cancellationToken.IsCancellationRequested &&
+                                    ex is IOException or TimeoutException or OperationCanceledException)
+        {
+            _logger.LogDebug(ex, "IPC request failed; will disconnect and retry once.");
+            Disconnect();
+        }
+
+        // Second attempt: fresh connection, fresh timeout
+        return await SendCoreAsync(message, cancellationToken);
+    }
+
+    private async Task<IpcMessage> SendCoreAsync(IpcMessage message, CancellationToken cancellationToken)
+    {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        cts.CancelAfter(IoTimeoutMs);
+        var ct = cts.Token;
+
+        try
+        {
+            if (!IsConnected && !await ConnectAsync(ct))
             {
                 throw new IOException("Could not connect to the PrintPilotProxy service.");
             }
 
             var json = JsonSerializer.Serialize(message);
-            await _writer!.WriteLineAsync(json.AsMemory(), cancellationToken);
-            var responseJson = await _reader!.ReadLineAsync(cancellationToken);
+            await _writer!.WriteLineAsync(json.AsMemory(), ct);
+            var responseJson = await _reader!.ReadLineAsync(ct);
             if (string.IsNullOrWhiteSpace(responseJson))
             {
                 throw new IOException("The service closed the IPC connection.");
@@ -86,17 +131,13 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
             Disconnect();
             throw;
         }
-        finally
-        {
-            _requestLock.Release();
-        }
     }
 
     private void Disconnect()
     {
-        _reader?.Dispose();
-        _writer?.Dispose();
-        _clientStream?.Dispose();
+        try { _reader?.Dispose(); } catch { }
+        try { _writer?.Dispose(); } catch { }
+        try { _clientStream?.Dispose(); } catch { }
         _reader = null;
         _writer = null;
         _clientStream = null;
@@ -105,13 +146,13 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
     public void Dispose()
     {
         Disconnect();
-        _requestLock.Dispose();
+        _lock.Dispose();
     }
 
     public ValueTask DisposeAsync()
     {
         Disconnect();
-        _requestLock.Dispose();
+        _lock.Dispose();
         return ValueTask.CompletedTask;
     }
 }

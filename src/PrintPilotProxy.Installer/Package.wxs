@@ -1,18 +1,16 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
-     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
   <Package Name="PrintPilotProxy"
            Manufacturer="PrintPilotProxy"
-           Version="0.2.1.0"
+           Version="0.4.0.0"
            UpgradeCode="A47F96B2-2C4B-4E7B-98A1-1234567890AB"
            Scope="perMachine"
            InstallerVersion="500">
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of PrintPilotProxy is already installed." Schedule="afterInstallInitialize" />
 
-    <CustomAction Id="KillApp" Directory="INSTALLFOLDER" ExeCommand="&quot;[SystemFolder]taskkill.exe&quot; /F /IM PrintPilotProxy.App.exe /T" Execute="immediate" Return="ignore" />
-    <InstallExecuteSequence>
-      <Custom Action="KillApp" Before="InstallValidate" Condition="Installed" />
-    </InstallExecuteSequence>
+    <util:CloseApplication Id="CloseApp" Target="PrintPilotProxy.App.exe" CloseMessage="yes" RebootPrompt="no" TerminateProcess="1" />
 
     <MediaTemplate EmbedCab="yes" />
 

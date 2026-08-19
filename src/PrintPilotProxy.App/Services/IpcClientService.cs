@@ -153,9 +153,6 @@ public sealed class IpcClientService
     {
         try
         {
-            if (!_client.IsConnected)
-                await _client.ConnectAsync(ct);
-
             return await _client.SendAsync(message, ct);
         }
         catch

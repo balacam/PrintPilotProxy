@@ -10,88 +10,302 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <DockPanel Grid.Row="0" Margin="0,0,0,12">
-            <TextBlock Text="{loc:Loc Key=Page.Logs}" Style="{StaticResource HeaderTextBlockStyle}" DockPanel.Dock="Left" Margin="0"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="{loc:Loc Key=Action.Refresh}" Command="{Binding RefreshCommand}" Padding="12,6" Margin="0,0,8,0" Background="{StaticResource AccentBrush}" Foreground="White"/>
-                <Button Content="{loc:Loc Key=Logs.OpenFolder}" Command="{Binding OpenLogFolderCommand}" Padding="12,6" Margin="0,0,8,0"/>
-                <Button Content="{loc:Loc Key=Logs.Copy}" Command="{Binding CopyToClipboardCommand}" Padding="12,6" Margin="0,0,8,0"/>
-                <Button Content="{loc:Loc Key=Logs.ClearView}" Command="{Binding ClearViewCommand}" Padding="12,6"/>
+        <!-- Page heading and actions -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="OBSERVABILITY" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+                <TextBlock Text="{loc:Loc Key=Page.Logs}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
             </StackPanel>
-        </DockPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="{loc:Loc Key=Logs.OpenFolder}" Command="{Binding OpenLogFolderCommand}" Style="{StaticResource ToolbarButtonStyle}" Margin="0,0,8,0" />
+                <Button Content="{loc:Loc Key=Logs.Copy}" Command="{Binding CopyToClipboardCommand}" Style="{StaticResource ToolbarButtonStyle}" Margin="0,0,8,0" />
+                <Button Content="{loc:Loc Key=Logs.ClearView}" Command="{Binding ClearViewCommand}" Style="{StaticResource ToolbarButtonStyle}" Margin="0,0,8,0" />
+                <Button Content="{loc:Loc Key=Action.Refresh}" Command="{Binding RefreshCommand}" Style="{StaticResource PrimaryButtonStyle}" />
+            </StackPanel>
+        </Grid>
 
-        <!-- Mode Selector -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,12">
-            <RadioButton Content="🔗  İstemci Bağlantı Günlükleri" IsChecked="{Binding ShowAccessLogs}" Margin="0,0,16,0" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" VerticalAlignment="Center"/>
-            <RadioButton Content="⚙️  Servis Sistem Logları" IsChecked="{Binding ShowSystemLogs}" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold" VerticalAlignment="Center"/>
-        </StackPanel>
+        <!-- Log source selector -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,16" Padding="12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <!-- Access Logs View -->
+                <Border Grid.Column="0" Style="{StaticResource InsetPanelStyle}">
+                    <RadioButton IsChecked="{Binding ShowAccessLogs}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Width="32" Height="32" Margin="0,0,11,0" Background="{StaticResource AccentSoftBrush}" CornerRadius="8">
+                                <TextBlock Text="&#xE968;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentHoverBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <TextBlock Grid.Column="1" Text="{loc:Loc Key=Logs.ClientAccessLogs}" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" />
+                        </Grid>
+                    </RadioButton>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource InsetPanelStyle}">
+                    <RadioButton IsChecked="{Binding ShowSystemLogs}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Width="32" Height="32" Margin="0,0,11,0" Background="{StaticResource InfoSurfaceBrush}" CornerRadius="8">
+                                <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource InfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <TextBlock Grid.Column="1" Text="{loc:Loc Key=Logs.ServiceSystemLogs}" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" />
+                        </Grid>
+                    </RadioButton>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Access log table -->
         <Border Grid.Row="2" Margin="0">
             <Border.Style>
-                <Style TargetType="Border" BasedOn="{StaticResource CardStyle}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
+                <Style TargetType="{x:Type Border}" BasedOn="{StaticResource CardStyle}">
+                    <Setter Property="Visibility" Value="Collapsed" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ShowAccessLogs}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Visibility" Value="Visible" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Border.Style>
-            <DataGrid ItemsSource="{Binding AccessLogs}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      Background="Transparent"
-                      Foreground="{StaticResource TextBrush}"
-                      RowBackground="{StaticResource PanelBackgroundBrush}"
-                      AlternatingRowBackground="{StaticResource DarkBackgroundBrush}"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="None"
-                      BorderThickness="0"
-                      MinHeight="300">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Zaman"       Binding="{Binding Time}"        Width="100" />
-                    <DataGridTextColumn Header="İstemci IP"  Binding="{Binding ClientIp}"    Width="160" />
-                    <DataGridTextColumn Header="Metot"       Binding="{Binding Method}"      Width="90" />
-                    <DataGridTextColumn Header="Hedef Adres" Binding="{Binding Destination}" Width="*" />
-                    <DataGridTextColumn Header="Durum"       Binding="{Binding Status}"      Width="90" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="12" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{loc:Loc Key=Logs.ClientTraffic}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0" />
+                    <Border Grid.Column="1" Style="{StaticResource StatusNeutralBadgeStyle}">
+                        <TextBlock Text="{loc:Loc Key=Logs.LiveView}" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}" />
+                    </Border>
+                </Grid>
+                <Border Grid.Row="2" Background="{StaticResource DarkBackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="9" ClipToBounds="True">
+                    <DataGrid ItemsSource="{Binding AccessLogs}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              MinHeight="330">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{loc:Loc Key=Logs.ColTime}" Binding="{Binding Time}" Width="100" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Logs.ColClientIp}" Binding="{Binding ClientIp}" Width="160" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Logs.ColMethod}" Binding="{Binding Method}" Width="90" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Logs.ColDestination}" Binding="{Binding Destination}" Width="*" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Logs.ColStatus}" Binding="{Binding Status}" Width="90" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
         </Border>
 
-        <!-- System Logs View -->
+        <!-- System log console -->
         <Border Grid.Row="2" Margin="0">
             <Border.Style>
-                <Style TargetType="Border" BasedOn="{StaticResource CardStyle}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
+                <Style TargetType="{x:Type Border}" BasedOn="{StaticResource CardStyle}">
+                    <Setter Property="Visibility" Value="Collapsed" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ShowSystemLogs}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Visibility" Value="Visible" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Border.Style>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <TextBox Text="{Binding LogContent}"
-                          IsReadOnly="True"
-                          Background="Transparent"
-                          Foreground="#A8FF78"
-                          FontFamily="Consolas"
-                          FontSize="12"
-                          BorderThickness="0"
-                          TextWrapping="NoWrap"
-                          VerticalScrollBarVisibility="Disabled"
-                          HorizontalScrollBarVisibility="Disabled"
-                          MinHeight="300" />
-            </ScrollViewer>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="12" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{loc:Loc Key=Logs.ServiceOutput}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Ellipse Width="7" Height="7" Fill="{StaticResource SuccessBrush}" Margin="0,0,7,0" />
+                        <TextBlock Text="{loc:Loc Key=Logs.Streaming}" FontSize="10" Foreground="{StaticResource MutedTextBrush}" />
+                    </StackPanel>
+                </Grid>
+                <Border Grid.Row="2" Background="#070D18" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="9" ClipToBounds="True">
+                    <Grid>
+                        <!-- Structured Log List (Invisible 2-column table) -->
+                        <ListView ItemsSource="{Binding SystemLogs}"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  Padding="8,6"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  VirtualizingStackPanel.IsVirtualizing="True"
+                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                  SelectionMode="Extended"
+                                  MinHeight="330">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Padding" Value="8,4" />
+                                    <Setter Property="Margin" Value="0,1" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="5"
+                                                        Padding="{TemplateBinding Padding}">
+                                                    <ContentPresenter />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#121D31" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Background" Value="#182A46" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,1">
+                                        <Grid.ColumnDefinitions>
+                                            <!-- Column 1: Time & Level (Distinct Styling) -->
+                                            <ColumnDefinition Width="230" />
+                                            <!-- Column 2: Log Content & Details -->
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Left Column: Timestamp & Level Badge -->
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,1,12,0">
+                                            <!-- Level Badge -->
+                                            <Border Width="40" Height="19" CornerRadius="4" Margin="0,0,8,0">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="{StaticResource DarkBackgroundBrush}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Level}" Value="INF">
+                                                                <Setter Property="Background" Value="{StaticResource InfoSurfaceBrush}" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Level}" Value="WRN">
+                                                                <Setter Property="Background" Value="{StaticResource WarningSurfaceBrush}" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Level}" Value="ERR">
+                                                                <Setter Property="Background" Value="{StaticResource ErrorSurfaceBrush}" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Level}" Value="FTL">
+                                                                <Setter Property="Background" Value="{StaticResource ErrorSurfaceBrush}" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Level}" Value="DBG">
+                                                                <Setter Property="Background" Value="{StaticResource DarkBackgroundBrush}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding Level}"
+                                                           FontSize="9.5"
+                                                           FontWeight="Bold"
+                                                           FontFamily="Cascadia Mono, Consolas"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Level}" Value="INF">
+                                                                    <Setter Property="Foreground" Value="{StaticResource InfoBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Level}" Value="WRN">
+                                                                    <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Level}" Value="ERR">
+                                                                    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Level}" Value="FTL">
+                                                                    <Setter Property="Foreground" Value="#FF4E6E" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Level}" Value="DBG">
+                                                                    <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+
+                                            <!-- Timestamp -->
+                                            <TextBlock Text="{Binding Timestamp}"
+                                                       FontFamily="Cascadia Mono, Consolas"
+                                                       FontSize="11"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       VerticalAlignment="Center" />
+                                        </StackPanel>
+
+                                        <!-- Right Column: Message & Details -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,1,0,0">
+                                            <TextBlock Text="{Binding Message}"
+                                                       Foreground="{StaticResource TextBrush}"
+                                                       FontFamily="Cascadia Mono, Consolas"
+                                                       FontSize="12"
+                                                       TextWrapping="Wrap" />
+
+                                            <!-- Exception / Multiline Details -->
+                                            <Border Visibility="{Binding HasDetails, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Background="#0D1628"
+                                                    BorderBrush="{StaticResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="4"
+                                                    Padding="8,6"
+                                                    Margin="0,5,0,2">
+                                                <TextBlock Text="{Binding Details}"
+                                                           Foreground="#FDA4AF"
+                                                           FontFamily="Cascadia Mono, Consolas"
+                                                           FontSize="11"
+                                                           TextWrapping="Wrap" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <!-- Fallback empty/error message when no structured logs available -->
+                        <TextBlock Text="{Binding LogContent}"
+                                   Visibility="{Binding HasSystemLogs, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontFamily="Cascadia Mono, Consolas"
+                                   FontSize="12"
+                                   Margin="14,12"
+                                   VerticalAlignment="Top" />
+                    </Grid>
+                </Border>
+            </Grid>
         </Border>
 
-        <!-- Status -->
         <TextBlock Grid.Row="3"
                    Text="{Binding StatusMessage}"
-                   Foreground="{StaticResource TextBrush}" Opacity="0.7" FontSize="11"
-                   Margin="0,8,0,0"
+                   Style="{StaticResource HelperTextBlockStyle}"
+                   Margin="0,10,0,0"
+                   TextWrapping="Wrap"
                    Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}" />
     </Grid>
 </UserControl>

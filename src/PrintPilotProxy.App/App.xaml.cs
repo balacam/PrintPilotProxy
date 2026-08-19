@@ -188,7 +188,10 @@ public partial class App : Application
             };
         }
         _mainWindow.Show();
-        _mainWindow.WindowState = WindowState.Normal;
+        if (_mainWindow.WindowState == WindowState.Minimized)
+        {
+            _mainWindow.WindowState = WindowState.Maximized;
+        }
         _mainWindow.Activate();
     }
 

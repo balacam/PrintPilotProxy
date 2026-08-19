@@ -211,7 +211,8 @@ public sealed class WindowsFirewallManager : IPlatformFirewallManager
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
             }
         };
 
