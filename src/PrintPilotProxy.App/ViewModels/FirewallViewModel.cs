@@ -27,6 +27,7 @@ public partial class FirewallViewModel : ObservableObject
     public FirewallViewModel(IpcClientService ipc)
     {
         _ipc = ipc;
+        LocalizationService.Instance.PropertyChanged += (_, _) => _ = LoadAsync();
         _ = LoadAsync();
     }
 

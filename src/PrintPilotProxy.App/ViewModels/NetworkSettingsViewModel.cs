@@ -71,6 +71,7 @@ public partial class NetworkSettingsViewModel : ObservableObject
     public NetworkSettingsViewModel(IpcClientService ipc)
     {
         _ipc = ipc;
+        LocalizationService.Instance.PropertyChanged += (_, _) => _ = LoadAsync();
         _ = LoadAsync();
     }
 

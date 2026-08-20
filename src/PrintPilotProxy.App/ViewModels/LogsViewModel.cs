@@ -17,7 +17,7 @@ using WpfClipboard = System.Windows.Clipboard;
 
 namespace PrintPilotProxy.App.ViewModels;
 
-public partial class LogsViewModel : ObservableObject
+public partial class LogsViewModel : ObservableObject, IDisposable
 {
     private static readonly string LogDirectory =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
@@ -66,7 +66,18 @@ public partial class LogsViewModel : ObservableObject
     public LogsViewModel(IpcClientService? ipc)
     {
         _ipc = ipc;
+        LocalizationService.Instance.PropertyChanged += OnLocalizationChanged;
         _ = RefreshAsync();
+    }
+
+    private void OnLocalizationChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        _ = RefreshAsync();
+    }
+
+    public void Dispose()
+    {
+        LocalizationService.Instance.PropertyChanged -= OnLocalizationChanged;
     }
 
     [RelayCommand]
@@ -90,7 +101,9 @@ public partial class LogsViewModel : ObservableObject
                         ClientIp = r.ClientIp,
                         Method = r.Method,
                         Destination = r.Destination,
-                        Status = r.IsSuccess ? "OK" : "Error",
+                        Status = r.IsSuccess 
+                            ? LocalizationService.Instance["Common.OK"] 
+                            : (!string.IsNullOrWhiteSpace(r.ErrorMessage) ? LogLocalizer.Localize(r.ErrorMessage) : LocalizationService.Instance["Common.Error"]),
                         StatusBrushKey = r.IsSuccess ? "SuccessBrush" : "ErrorBrush"
                     });
                 }
@@ -203,7 +216,7 @@ public partial class LogsViewModel : ObservableObject
                 {
                     Timestamp = displayTs,
                     Level = lvl,
-                    Message = msg,
+                    Message = LogLocalizer.Localize(msg),
                     LevelBrushKey = brushKey,
                     LevelSurfaceBrushKey = surfaceKey,
                     RawText = rawLine
@@ -223,7 +236,7 @@ public partial class LogsViewModel : ObservableObject
                     {
                         Timestamp = string.Empty,
                         Level = "LOG",
-                        Message = rawLine,
+                        Message = LogLocalizer.Localize(rawLine),
                         LevelBrushKey = "SecondaryTextBrush",
                         LevelSurfaceBrushKey = "DarkBackgroundBrush",
                         RawText = rawLine

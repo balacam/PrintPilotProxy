@@ -316,13 +316,13 @@
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ProxyStatus}" Value="Running">
+                                    <DataTrigger Binding="{Binding ProxyStatusRaw}" Value="Running">
                                         <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding ProxyStatus}" Value="Stopped">
+                                    <DataTrigger Binding="{Binding ProxyStatusRaw}" Value="Stopped">
                                         <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding ProxyStatus}" Value="Faulted">
+                                    <DataTrigger Binding="{Binding ProxyStatusRaw}" Value="Faulted">
                                         <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>

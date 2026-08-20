@@ -39,6 +39,7 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty] private object? _currentPage;
     [ObservableProperty] private string _currentPageName = "Dashboard";
     [ObservableProperty] private string _proxyStatus = "Unknown";
+    [ObservableProperty] private string _proxyStatusRaw = "Unknown";
     [ObservableProperty] private string _listenAddress = "N/A";
     [ObservableProperty] private bool _isConnectedToService = false;
 
@@ -46,6 +47,8 @@ public partial class MainViewModel : ObservableObject
     {
         _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
+
+        LocalizationService.Instance.PropertyChanged += (_, _) => _ = UpdateStatusAsync();
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
         _timer.Tick += async (_, _) => await UpdateStatusAsync();
@@ -68,12 +71,14 @@ public partial class MainViewModel : ObservableObject
             if (status != null)
             {
                 IsConnectedToService = true;
-                ProxyStatus = status.State.ToString();
+                ProxyStatusRaw = status.State.ToString();
+                ProxyStatus = LogLocalizer.Localize(status.State.ToString());
                 ListenAddress = status.ListeningAddress ?? "N/A";
             }
             else
             {
                 IsConnectedToService = false;
+                ProxyStatusRaw = "Stopped";
                 ProxyStatus = LocalizationService.Instance["MainWindow.ServiceUnavailable"];
                 ListenAddress = LocalizationService.Instance["Common.Na"];
             }
@@ -81,6 +86,7 @@ public partial class MainViewModel : ObservableObject
         catch
         {
             IsConnectedToService = false;
+            ProxyStatusRaw = "Stopped";
             ProxyStatus = LocalizationService.Instance["MainWindow.ServiceUnavailable"];
             ListenAddress = LocalizationService.Instance["Common.Na"];
         }

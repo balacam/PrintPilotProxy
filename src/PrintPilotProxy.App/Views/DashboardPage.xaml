@@ -74,13 +74,13 @@
                                     <Style TargetType="{x:Type Ellipse}">
                                         <Setter Property="Fill" Value="{StaticResource WarningBrush}" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProxyState}" Value="Running">
+                                            <DataTrigger Binding="{Binding ProxyStateRaw}" Value="Running">
                                                 <Setter Property="Fill" Value="{StaticResource SuccessBrush}" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding ProxyState}" Value="Stopped">
+                                            <DataTrigger Binding="{Binding ProxyStateRaw}" Value="Stopped">
                                                 <Setter Property="Fill" Value="{StaticResource ErrorBrush}" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding ProxyState}" Value="Faulted">
+                                            <DataTrigger Binding="{Binding ProxyStateRaw}" Value="Faulted">
                                                 <Setter Property="Fill" Value="{StaticResource ErrorBrush}" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -94,13 +94,13 @@
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Setter Property="Foreground" Value="{StaticResource WarningBrush}" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProxyState}" Value="Running">
+                                            <DataTrigger Binding="{Binding ProxyStateRaw}" Value="Running">
                                                 <Setter Property="Foreground" Value="{StaticResource SuccessBrush}" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding ProxyState}" Value="Stopped">
+                                            <DataTrigger Binding="{Binding ProxyStateRaw}" Value="Stopped">
                                                 <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding ProxyState}" Value="Faulted">
+                                            <DataTrigger Binding="{Binding ProxyStateRaw}" Value="Faulted">
                                                 <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
                                             </DataTrigger>
                                         </Style.Triggers>

@@ -16,6 +16,7 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
     private readonly DispatcherTimer _timer;
 
     [ObservableProperty] private string _proxyState = "N/A";
+    [ObservableProperty] private string _proxyStateRaw = "Stopped";
     [ObservableProperty] private string _proxyStateBrushKey = "WarningBrush";
     [ObservableProperty] private string _engineName = "N/A";
     [ObservableProperty] private string _engineVersion = "N/A";
@@ -38,6 +39,7 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
     public DashboardViewModel(IpcClientService ipc)
     {
         _ipc = ipc;
+        LocalizationService.Instance.PropertyChanged += (_, _) => _ = RefreshAsync();
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
         _timer.Tick += async (_, _) => await RefreshAsync();
         _timer.Start();
@@ -58,7 +60,8 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
             var status = await _ipc.GetStatusAsync();
             if (status != null)
             {
-                ProxyState = status.State.ToString();
+                ProxyStateRaw = status.State.ToString();
+                ProxyState = LogLocalizer.Localize(status.State.ToString());
                 ProxyStateBrushKey = BrushForState(status.State);
                 EngineName = status.EngineName;
                 EngineVersion = status.EngineVersion;
@@ -71,6 +74,7 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
             }
             else
             {
+                ProxyStateRaw = "Stopped";
                 ProxyState = LocalizationService.Instance["Dash.ServiceUnavailable"];
                 ProxyStateBrushKey = "ErrorBrush";
                 ListeningAddress = TotalRequests = TotalErrors = ActiveConnections = UptimeString = "N/A";
@@ -98,7 +102,9 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
                     ClientIp    = r.ClientIp,
                     Method      = r.Method,
                     Destination = r.Destination,
-                    Status      = r.IsSuccess ? "OK" : (!string.IsNullOrEmpty(r.ErrorMessage) ? r.ErrorMessage : "Error"),
+                    Status      = r.IsSuccess 
+                        ? LocalizationService.Instance["Common.OK"] 
+                        : (!string.IsNullOrEmpty(r.ErrorMessage) ? LogLocalizer.Localize(r.ErrorMessage) : LocalizationService.Instance["Common.Error"]),
                     StatusBrushKey = r.IsSuccess ? "SuccessBrush" : "ErrorBrush"
                 });
             }

@@ -35,6 +35,7 @@ public partial class AllowedClientsViewModel : ObservableObject
     public AllowedClientsViewModel(IpcClientService ipc)
     {
         _ipc = ipc;
+        LocalizationService.Instance.PropertyChanged += (_, _) => _ = LoadAsync();
         _ = LoadAsync();
     }
 

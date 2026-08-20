@@ -22,6 +22,7 @@ public partial class ServiceViewModel : ObservableObject, IDisposable
     [ObservableProperty] private string _windowsServiceState = "Unknown";
     [ObservableProperty] private string _startupType = "Unknown";
     [ObservableProperty] private string _proxyStateText = "N/A";
+    [ObservableProperty] private string _proxyStateTextRaw = "N/A";
     [ObservableProperty] private string _proxyStateBrushKey = "WarningBrush";
     [ObservableProperty] private string _listeningAddress = "N/A";
     [ObservableProperty] private string _uptime = "N/A";
@@ -64,6 +65,7 @@ public partial class ServiceViewModel : ObservableObject, IDisposable
     {
         _ipc = ipc;
         _serviceManager = serviceManager;
+        LocalizationService.Instance.PropertyChanged += (_, _) => _ = RefreshAsync();
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
         _timer.Tick += async (_, _) => await RefreshAsync();
         _timer.Start();
@@ -79,14 +81,15 @@ public partial class ServiceViewModel : ObservableObject, IDisposable
         try
         {
             var service = await _serviceManager.GetInfoAsync();
-            WindowsServiceState = service.Status.ToString();
-            StartupType = service.StartupType.ToString();
+            WindowsServiceState = LogLocalizer.Localize(service.Status.ToString());
+            StartupType = LogLocalizer.Localize(service.StartupType.ToString());
             CanStart = service.Status == ServiceStatus.Stopped;
             CanStop = service.Status is ServiceStatus.Running or ServiceStatus.Starting;
             CanRestart = service.Status == ServiceStatus.Running;
 
             if (service.Status != ServiceStatus.Running)
             {
+                ProxyStateTextRaw = "STOPPED";
                 ProxyStateText = service.Status == ServiceStatus.NotInstalled ? LocalizationService.Instance["Svc.NotInstalled"] : LocalizationService.Instance["Common.Na"];
                 ProxyStateBrushKey = service.Status == ServiceStatus.NotInstalled ? "ErrorBrush" : "WarningBrush";
                 ListeningAddress = Uptime = TotalRequests = TotalErrors = ActiveConnections = "N/A";
@@ -104,6 +107,7 @@ public partial class ServiceViewModel : ObservableObject, IDisposable
             var status = await _ipc.GetStatusAsync();
             if (status is null)
             {
+                ProxyStateTextRaw = "STOPPED";
                 ProxyStateText = LocalizationService.Instance["Svc.Unavailable"];
                 ProxyStateBrushKey = "ErrorBrush";
                 ListeningAddress = Uptime = TotalRequests = TotalErrors = ActiveConnections = "N/A";
@@ -113,7 +117,8 @@ public partial class ServiceViewModel : ObservableObject, IDisposable
                 return;
             }
 
-            ProxyStateText = status.State.ToString();
+            ProxyStateTextRaw = status.State.ToString().ToUpperInvariant();
+            ProxyStateText = LogLocalizer.Localize(status.State.ToString());
             ProxyStateBrushKey = BrushForState(status.State);
             
             CanStartProxyEngine = status.State == ProxyState.Stopped || status.State == ProxyState.Faulted;

@@ -37,6 +37,7 @@ public partial class DiagnosticsViewModel : ObservableObject
     public DiagnosticsViewModel(IpcClientService ipc)
     {
         _ipc = ipc;
+        LocalizationService.Instance.PropertyChanged += (_, _) => _ = RunAllAsync();
         _ = RunAllAsync();
     }
 

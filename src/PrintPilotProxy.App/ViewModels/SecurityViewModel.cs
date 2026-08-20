@@ -22,6 +22,7 @@ public partial class SecurityViewModel : ObservableObject
     public SecurityViewModel(IpcClientService ipc)
     {
         _ipc = ipc;
+        LocalizationService.Instance.PropertyChanged += (_, _) => _ = RunAuditAsync();
         _ = RunAuditAsync();
     }
 
