@@ -41,7 +41,7 @@ public partial class FirewallViewModel : ObservableObject
             var config = await _ipc.GetConfigurationAsync();
             if (config != null)
             {
-                RuleName = $"PrintPilotProxy - TCP {config.Listener.Port}";
+                RuleName = FirewallRuleNames.ManagedRule;
                 RulePort = config.Listener.Port.ToString();
             }
 
@@ -53,11 +53,15 @@ public partial class FirewallViewModel : ObservableObject
 
                 if (status.CurrentRule != null)
                 {
+                    RuleName = status.CurrentRule.Name;
                     RuleProtocol = status.CurrentRule.Protocol;
                     RuleDirection = status.CurrentRule.Direction;
-                RuleScope = status.CurrentRule.LocalAddresses.Count > 0
-                    ? string.Join(", ", status.CurrentRule.LocalAddresses)
-                    : LocalizationService.Instance["Common.All"];
+                    RulePort = string.Equals(status.CurrentRule.Protocol, "Any", StringComparison.OrdinalIgnoreCase) || status.CurrentRule.Port == 0 
+                        ? LocalizationService.Instance["Common.All"] ?? "Any" 
+                        : status.CurrentRule.Port.ToString();
+                    RuleScope = status.CurrentRule.LocalAddresses.Count > 0
+                        ? string.Join(", ", status.CurrentRule.LocalAddresses)
+                        : LocalizationService.Instance["Common.All"];
                 }
             }
             else

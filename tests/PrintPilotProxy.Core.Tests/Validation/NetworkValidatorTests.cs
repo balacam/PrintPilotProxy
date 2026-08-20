@@ -57,6 +57,8 @@ public class NetworkValidatorTests
     [InlineData("192.168.2.1", "192.168.1.0/24", false)]
     [InlineData("10.5.0.1", "10.0.0.0/8", true)]
     [InlineData("192.168.1.1", "0.0.0.0/0", true)]
+    [InlineData("::ffff:192.168.1.5", "192.168.1.0/24", true)]
+    [InlineData("::ffff:192.168.1.5", "192.168.1.5", true)]
     public void IsInCidrRange_ShouldReturnExpectedResult(string ip, string cidr, bool expected)
     {
         var result = NetworkValidator.IsInCidrRange(IPAddress.Parse(ip), cidr);
@@ -75,6 +77,9 @@ public class NetworkValidatorTests
     [InlineData("192.168.1.1", "192.168.1.2", false)]
     [InlineData("192.168.1.5", "192.168.1.0/24", true)]
     [InlineData("192.168.2.1", "192.168.1.0/24", false)]
+    [InlineData("::ffff:192.168.1.5", "192.168.1.0/24", true)]
+    [InlineData("::ffff:192.168.1.5", "192.168.1.5", true)]
+    [InlineData("192.168.10.25", "192.168.10.0/24", true)]
     public void IsMatch_ShouldReturnExpectedResult(string ip, string rule, bool expected)
     {
         var result = NetworkValidator.IsMatch(IPAddress.Parse(ip), rule);

@@ -32,21 +32,9 @@ if ($service) {
 
 # 2. Clean up Firewall rules
 Write-Host "Cleaning up Windows Firewall rules..."
-# Try removing the default rule we create (PrintPilotProxy - TCP <port>). Since we don't know the exact port without parsing config, we'll try a wildcard removal if possible, or just exact matches if we parse the config.
-# Safer: Parse config.json to find the current port.
-$ConfigPath = "C:\ProgramData\PrintPilotProxy\config.json"
-if (Test-Path $ConfigPath) {
-    try {
-        $config = Get-Content $ConfigPath | ConvertFrom-Json
-        $port = $config.listener.port
-        if ($port) {
-            $ruleName = "PrintPilotProxy - TCP $port"
-            netsh advfirewall firewall delete rule name="$ruleName" | Out-Null
-        }
-    } catch {
-        Write-Host "Could not automatically remove firewall rule. Please check manually." -ForegroundColor Yellow
-    }
-}
+# Remove the rules by name
+netsh advfirewall firewall delete rule name="PrintPilotProxy" 2>$null
+netsh advfirewall firewall delete rule name="PrintPilotProxy Discovery (UDP-In)" 2>$null
 
 # 3. Remove Start Menu Shortcut
 Write-Host "Removing Start Menu shortcut..."

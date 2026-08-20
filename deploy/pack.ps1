@@ -20,6 +20,8 @@ Get-Process PrintPilotProxy.Cli -ErrorAction SilentlyContinue | Stop-Process -Fo
 
 Write-Host "==> Cleaning staging directory..." -ForegroundColor Cyan
 if (Test-Path "$publishDir\staging") { Remove-Item "$publishDir\staging" -Recurse -Force -ErrorAction SilentlyContinue }
+Get-ChildItem -Path $publishDir -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
+
 New-Item "$publishDir\staging\App" -ItemType Directory -Force | Out-Null
 New-Item "$publishDir\staging\Service" -ItemType Directory -Force | Out-Null
 New-Item "$publishDir\staging\Cli" -ItemType Directory -Force | Out-Null

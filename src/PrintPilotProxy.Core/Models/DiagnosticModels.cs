@@ -98,6 +98,9 @@ public sealed class FirewallRule
 
     /// <summary>Firewall profile scope (Private, Domain, Public, or Any).</summary>
     public string Profile { get; set; } = "Private";
+
+    /// <summary>The absolute path to the executable to which this rule applies.</summary>
+    public string? Program { get; set; }
 }
 
 /// <summary>

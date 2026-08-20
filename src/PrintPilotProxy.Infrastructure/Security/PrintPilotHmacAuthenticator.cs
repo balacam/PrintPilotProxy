@@ -32,10 +32,8 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
 
     public AuthenticationResult Authenticate(string? authorizationHeader, IPAddress clientIp)
     {
-        if (!_isRequired)
-        {
-            return AuthenticationResult.Success();
-        }
+        // Removed early exit so that if the proxy engine calls Authenticate()
+        // due to configuration requiring it, we always validate.
 
         if (string.IsNullOrWhiteSpace(authorizationHeader))
         {

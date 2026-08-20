@@ -80,8 +80,12 @@ public partial class SecurityViewModel : ObservableObject
                         SecurityLevel.Critical => "ErrorBrush",
                         _ => "TextBrush"
                     },
-                    Message = check.Message,
-                    Remediation = check.Remediation ?? string.Empty
+                    Message = check.Message.StartsWith("Sec.Check.") 
+                        ? LocalizationService.Instance.GetFormat(check.Message, (object[])check.MessageArgs)
+                        : check.Message,
+                    Remediation = !string.IsNullOrEmpty(check.Remediation) && check.Remediation.StartsWith("Sec.Check.")
+                        ? LocalizationService.Instance[check.Remediation]
+                        : (check.Remediation ?? string.Empty)
                 });
             }
 

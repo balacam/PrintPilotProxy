@@ -217,7 +217,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             LastFailedRequest = _lastFailedRequest,
             ActiveConnections = _proxyServer?.ClientConnectionCount ?? 0,
             EngineName = "Unobtanium Web Proxy",
-            EngineVersion = "0.1.5"
+            EngineVersion = "0.7.0"
         };
     }
 
@@ -239,7 +239,11 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         
         var clientIp = (e.ClientRemoteEndPoint as IPEndPoint)?.Address;
 
-        if (clientIp == null || !_acl.IsAllowed(clientIp))
+        bool isAllowed = clientIp != null 
+            ? _acl.IsAllowed(clientIp) 
+            : _configuration?.ClientAccess.Mode == ClientAccessMode.AllowAll;
+
+        if (!isAllowed)
         {
             e.DenyConnect = true;
             LogRequest(e, clientIp, 403, "Access denied by ACL");
@@ -250,7 +254,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         {
             var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 
                 ?? GetHeaderValue(e.HttpClient.Request.Headers, "X-PrintPilot-Auth");
-            var authResult = _authenticator.Authenticate(authHeader, clientIp);
+            var authResult = _authenticator.Authenticate(authHeader, clientIp ?? IPAddress.Any);
             if (!authResult.IsSuccess)
             {
                 e.DenyConnect = true;
@@ -283,7 +287,11 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
     {
         var clientIp = (e.ClientRemoteEndPoint as IPEndPoint)?.Address;
         
-        if (clientIp == null || !_acl.IsAllowed(clientIp))
+        bool isAllowed = clientIp != null 
+            ? _acl.IsAllowed(clientIp) 
+            : _configuration?.ClientAccess.Mode == ClientAccessMode.AllowAll;
+
+        if (!isAllowed)
         {
             RejectRequest(e, HttpStatusCode.Forbidden, "Access denied by ACL");
             LogRequest(e, clientIp, 403, "Access denied by ACL");
@@ -294,7 +302,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         {
             var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 
                 ?? GetHeaderValue(e.HttpClient.Request.Headers, "X-PrintPilot-Auth");
-            var authResult = _authenticator.Authenticate(authHeader, clientIp);
+            var authResult = _authenticator.Authenticate(authHeader, clientIp ?? IPAddress.Any);
             if (!authResult.IsSuccess)
             {
                 var challengeHeaders = new List<HttpHeader>

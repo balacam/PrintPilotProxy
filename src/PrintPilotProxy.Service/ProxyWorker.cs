@@ -527,49 +527,33 @@ public sealed class ProxyWorker : BackgroundService
 
             if (!_firewallManager.HasPermission)
             {
-                _logger.LogWarning("Skipping Windows Firewall rule configuration because process lacks administrator permission to manage Windows Firewall.");
                 return;
             }
 
-            var localAddresses = configuration.Listener.Mode == ListenerMode.AllInterfaces
-                ? new List<string>()
-                : (await ResolveListenerAddressesAsync(configuration, cancellationToken))
-                    .Select(address => address.ToString())
-                    .ToList();
             var remoteAddresses = configuration.ClientAccess.Mode == ClientAccessMode.AllowList
                 ? configuration.ClientAccess.AllowedClients
                     .Where(client => client.Enabled)
                     .Select(client => client.IpOrCidr)
                     .ToList()
-                    : new List<string>();
+                : new List<string>();
 
-            // 1. Managed Proxy TCP Inbound Rule
+            // 1. Managed Proxy Rule (Allow all protocols across all network profiles)
             await _firewallManager.CreateRuleAsync(new FirewallRule
             {
                 Name = FirewallRuleNames.ManagedRule,
-                Protocol = "TCP",
-                Port = configuration.Listener.Port,
+                Protocol = "Any",
+                Port = 0,
                 Direction = "Inbound",
                 Action = "Allow",
-                Profile = "Private",
-                LocalAddresses = localAddresses,
+                Profile = "Any",
+                LocalAddresses = new List<string>(),
                 RemoteAddresses = remoteAddresses,
-                InterfaceScope = configuration.Firewall.InterfaceScope
+                InterfaceScope = configuration.Firewall.InterfaceScope,
+                Program = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName
             }, cancellationToken);
-
-            // 2. Managed Discovery UDP Inbound Rule (Port 37421, Private profile only)
-            await _firewallManager.CreateRuleAsync(new FirewallRule
-            {
-                Name = FirewallRuleNames.DiscoveryRule,
-                Protocol = "UDP",
-                Port = DiscoveryConstants.DefaultUdpPort,
-                Direction = "Inbound",
-                Action = "Allow",
-                Profile = "Private",
-                LocalAddresses = localAddresses,
-                RemoteAddresses = new List<string>(),
-                InterfaceScope = configuration.Firewall.InterfaceScope
-            }, cancellationToken);
+            
+            // Remove the old discovery rule, since the main rule now covers UDP
+            await _firewallManager.RemoveRuleAsync(FirewallRuleNames.DiscoveryRule, cancellationToken);
         }
         catch (Exception ex)
         {

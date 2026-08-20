@@ -13,7 +13,7 @@ namespace PrintPilotProxy.App.ViewModels;
 /// proxy-engine status is shown separately because a running service can keep
 /// the engine stopped for configuration or recovery reasons.
 /// </summary>
-public partial class ServiceViewModel : ObservableObject
+public partial class ServiceViewModel : ObservableObject, IDisposable
 {
     private readonly IpcClientService _ipc;
     private readonly IPlatformServiceManager _serviceManager;
@@ -269,4 +269,9 @@ public partial class ServiceViewModel : ObservableObject
         => uptime.HasValue
             ? $"{(int)uptime.Value.TotalHours:D2}:{uptime.Value.Minutes:D2}:{uptime.Value.Seconds:D2}"
             : "N/A";
+
+    public void Dispose()
+    {
+        _timer?.Stop();
+    }
 }

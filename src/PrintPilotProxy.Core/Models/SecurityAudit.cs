@@ -47,6 +47,9 @@ public sealed class SecurityCheck
     /// <summary>Detailed message about the finding.</summary>
     public string Message { get; set; } = string.Empty;
 
+    /// <summary>Arguments to format the localized message.</summary>
+    public string[] MessageArgs { get; set; } = Array.Empty<string>();
+
     /// <summary>Remediation advice if the check failed.</summary>
     public string? Remediation { get; set; }
 }

@@ -68,7 +68,7 @@ public partial class MainViewModel : ObservableObject
             if (status != null)
             {
                 IsConnectedToService = true;
-                ProxyStatus = status.State.ToString().ToUpperInvariant();
+                ProxyStatus = status.State.ToString();
                 ListenAddress = status.ListeningAddress ?? "N/A";
             }
             else
@@ -159,6 +159,10 @@ public partial class MainViewModel : ObservableObject
             }
 
             DiagnosticLogger.Log($"[9. IPC Connection Attempted] IsConnected={_ipc.IsConnected}");
+            if (CurrentPage is UserControl oldView && oldView.DataContext is IDisposable disposableVm)
+            {
+                try { disposableVm.Dispose(); } catch { }
+            }
             CurrentPage = view;
             CurrentPageName = requestedName.Equals("ProxySettings", StringComparison.OrdinalIgnoreCase) || requestedName.Equals("Settings", StringComparison.OrdinalIgnoreCase)
                 ? "NetworkSettings"

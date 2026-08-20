@@ -58,6 +58,18 @@ public static class NetworkValidator
     }
 
     /// <summary>
+    /// Normalizes IPv4-mapped IPv6 addresses (e.g. ::ffff:192.168.1.1) to standard IPv4.
+    /// </summary>
+    public static IPAddress NormalizeIp(IPAddress address)
+    {
+        if (address.IsIPv4MappedToIPv6)
+        {
+            return address.MapToIPv4();
+        }
+        return address;
+    }
+
+    /// <summary>
     /// Checks if a given IP address matches a CIDR range.
     /// </summary>
     public static bool IsInCidrRange(IPAddress address, string cidr)
@@ -65,11 +77,13 @@ public static class NetworkValidator
         if (string.IsNullOrWhiteSpace(cidr))
             return false;
 
+        address = NormalizeIp(address);
+
         var slashIndex = cidr.IndexOf('/');
         if (slashIndex < 0)
         {
             // Exact IP match
-            return IPAddress.TryParse(cidr, out var exactIp) && address.Equals(exactIp);
+            return IPAddress.TryParse(cidr.Trim(), out var exactIp) && address.Equals(NormalizeIp(exactIp));
         }
 
         var networkPart = cidr[..slashIndex];
@@ -77,6 +91,8 @@ public static class NetworkValidator
 
         if (!IPAddress.TryParse(networkPart, out var networkAddress))
             return false;
+
+        networkAddress = NormalizeIp(networkAddress);
 
         if (!int.TryParse(prefixPart, out var prefixLength))
             return false;
@@ -116,9 +132,11 @@ public static class NetworkValidator
         if (string.IsNullOrWhiteSpace(ipOrCidr))
             return false;
 
+        address = NormalizeIp(address);
+
         return ipOrCidr.Contains('/')
             ? IsInCidrRange(address, ipOrCidr)
-            : IPAddress.TryParse(ipOrCidr.Trim(), out var ip) && address.Equals(ip);
+            : IPAddress.TryParse(ipOrCidr.Trim(), out var ip) && address.Equals(NormalizeIp(ip));
     }
 
     /// <summary>

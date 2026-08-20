@@ -61,9 +61,9 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
 
     public async Task<IpcMessage> SendAsync(IpcMessage message, CancellationToken cancellationToken = default)
     {
-        // Non-blocking lock acquire: if another call is in progress, fail fast
-        // rather than queueing up and causing cascading timeouts
-        bool acquired = await _lock.WaitAsync(0, cancellationToken);
+        // Acquire lock with a reasonable timeout so concurrent polling requests
+        // queue cleanly instead of immediately failing
+        bool acquired = await _lock.WaitAsync(3000, cancellationToken);
         if (!acquired)
         {
             throw new TimeoutException("Another IPC request is already in progress.");

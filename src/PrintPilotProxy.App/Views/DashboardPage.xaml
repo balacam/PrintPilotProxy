@@ -303,8 +303,8 @@
                             <DataGridTextColumn Header="{loc:Loc Key=Dash.ColTime}" Binding="{Binding Time}" Width="92" />
                             <DataGridTextColumn Header="{loc:Loc Key=Dash.ColClientIp}" Binding="{Binding ClientIp}" Width="140" />
                             <DataGridTextColumn Header="{loc:Loc Key=Dash.ColMethod}" Binding="{Binding Method}" Width="86" />
-                            <DataGridTextColumn Header="{loc:Loc Key=Dash.ColDestination}" Binding="{Binding Destination}" Width="*" />
-                            <DataGridTextColumn Header="{loc:Loc Key=Dash.ColStatus}" Binding="{Binding Status}" Width="88" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Dash.ColDestination}" Binding="{Binding Destination}" Width="2*" />
+                            <DataGridTextColumn Header="{loc:Loc Key=Dash.ColStatus}" Binding="{Binding Status}" Width="1.5*" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

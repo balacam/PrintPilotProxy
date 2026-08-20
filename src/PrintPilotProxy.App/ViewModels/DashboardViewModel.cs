@@ -10,7 +10,7 @@ using PrintPilotProxy.Core.Models;
 
 namespace PrintPilotProxy.App.ViewModels;
 
-public partial class DashboardViewModel : ObservableObject
+public partial class DashboardViewModel : ObservableObject, IDisposable
 {
     private readonly IpcClientService _ipc;
     private readonly DispatcherTimer _timer;
@@ -79,7 +79,9 @@ public partial class DashboardViewModel : ObservableObject
             var config = await _ipc.GetConfigurationAsync();
             if (config != null)
             {
-                AccessMode = config.ClientAccess.Mode.ToString();
+                AccessMode = config.ClientAccess.Mode == ClientAccessMode.AllowAll 
+                    ? LocalizationService.Instance["Net.ClientAccessAllowAll"]
+                    : LocalizationService.Instance["Net.ClientAccessAllowList"];
                 AllowedClientsCount = config.ClientAccess.AllowedClients.Count.ToString();
                 AllowedPorts = config.Security.DestinationPortRestrictionsEnabled
                     ? string.Join(", ", config.Security.AllowedDestinationPorts)
@@ -96,7 +98,7 @@ public partial class DashboardViewModel : ObservableObject
                     ClientIp    = r.ClientIp,
                     Method      = r.Method,
                     Destination = r.Destination,
-                    Status      = r.IsSuccess ? "OK" : "Error",
+                    Status      = r.IsSuccess ? "OK" : (!string.IsNullOrEmpty(r.ErrorMessage) ? r.ErrorMessage : "Error"),
                     StatusBrushKey = r.IsSuccess ? "SuccessBrush" : "ErrorBrush"
                 });
             }
@@ -134,6 +136,11 @@ public partial class DashboardViewModel : ObservableObject
         if (!uptime.HasValue) return "N/A";
         var u = uptime.Value;
         return $"{(int)u.TotalHours:D2}:{u.Minutes:D2}:{u.Seconds:D2}";
+    }
+
+    public void Dispose()
+    {
+        _timer?.Stop();
     }
 }
 

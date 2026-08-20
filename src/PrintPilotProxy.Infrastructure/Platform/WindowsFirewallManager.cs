@@ -35,18 +35,22 @@ public sealed class WindowsFirewallManager : IPlatformFirewallManager
         var remoteScope = FormatScope(rule.RemoteAddresses);
         var localScope = FormatScope(rule.LocalAddresses);
         var direction = string.Equals(rule.Direction, "Outbound", StringComparison.OrdinalIgnoreCase) ? "out" : "in";
-        var protocol = string.Equals(rule.Protocol, "UDP", StringComparison.OrdinalIgnoreCase) ? "UDP" : "TCP";
+        var protocol = string.Equals(rule.Protocol, "Any", StringComparison.OrdinalIgnoreCase) ? "any" : 
+                       (string.Equals(rule.Protocol, "UDP", StringComparison.OrdinalIgnoreCase) ? "UDP" : "TCP");
         var enabled = rule.Enabled ? "yes" : "no";
         var interfaceScope = NormalizeInterfaceScope(rule.InterfaceScope);
         var profile = NormalizeProfile(rule.Profile);
 
+        var portArg = string.Equals(protocol, "any", StringComparison.OrdinalIgnoreCase) ? "" : $"localport={rule.Port} ";
+        var programArg = string.IsNullOrWhiteSpace(rule.Program) ? "" : $"program=\"{rule.Program}\" ";
+
         var arguments =
             $"advfirewall firewall add rule name=\"{rule.Name}\" dir={direction} action=allow " +
-            $"protocol={protocol} localport={rule.Port} remoteip=\"{remoteScope}\" " +
+            $"protocol={protocol} {portArg}{programArg}remoteip=\"{remoteScope}\" " +
             $"localip=\"{localScope}\" interfacetype={interfaceScope} profile={profile} enable={enabled}";
 
         await RunNetshAsync(arguments, cancellationToken);
-        _logger.LogInformation("Updated managed Windows Firewall rule {RuleName} for port {Port}.", rule.Name, rule.Port);
+        _logger.LogInformation("Updated managed Windows Firewall rule {RuleName} for protocol {Protocol}.", rule.Name, protocol);
         return true;
     }
 
@@ -87,7 +91,7 @@ public sealed class WindowsFirewallManager : IPlatformFirewallManager
             {
                 nativeRule = policy.Rules.Item(ruleName);
             }
-            catch (COMException)
+            catch (Exception ex) when (ex is COMException || ex is System.IO.FileNotFoundException)
             {
                 return Task.FromResult(new FirewallStatus { FirewallEnabled = firewallEnabled, RuleExists = false });
             }
@@ -102,7 +106,8 @@ public sealed class WindowsFirewallManager : IPlatformFirewallManager
                 Enabled = nativeRule.Enabled,
                 Direction = (int)nativeRule.Direction == 1 ? "Inbound" : "Outbound",
                 Action = (int)nativeRule.Action == 1 ? "Allow" : "Block",
-                InterfaceScope = nativeRule.InterfaceTypes as string ?? "Any"
+                InterfaceScope = nativeRule.InterfaceTypes as string ?? "Any",
+                Program = nativeRule.ApplicationName as string
             };
 
             return Task.FromResult(new FirewallStatus
@@ -148,7 +153,7 @@ public sealed class WindowsFirewallManager : IPlatformFirewallManager
     private static void ValidateManagedRule(FirewallRule rule)
     {
         ValidateManagedRuleName(rule.Name);
-        if (!NetworkValidator.IsValidPort(rule.Port))
+        if (!string.Equals(rule.Protocol, "Any", StringComparison.OrdinalIgnoreCase) && !NetworkValidator.IsValidPort(rule.Port))
         {
             throw new ArgumentOutOfRangeException(nameof(rule.Port), "Firewall rule port must be a valid TCP or UDP port.");
         }
@@ -191,7 +196,13 @@ public sealed class WindowsFirewallManager : IPlatformFirewallManager
     private static int ToPort(string? ports)
         => int.TryParse(ports?.Split(',', StringSplitOptions.TrimEntries).FirstOrDefault(), out var port) ? port : 0;
 
-    private static string ToProtocol(int protocol) => protocol == 17 ? "UDP" : "TCP";
+    private static string ToProtocol(int protocol) => protocol switch
+    {
+        17 => "UDP",
+        6 => "TCP",
+        256 => "Any",
+        _ => "Any"
+    };
 
     private static string NormalizeInterfaceScope(string? value)
         => value?.ToLowerInvariant() switch

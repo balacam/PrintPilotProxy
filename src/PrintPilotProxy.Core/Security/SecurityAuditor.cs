@@ -36,10 +36,8 @@ public sealed class SecurityAuditor : ISecurityAuditor
             Description = "Proxy should not listen on all interfaces unless required.",
             Passed = !isPublic,
             Level = isPublic ? SecurityLevel.Warning : SecurityLevel.Secure,
-            Message = isPublic
-                ? "Proxy is listening on all interfaces (0.0.0.0). Consider binding to a specific IP."
-                : "Proxy is bound to a specific interface.",
-            Remediation = isPublic ? "Set the listen address to a specific network interface IP address." : null
+            Message = isPublic ? "Sec.Check.Sec001.MsgFail" : "Sec.Check.Sec001.MsgPass",
+            Remediation = isPublic ? "Sec.Check.Sec001.Fix" : null
         };
     }
 
@@ -55,11 +53,10 @@ public sealed class SecurityAuditor : ISecurityAuditor
             Passed = !isAllowAll && hasClients,
             Level = isAllowAll ? SecurityLevel.Warning : (hasClients ? SecurityLevel.Secure : SecurityLevel.Info),
             Message = isAllowAll
-                ? "Client access is set to AllowAll. Anyone can use the proxy."
-                : (hasClients
-                    ? $"{config.ClientAccess.AllowedClients.Count(c => c.Enabled)} allowed client(s) configured."
-                    : "No allowed clients configured. The proxy will reject all connections."),
-            Remediation = isAllowAll ? "Configure specific allowed clients." : (hasClients ? null : "Add at least one allowed client.")
+                ? "Sec.Check.Sec002.MsgFail"
+                : (hasClients ? "Sec.Check.Sec002.MsgPass" : "Sec.Check.Sec002.MsgEmpty"),
+            MessageArgs = hasClients ? new[] { config.ClientAccess.AllowedClients.Count(c => c.Enabled).ToString() } : Array.Empty<string>(),
+            Remediation = isAllowAll ? "Sec.Check.Sec002.Fix" : (hasClients ? null : "Sec.Check.Sec002.FixEmpty")
         };
     }
 
@@ -73,7 +70,7 @@ public sealed class SecurityAuditor : ISecurityAuditor
             Description = "HTTPS traffic is tunneled without inspection, preserving end-to-end encryption.",
             Passed = true,
             Level = SecurityLevel.Secure,
-            Message = "HTTPS interception is not implemented. All HTTPS traffic is forwarded via CONNECT tunneling."
+            Message = "Sec.Check.Sec003.MsgPass"
         };
     }
 
@@ -88,10 +85,8 @@ public sealed class SecurityAuditor : ISecurityAuditor
             Description = "Firewall should restrict access to the proxy port.",
             Passed = !isAllInterfaces,
             Level = isAllInterfaces ? SecurityLevel.Warning : SecurityLevel.Secure,
-            Message = isAllInterfaces
-                ? "Consider configuring Windows Firewall to restrict access to the proxy port."
-                : "Proxy is bound to a specific interface.",
-            Remediation = isAllInterfaces ? "Configure a Windows Firewall rule to restrict access to allowed client IPs." : null
+            Message = isAllInterfaces ? "Sec.Check.Sec004.MsgFail" : "Sec.Check.Sec004.MsgPass",
+            Remediation = isAllInterfaces ? "Sec.Check.Sec004.Fix" : null
         };
     }
 
@@ -105,10 +100,9 @@ public sealed class SecurityAuditor : ISecurityAuditor
             Description = "Only specific destination ports should be allowed.",
             Passed = restricted,
             Level = restricted ? SecurityLevel.Secure : SecurityLevel.Warning,
-            Message = restricted
-                ? $"Destination ports restricted to: {string.Join(", ", config.Security.AllowedDestinationPorts)}"
-                : "Destination port restrictions are disabled. Any destination port is allowed.",
-            Remediation = restricted ? null : "Enable destination port restrictions in Security settings."
+            Message = restricted ? "Sec.Check.Sec005.MsgPass" : "Sec.Check.Sec005.MsgFail",
+            MessageArgs = restricted ? new[] { string.Join(", ", config.Security.AllowedDestinationPorts) } : Array.Empty<string>(),
+            Remediation = restricted ? null : "Sec.Check.Sec005.Fix"
         };
     }
 
@@ -123,8 +117,8 @@ public sealed class SecurityAuditor : ISecurityAuditor
                 Description = "Allowed client entries should not be overly broad.",
                 Passed = false,
                 Level = SecurityLevel.Warning,
-                Message = "AllowAll mode is enabled.",
-                Remediation = "Switch to AllowList mode."
+                Message = "Sec.Check.Sec006.MsgFailAllowAll",
+                Remediation = "Sec.Check.Sec006.FixAllowAll"
             };
         }
 
@@ -140,10 +134,9 @@ public sealed class SecurityAuditor : ISecurityAuditor
             Description = "Allowed client entries should not be overly broad.",
             Passed = broadClients.Count == 0,
             Level = broadClients.Count > 0 ? SecurityLevel.Warning : SecurityLevel.Secure,
-            Message = broadClients.Count > 0
-                ? $"{broadClients.Count} broad subnet(s) detected: {string.Join(", ", broadClients.Select(c => c.IpOrCidr))}"
-                : "No overly broad subnets configured.",
-            Remediation = broadClients.Count > 0 ? "Consider narrowing client CIDR ranges to reduce attack surface." : null
+            Message = broadClients.Count > 0 ? "Sec.Check.Sec006.MsgFailBroad" : "Sec.Check.Sec006.MsgPass",
+            MessageArgs = broadClients.Count > 0 ? new[] { broadClients.Count.ToString(), string.Join(", ", broadClients.Select(c => c.IpOrCidr)) } : Array.Empty<string>(),
+            Remediation = broadClients.Count > 0 ? "Sec.Check.Sec006.FixBroad" : null
         };
     }
 
@@ -157,10 +150,9 @@ public sealed class SecurityAuditor : ISecurityAuditor
             Description = "Configuration must pass all validation checks.",
             Passed = errors.Count == 0,
             Level = errors.Count > 0 ? SecurityLevel.Critical : SecurityLevel.Secure,
-            Message = errors.Count > 0
-                ? $"{errors.Count} configuration error(s): {string.Join("; ", errors.Take(3))}"
-                : "Configuration is valid.",
-            Remediation = errors.Count > 0 ? "Fix the configuration errors listed above." : null
+            Message = errors.Count > 0 ? "Sec.Check.Sec007.MsgFail" : "Sec.Check.Sec007.MsgPass",
+            MessageArgs = errors.Count > 0 ? new[] { errors.Count.ToString(), string.Join("; ", errors.Take(3)) } : Array.Empty<string>(),
+            Remediation = errors.Count > 0 ? "Sec.Check.Sec007.Fix" : null
         };
     }
 }

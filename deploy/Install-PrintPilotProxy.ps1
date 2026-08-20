@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Installs PrintPilotProxy v0.5.0
+Installs PrintPilotProxy v0.8.3
 
 .DESCRIPTION
 This script copies the compiled binaries to Program Files, creates the ProgramData configuration directory,
@@ -70,6 +70,20 @@ if (Test-Path $ServiceExe) {
         
         # Configure recovery (restart on failure)
         sc.exe failure $ServiceName reset= 86400 actions= restart/60000/restart/60000/restart/60000
+    }
+
+    Write-Host "Configuring Windows Firewall..."
+    # Remove existing dynamic rules if any
+    netsh advfirewall firewall delete rule name="PrintPilotProxy" 2>$null
+    netsh advfirewall firewall delete rule name="PrintPilotProxy Discovery (UDP-In)" 2>$null
+    
+    # Create static rule for the Service
+    netsh advfirewall firewall add rule name="PrintPilotProxy" dir=in action=allow program="`"$ServiceExe`"" protocol=any profile=any
+    
+    # Create static rule for the App
+    $AppExe = Join-Path $InstallDir "PrintPilotProxy.App.exe"
+    if (Test-Path $AppExe) {
+        netsh advfirewall firewall add rule name="PrintPilotProxy" dir=in action=allow program="`"$AppExe`"" protocol=any profile=any
     }
     
     # Start the service
