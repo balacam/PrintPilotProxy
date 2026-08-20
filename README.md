@@ -62,7 +62,7 @@ Take your system from nothing installed to PrintPilot using the proxy with these
 
 ## Configuration Overview
 
-Configuration is stored in `config.json`. You can manage it via the WPF UI or edit it directly.
+Configuration is stored in `C:\ProgramData\PrintPilotProxy\config.json`. You can manage it via the WPF UI or edit it directly.
 
 ## Proxy Engine
 

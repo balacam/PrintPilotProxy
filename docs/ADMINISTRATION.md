@@ -1,6 +1,6 @@
-# Network Administration Guide
+# Administration Guide
 
-This guide details the network topology, routing, and firewall requirements for deploying PrintPilotProxy.
+This guide details the network topology, routing, firewall requirements, and operational administration for deploying PrintPilotProxy.
 
 ## Example Network Topology
 
@@ -45,3 +45,13 @@ PrintPilotProxy handles secure traffic using the HTTP `CONNECT` method.
 ## Network Auto-Discovery (V2)
 PrintPilotProxy uses an Auto-discovery mechanism to find local private IPv4 addresses (RFC1918 blocks: 10.x.x.x, 172.16.x.x, 192.168.x.x) and binds exclusively to those. It migrates v1 127.0.0.1 setups to SpecificAddress to preserve legacy security.
 
+## Windows Operations
+
+### Windows Service
+PrintPilotProxy runs natively as a Windows Service (`Microsoft.Extensions.Hosting.WindowsServices`). It handles auto-restarts and headless execution. You can manage it using the standard `services.msc` tool or the WPF Management App.
+
+### Windows Firewall
+The UI can automatically configure Windows Firewall to allow incoming traffic on the configured proxy port.
+
+### Logs
+Logs are located in `C:\ProgramData\PrintPilotProxy\Logs\`. Check the Event Viewer if the service fails to start or crashes unexpectedly.
