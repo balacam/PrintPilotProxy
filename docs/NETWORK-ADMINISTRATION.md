@@ -33,14 +33,14 @@ PrintPilotProxy uses an internal ACL to authorize clients.
 ## DNS Resolution
 
 *   **PrintPilot PC**: The client PC does *not* necessarily need public DNS resolution if it's configured to use the proxy. It only needs to resolve the IP of the Proxy Server (if a hostname is used instead of an IP).
-*   **Proxy Server**: The Proxy Server *must* have functioning DNS resolution to look up the public IP addresses of PrintPilot Cloud services (e.g., via internal DNS servers that forward to public resolvers).
+*   **Proxy Server**: The Proxy Server *must* have functioning DNS resolution to look up the IP addresses of target SMTP / destination servers (e.g., via internal DNS servers that forward to public resolvers).
 
 ## HTTPS CONNECT and Destination Ports
 
 PrintPilotProxy handles secure traffic using the HTTP `CONNECT` method.
 
-*   **HTTPS CONNECT**: When the PrintPilot PC needs to establish a secure (HTTPS) connection, it sends a `CONNECT` request to the Proxy Server. The proxy then establishes a blind TCP tunnel to the destination. The traffic remains end-to-end encrypted; PrintPilotProxy does not intercept or decrypt the TLS payload.
-*   **Destination Ports**: To prevent abuse (e.g., tunneling SSH or other protocols through the proxy), PrintPilotProxy restricts the destination ports it will connect to. By default, it will typically only allow connections to standard web ports like `80` (HTTP) and `443` (HTTPS). You should configure the allowed destination ports to match the exact requirements of the PrintPilot Cloud services.
+*   **HTTPS CONNECT**: When the PrintPilot PC needs to establish a secure connection, it sends a `CONNECT` request to the Proxy Server. The proxy then establishes a blind TCP tunnel to the destination. The traffic remains end-to-end encrypted; PrintPilotProxy does not intercept or decrypt the TLS payload.
+*   **Destination Ports**: To prevent abuse (e.g., tunneling unauthorized protocols through the proxy), PrintPilotProxy can restrict the destination ports it will connect to. Configure the allowed destination ports to match the requirements of your destination SMTP Server / Mail Relay.
 
 ## Network Auto-Discovery (V2)
 PrintPilotProxy uses an Auto-discovery mechanism to find local private IPv4 addresses (RFC1918 blocks: 10.x.x.x, 172.16.x.x, 192.168.x.x) and binds exclusively to those. It migrates v1 127.0.0.1 setups to SpecificAddress to preserve legacy security.

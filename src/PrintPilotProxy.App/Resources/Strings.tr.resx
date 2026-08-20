@@ -308,4 +308,34 @@
   <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Proxy motoru durduruldu.</value></data>
   <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Proxy motoru yeniden başlatıldı.</value></data>
   <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Komut yürütme başarısız oldu.</value></data>
+
+  <!-- About -->
+  <data name="Nav.About" xml:space="preserve"><value>Hakkında</value></data>
+  <data name="Page.About" xml:space="preserve"><value>Hakkında</value></data>
+  <data name="About.Subtitle" xml:space="preserve"><value>Yüksek performanslı kurumsal yazdırma proxysi ve ağ güvenliği köprüsü.</value></data>
+  <data name="About.Description" xml:space="preserve"><value>PrintPilotProxy, kurumsal altyapılarda güvenli, denetimli ve izlenebilir ağ yazdırma işlemleri sağlar. İş uygulamalarını yerel ve ağ yazıcılarına ayrıntılı erişim kontrolü (ACL) ile bağlar.</value></data>
+  <data name="About.SystemInfo" xml:space="preserve"><value>Sistem ve Ortam Bilgileri</value></data>
+  <data name="About.Version" xml:space="preserve"><value>Sürüm</value></data>
+  <data name="About.Runtime" xml:space="preserve"><value>Çalışma Zamanı</value></data>
+  <data name="About.Platform" xml:space="preserve"><value>İşletim Sistemi</value></data>
+  <data name="About.Architecture" xml:space="preserve"><value>Mimari</value></data>
+  <data name="About.InstallLocation" xml:space="preserve"><value>Yükleme Dizini</value></data>
+  <data name="About.Links" xml:space="preserve"><value>Araçlar ve Depolama</value></data>
+  <data name="About.CopySysInfo" xml:space="preserve"><value>Sistem Bilgisini Kopyala</value></data>
+  <data name="About.CopySysInfoDesc" xml:space="preserve"><value>Donanım, çalışma ortamı ve işletim sistemi bilgilerini panoya kopyalar</value></data>
+  <data name="About.OpenLogs" xml:space="preserve"><value>Günlük Klasörünü Aç</value></data>
+  <data name="About.OpenLogsDesc" xml:space="preserve"><value>Proxy erişim ve servis tanılama günlük dosyalarını görüntüler</value></data>
+  <data name="About.OpenConfig" xml:space="preserve"><value>Veri Klasörünü Aç</value></data>
+  <data name="About.OpenConfigDesc" xml:space="preserve"><value>Program yapılandırması ve durum dosyalarını görüntüler</value></data>
+  <data name="About.KeyFeatures" xml:space="preserve"><value>Temel Yetenekler</value></data>
+  <data name="About.Feature1.Title" xml:space="preserve"><value>Yüksek Hızlı Akış Proxysi</value></data>
+  <data name="About.Feature1.Desc" xml:space="preserve"><value>Düşük gecikmeli RAW, LPR ve HTTP/IPP yazdırma veri aktarımı ve güçlü bağlantı yönetimi.</value></data>
+  <data name="About.Feature2.Title" xml:space="preserve"><value>Erişim Kontrolü ve ACL</value></data>
+  <data name="About.Feature2.Desc" xml:space="preserve"><value>Yazıcı filolarını izole etmek için sıkı IP/CIDR istemci izin listesi ve hedef port kısıtlaması.</value></data>
+  <data name="About.Feature3.Title" xml:space="preserve"><value>Dayanıklı Windows Hizmeti</value></data>
+  <data name="About.Feature3.Desc" xml:space="preserve"><value>Anında yapılandırma güncellemeleri ile yüksek erişilebilirlikli arka plan hizmeti olarak çalışır.</value></data>
+  <data name="About.Feature4.Title" xml:space="preserve"><value>Tanılama ve Denetim</value></data>
+  <data name="About.Feature4.Desc" xml:space="preserve"><value>Entegre güvenlik duruşu denetimi, canlı telemetri ve yapılandırılmış tanılama günlükleri.</value></data>
+  <data name="About.Copyright" xml:space="preserve"><value>Telif Hakkı © 2026 PrintPilotProxy Katkıda Bulunanları. MIT Lisansı altında dağıtılmaktadır.</value></data>
+  <data name="About.SysInfoCopied" xml:space="preserve"><value>Sistem bilgileri panoya kopyalandı!</value></data>
 </root>

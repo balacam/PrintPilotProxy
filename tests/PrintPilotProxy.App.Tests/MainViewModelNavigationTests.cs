@@ -35,6 +35,7 @@ public class MainViewModelNavigationTests
         services.AddTransient<DiagnosticsViewModel>();
         services.AddTransient<LanguageViewModel>();
         services.AddTransient<SecurityViewModel>();
+        services.AddTransient<AboutViewModel>();
         return services.BuildServiceProvider();
     }
 
@@ -106,6 +107,7 @@ public class MainViewModelNavigationTests
     [InlineData("Diagnostics", typeof(DiagnosticsPage), typeof(DiagnosticsViewModel))]
     [InlineData("Security", typeof(SecurityPage), typeof(SecurityViewModel))]
     [InlineData("Language", typeof(LanguagePage), typeof(LanguageViewModel))]
+    [InlineData("About", typeof(AboutPage), typeof(AboutViewModel))]
     public void NavigateCommand_ExecutesAndInstantiatesViewAndViewModel(
         string pageAlias, Type expectedViewType, Type expectedVmType)
     {
@@ -203,6 +205,46 @@ public class MainViewModelNavigationTests
         {
             throw threadException;
         }
+    }
+
+    [Fact]
+    [Trait("Category", "STA")]
+    public void AboutPage_InstantiatesWithoutXamlParseException()
+    {
+        Exception? threadException = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                EnsureWpfApplication();
+                var page = new AboutPage();
+                page.Should().NotBeNull();
+            }
+            catch (Exception ex)
+            {
+                threadException = ex;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join(5000);
+
+        if (threadException != null)
+        {
+            throw threadException;
+        }
+    }
+
+    [Fact]
+    public void AboutViewModel_InitializesPropertiesCorrectly()
+    {
+        var vm = new AboutViewModel();
+        vm.AppName.Should().Be("PrintPilotProxy");
+        vm.Version.Should().NotBeNullOrWhiteSpace();
+        vm.FrameworkDescription.Should().NotBeNullOrWhiteSpace();
+        vm.OsDescription.Should().NotBeNullOrWhiteSpace();
+        vm.Architecture.Should().NotBeNullOrWhiteSpace();
     }
 
     [Fact]

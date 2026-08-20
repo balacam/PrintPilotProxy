@@ -95,16 +95,20 @@ public sealed class FirewallRule
 
     /// <summary>Windows interface scope (LAN, Wireless, RAS, or Any).</summary>
     public string InterfaceScope { get; set; } = "Any";
+
+    /// <summary>Firewall profile scope (Private, Domain, Public, or Any).</summary>
+    public string Profile { get; set; } = "Private";
 }
 
 /// <summary>
-/// Names reserved for firewall rules owned by PrintPilotProxy. Keeping one
-/// stable name makes updates idempotent and guarantees that uninstall removes
+/// Names reserved for firewall rules owned by PrintPilotProxy. Keeping stable
+/// names makes updates idempotent and guarantees that uninstall removes
 /// only rules created by this product.
 /// </summary>
 public static class FirewallRuleNames
 {
     public const string ManagedRule = "PrintPilotProxy";
+    public const string DiscoveryRule = "PrintPilotProxy Discovery (UDP-In)";
 }
 
 /// <summary>

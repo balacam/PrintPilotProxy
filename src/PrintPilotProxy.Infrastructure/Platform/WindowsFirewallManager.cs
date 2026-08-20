@@ -16,7 +16,7 @@ namespace PrintPilotProxy.Infrastructure.Platform;
 /// </summary>
 public sealed class WindowsFirewallManager : IPlatformFirewallManager
 {
-    private static readonly Regex SafeRuleName = new("^[A-Za-z0-9 ._-]+$", RegexOptions.Compiled);
+    private static readonly Regex SafeRuleName = new(@"^[A-Za-z0-9 ._\-()]+$", RegexOptions.Compiled);
     private readonly ILogger<WindowsFirewallManager> _logger;
 
     public WindowsFirewallManager(ILogger<WindowsFirewallManager>? logger = null)
@@ -38,11 +38,12 @@ public sealed class WindowsFirewallManager : IPlatformFirewallManager
         var protocol = string.Equals(rule.Protocol, "UDP", StringComparison.OrdinalIgnoreCase) ? "UDP" : "TCP";
         var enabled = rule.Enabled ? "yes" : "no";
         var interfaceScope = NormalizeInterfaceScope(rule.InterfaceScope);
+        var profile = NormalizeProfile(rule.Profile);
 
         var arguments =
             $"advfirewall firewall add rule name=\"{rule.Name}\" dir={direction} action=allow " +
             $"protocol={protocol} localport={rule.Port} remoteip=\"{remoteScope}\" " +
-            $"localip=\"{localScope}\" interfacetype={interfaceScope} enable={enabled}";
+            $"localip=\"{localScope}\" interfacetype={interfaceScope} profile={profile} enable={enabled}";
 
         await RunNetshAsync(arguments, cancellationToken);
         _logger.LogInformation("Updated managed Windows Firewall rule {RuleName} for port {Port}.", rule.Name, rule.Port);
@@ -163,10 +164,11 @@ public sealed class WindowsFirewallManager : IPlatformFirewallManager
 
     private static void ValidateManagedRuleName(string ruleName)
     {
-        if (!string.Equals(ruleName, FirewallRuleNames.ManagedRule, StringComparison.Ordinal) ||
+        if ((!string.Equals(ruleName, FirewallRuleNames.ManagedRule, StringComparison.Ordinal) &&
+             !string.Equals(ruleName, FirewallRuleNames.DiscoveryRule, StringComparison.Ordinal)) ||
             !SafeRuleName.IsMatch(ruleName))
         {
-            throw new InvalidOperationException("PrintPilotProxy may manage only its own firewall rule.");
+            throw new InvalidOperationException("PrintPilotProxy may manage only its own firewall rules.");
         }
     }
 
@@ -197,6 +199,16 @@ public sealed class WindowsFirewallManager : IPlatformFirewallManager
             "lan" => "lan",
             "wireless" => "wireless",
             "ras" => "ras",
+            _ => "any"
+        };
+
+    private static string NormalizeProfile(string? value)
+        => value?.ToLowerInvariant() switch
+        {
+            "private" => "private",
+            "domain" => "domain",
+            "public" => "public",
+            "private,domain" or "domain,private" => "private,domain",
             _ => "any"
         };
 

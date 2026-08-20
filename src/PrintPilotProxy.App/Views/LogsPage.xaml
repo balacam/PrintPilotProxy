@@ -38,7 +38,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0" Style="{StaticResource InsetPanelStyle}">
-                    <RadioButton IsChecked="{Binding ShowAccessLogs}">
+                    <RadioButton GroupName="LogSource" IsChecked="{Binding ShowAccessLogs}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -53,7 +53,7 @@
                 </Border>
 
                 <Border Grid.Column="2" Style="{StaticResource InsetPanelStyle}">
-                    <RadioButton IsChecked="{Binding ShowSystemLogs}">
+                    <RadioButton GroupName="LogSource" IsChecked="{Binding ShowSystemLogs}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />

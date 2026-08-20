@@ -37,7 +37,7 @@ public class Program
                 Console.WriteLine("Validating configuration...");
                 break;
             case "version":
-                Console.WriteLine("PrintPilotProxy Version 0.1.0");
+                Console.WriteLine("PrintPilotProxy Version 0.5.0");
                 break;
             default:
                 PrintHelp();

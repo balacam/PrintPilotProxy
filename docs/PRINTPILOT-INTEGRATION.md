@@ -6,20 +6,15 @@ This guide explains how to integrate a PrintPilot client with PrintPilotProxy.
 
 To route PrintPilot traffic through PrintPilotProxy, you need to configure the proxy settings within your PrintPilot client.
 
-1.  **Proxy Host**: Set this to the IP address or hostname of the server running PrintPilotProxy (e.g., `192.168.10.10`).
-2.  **Proxy Port**: Set this to the port PrintPilotProxy is listening on (default is `3128`).
-3.  **Protocols**: PrintPilotProxy supports both HTTP and HTTPS proxying. HTTPS is achieved using the HTTP `CONNECT` method, ensuring secure, end-to-end encrypted communication between the PrintPilot client and the external PrintPilot Cloud servers.
+1.  **Auto-Discovery**: PrintPilot clients can automatically discover PrintPilotProxy on the local network using UDP broadcast on port `37421`.
+2.  **Manual Proxy Host**: Set this to the IP address or hostname of the server running PrintPilotProxy (e.g., `192.168.10.10`).
+3.  **Proxy Port**: Set this to the port PrintPilotProxy is listening on (default is `3128`).
+4.  **Protocols & Tunneling**: PrintPilotProxy supports HTTP and HTTPS/TLS tunneling using the HTTP `CONNECT` method, enabling secure, end-to-end encrypted proxying between PrintPilot clients and the destination SMTP Server / Mail Relay.
 
 ## Network & Firewall Requirements
 
 For the integration to work successfully:
 
-*   **Client to Proxy**: The PrintPilot client PC must be able to reach the Proxy Server on the configured port (e.g., TCP 3128). Ensure any local or network firewalls between the client and proxy allow this traffic.
-*   **Proxy to Internet**: The Proxy Server must have outbound internet access to reach PrintPilot Cloud services (typically TCP ports 80 and 443).
-*   **Allowed Clients**: The IP address of the PrintPilot client must be explicitly added to the "Allowed Clients" ACL in PrintPilotProxy.
-
-## Important Note Regarding Email
-
-**PrintPilotProxy does NOT handle email content.**
-
-PrintPilotProxy is strictly a forward HTTP/HTTPS proxy. It routes web traffic (API calls, web socket connections, etc.) between the PrintPilot client and the cloud. It does not act as an SMTP relay, POP3/IMAP proxy, or inspect email payloads. Any email-related functionalities (such as scan-to-email) require separate network configurations or mail servers depending on your specific setup.
+*   **Client to Proxy (LAN)**: The PrintPilot client PC must be able to reach the Proxy Server on the configured proxy port (TCP `3128`) and discovery port (UDP `37421`). Ensure internal network and host firewalls permit this traffic.
+*   **Proxy to SMTP / External**: The Proxy Server must have outbound network access to reach the target SMTP Server (e.g., ports 25, 465, 587 or custom).
+*   **Allowed Clients**: The IP address of the PrintPilot client must be explicitly allowed in PrintPilotProxy's ACL (or set to Allow All mode).

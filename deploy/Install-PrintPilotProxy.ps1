@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Installs PrintPilotProxy v0.1.0
+Installs PrintPilotProxy v0.5.0
 
 .DESCRIPTION
 This script copies the compiled binaries to Program Files, creates the ProgramData configuration directory,

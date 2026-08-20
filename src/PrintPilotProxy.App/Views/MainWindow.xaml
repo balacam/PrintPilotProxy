@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:loc="clr-namespace:PrintPilotProxy.App.Localization"
         Title="PrintPilotProxy"
+        Icon="/Resources/app.ico"
         Height="840"
         Width="1280"
         MinHeight="700"
@@ -193,6 +194,20 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="&#xE774;" Style="{StaticResource NavIconTextStyle}" />
                                 <TextBlock Grid.Column="1" Text="{loc:Loc Key=Nav.Language}" Style="{StaticResource NavLabelTextStyle}" />
+                            </Grid>
+                        </Button>
+
+                        <Button Command="{Binding NavigateCommand}"
+                                CommandParameter="About"
+                                Style="{StaticResource NavButtonStyle}"
+                                Tag="{Binding CurrentPageName, Converter={StaticResource EqualityToBooleanConverter}, ConverterParameter=About}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE946;" Style="{StaticResource NavIconTextStyle}" />
+                                <TextBlock Grid.Column="1" Text="{loc:Loc Key=Nav.About}" Style="{StaticResource NavLabelTextStyle}" />
                             </Grid>
                         </Button>
                     </StackPanel>

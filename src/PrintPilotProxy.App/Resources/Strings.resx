@@ -336,4 +336,34 @@
   <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Proxy engine stopped.</value></data>
   <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Proxy engine restarted.</value></data>
   <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Command execution failed.</value></data>
+
+  <!-- About -->
+  <data name="Nav.About" xml:space="preserve"><value>About</value></data>
+  <data name="Page.About" xml:space="preserve"><value>About</value></data>
+  <data name="About.Subtitle" xml:space="preserve"><value>High-performance enterprise print proxy &amp; network security bridge.</value></data>
+  <data name="About.Description" xml:space="preserve"><value>PrintPilotProxy enables secure, controlled, and monitored network printing across enterprise infrastructure, bridging business applications to local and network printers with fine-grained access control.</value></data>
+  <data name="About.SystemInfo" xml:space="preserve"><value>System &amp; Environment</value></data>
+  <data name="About.Version" xml:space="preserve"><value>Version</value></data>
+  <data name="About.Runtime" xml:space="preserve"><value>Runtime</value></data>
+  <data name="About.Platform" xml:space="preserve"><value>Operating System</value></data>
+  <data name="About.Architecture" xml:space="preserve"><value>Architecture</value></data>
+  <data name="About.InstallLocation" xml:space="preserve"><value>Install Directory</value></data>
+  <data name="About.Links" xml:space="preserve"><value>Tools &amp; Storage</value></data>
+  <data name="About.CopySysInfo" xml:space="preserve"><value>Copy System Information</value></data>
+  <data name="About.CopySysInfoDesc" xml:space="preserve"><value>Copy hardware, runtime, and OS details to clipboard</value></data>
+  <data name="About.OpenLogs" xml:space="preserve"><value>Open Log Directory</value></data>
+  <data name="About.OpenLogsDesc" xml:space="preserve"><value>View proxy access and service diagnostic files</value></data>
+  <data name="About.OpenConfig" xml:space="preserve"><value>Open Data Directory</value></data>
+  <data name="About.OpenConfigDesc" xml:space="preserve"><value>View program configuration and state storage</value></data>
+  <data name="About.KeyFeatures" xml:space="preserve"><value>Core Capabilities</value></data>
+  <data name="About.Feature1.Title" xml:space="preserve"><value>High-Speed Stream Proxy</value></data>
+  <data name="About.Feature1.Desc" xml:space="preserve"><value>Low-latency RAW, LPR, and HTTP/IPP print stream relay with robust connection handling.</value></data>
+  <data name="About.Feature2.Title" xml:space="preserve"><value>Access Control &amp; ACL</value></data>
+  <data name="About.Feature2.Desc" xml:space="preserve"><value>Strict IP/CIDR client allowlisting and destination port enforcement to isolate print fleets.</value></data>
+  <data name="About.Feature3.Title" xml:space="preserve"><value>Resilient Windows Service</value></data>
+  <data name="About.Feature3.Desc" xml:space="preserve"><value>Runs as a high-availability background service with instant configuration updates.</value></data>
+  <data name="About.Feature4.Title" xml:space="preserve"><value>Diagnostics &amp; Audit</value></data>
+  <data name="About.Feature4.Desc" xml:space="preserve"><value>Built-in security posture auditing, live telemetry, and structured diagnostic logs.</value></data>
+  <data name="About.Copyright" xml:space="preserve"><value>Copyright © 2026 PrintPilotProxy Contributors. Distributed under the MIT License.</value></data>
+  <data name="About.SysInfoCopied" xml:space="preserve"><value>System information copied to clipboard!</value></data>
 </root>

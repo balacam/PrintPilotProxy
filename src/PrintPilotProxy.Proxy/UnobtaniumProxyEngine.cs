@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Logging;
+using PrintPilotProxy.Core.Constants;
 using PrintPilotProxy.Core.Interfaces;
 using PrintPilotProxy.Core.Models;
 using Titanium.Web.Proxy;
@@ -19,6 +20,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
     private readonly ILogger<UnobtaniumProxyEngine> _logger;
     private readonly IAccessControlList _acl;
     private readonly INetworkInterfaceDiscovery _networkDiscovery;
+    private readonly IProxyAuthenticator? _authenticator;
     private ProxyServer? _proxyServer;
     private readonly List<ExplicitProxyEndPoint> _explicitEndPoints = new();
     private ProxyConfiguration? _configuration;
@@ -40,11 +42,16 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
     public event EventHandler<ProxyRequestEntry>? RequestProcessed;
     public event EventHandler<ProxyErrorEventArgs>? ErrorOccurred;
 
-    public UnobtaniumProxyEngine(ILogger<UnobtaniumProxyEngine> logger, IAccessControlList acl, INetworkInterfaceDiscovery networkDiscovery)
+    public UnobtaniumProxyEngine(
+        ILogger<UnobtaniumProxyEngine> logger,
+        IAccessControlList acl,
+        INetworkInterfaceDiscovery networkDiscovery,
+        IProxyAuthenticator? authenticator = null)
     {
         _logger = logger;
         _acl = acl;
         _networkDiscovery = networkDiscovery;
+        _authenticator = authenticator;
     }
 
     public async Task StartAsync(ProxyConfiguration configuration, CancellationToken cancellationToken = default)
@@ -238,6 +245,19 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             LogRequest(e, clientIp, 403, "Access denied by ACL");
             return Task.CompletedTask;
         }
+
+        if (_authenticator != null && (_configuration?.Security.RequireAuthentication == true || _authenticator.IsAuthenticationRequired))
+        {
+            var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 
+                ?? GetHeaderValue(e.HttpClient.Request.Headers, "X-PrintPilot-Auth");
+            var authResult = _authenticator.Authenticate(authHeader, clientIp);
+            if (!authResult.IsSuccess)
+            {
+                e.DenyConnect = true;
+                LogRequest(e, clientIp, 407, $"Proxy authentication required: {authResult.FailureReason}");
+                return Task.CompletedTask;
+            }
+        }
         
         var destinationUri = e.HttpClient.Request.RequestUri;
         if (destinationUri is null)
@@ -268,6 +288,23 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             RejectRequest(e, HttpStatusCode.Forbidden, "Access denied by ACL");
             LogRequest(e, clientIp, 403, "Access denied by ACL");
             return Task.CompletedTask;
+        }
+
+        if (_authenticator != null && (_configuration?.Security.RequireAuthentication == true || _authenticator.IsAuthenticationRequired))
+        {
+            var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 
+                ?? GetHeaderValue(e.HttpClient.Request.Headers, "X-PrintPilot-Auth");
+            var authResult = _authenticator.Authenticate(authHeader, clientIp);
+            if (!authResult.IsSuccess)
+            {
+                var challengeHeaders = new List<HttpHeader>
+                {
+                    new("Proxy-Authenticate", $"{DiscoveryConstants.AuthScheme} realm=\"PrintPilotProxy\"")
+                };
+                e.GenericResponse("Proxy Authentication Required", HttpStatusCode.ProxyAuthenticationRequired, challengeHeaders);
+                LogRequest(e, clientIp, 407, $"Proxy authentication required: {authResult.FailureReason}");
+                return Task.CompletedTask;
+            }
         }
         
         var destinationUri = e.HttpClient.Request.RequestUri;
@@ -360,5 +397,11 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         _lastFailedRequest = null;
         _startedAt = null;
         _recentRequests.Clear();
+    }
+
+    private static string? GetHeaderValue(HeaderCollection? headers, string headerName)
+    {
+        if (headers == null) return null;
+        return headers.FirstOrDefault(h => string.Equals(h.Name, headerName, StringComparison.OrdinalIgnoreCase))?.Value;
     }
 }

@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PrintPilotProxy.Core.Constants;
 using PrintPilotProxy.Core.Interfaces;
 using PrintPilotProxy.Core.Models;
 using IConfigurationManager = PrintPilotProxy.Core.Interfaces.IConfigurationManager;
@@ -14,6 +15,7 @@ public sealed class ProxyWorker : BackgroundService
     private const int MaximumAutomaticRecoveryAttempts = 3;
     private readonly ILogger<ProxyWorker> _logger;
     private readonly IProxyEngine _proxyEngine;
+    private readonly IProxyDiscoveryService _discoveryService;
     private readonly IConfigurationManager _configManager;
     private readonly IPlatformFirewallManager _firewallManager;
     private readonly IPlatformNetworkManager _networkManager;
@@ -32,6 +34,7 @@ public sealed class ProxyWorker : BackgroundService
     public ProxyWorker(
         ILogger<ProxyWorker> logger,
         IProxyEngine proxyEngine,
+        IProxyDiscoveryService discoveryService,
         IConfigurationManager configManager,
         IPlatformFirewallManager firewallManager,
         IPlatformNetworkManager networkManager,
@@ -44,6 +47,7 @@ public sealed class ProxyWorker : BackgroundService
     {
         _logger = logger;
         _proxyEngine = proxyEngine;
+        _discoveryService = discoveryService;
         _configManager = configManager;
         _firewallManager = firewallManager;
         _networkManager = networkManager;
@@ -70,6 +74,14 @@ public sealed class ProxyWorker : BackgroundService
             if (configuration.Service.AutoStartProxy)
             {
                 await StartConfiguredProxyWithRecoveryAsync(configuration, stoppingToken);
+                try
+                {
+                    await _discoveryService.StartAsync(stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to start discovery service. Proxy service remains functional.");
+                }
             }
 
             await Task.Delay(Timeout.InfiniteTimeSpan, stoppingToken);
@@ -89,6 +101,15 @@ public sealed class ProxyWorker : BackgroundService
         {
             _proxyEngine.RequestProcessed -= OnRequestProcessed;
             _ipcServer.MessageReceived -= HandleIpcMessageAsync;
+
+            try
+            {
+                await _discoveryService.StopAsync(CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error stopping discovery service during service shutdown.");
+            }
 
             if (_proxyEngine.GetStatus().State is ProxyState.Running or ProxyState.Starting or ProxyState.Faulted)
             {
@@ -202,17 +223,40 @@ public sealed class ProxyWorker : BackgroundService
         await ConfigureFirewallAsync(configuration, CancellationToken.None);
         _acl.Refresh(configuration);
         await _proxyEngine.StartAsync(configuration);
+        try
+        {
+            await _discoveryService.StartAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to start discovery service on proxy start.");
+        }
         return Success(request, "Proxy started.");
     }
 
     private async Task<IpcMessage> HandleStopProxyAsync(IpcMessage request)
     {
+        try
+        {
+            await _discoveryService.StopAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Error stopping discovery service on proxy stop.");
+        }
+
         await _proxyEngine.StopAsync();
         return Success(request, "Proxy stopped.");
     }
 
     private async Task<IpcMessage> HandleRestartProxyAsync(IpcMessage request)
     {
+        try
+        {
+            await _discoveryService.StopAsync();
+        }
+        catch { }
+
         if (_proxyEngine.GetStatus().State is ProxyState.Running or ProxyState.Starting or ProxyState.Faulted)
         {
             await _proxyEngine.StopAsync();
@@ -223,6 +267,14 @@ public sealed class ProxyWorker : BackgroundService
         await ConfigureFirewallAsync(configuration, CancellationToken.None);
         _acl.Refresh(configuration);
         await _proxyEngine.StartAsync(configuration);
+        try
+        {
+            await _discoveryService.StartAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to start discovery service on proxy restart.");
+        }
         return Success(request, "Proxy restarted.");
     }
 
@@ -366,6 +418,7 @@ public sealed class ProxyWorker : BackgroundService
         configuration.Firewall.RuleEnabled = false;
         await _configManager.SaveAsync(configuration);
         await _firewallManager.RemoveRuleAsync(FirewallRuleNames.ManagedRule);
+        await _firewallManager.RemoveRuleAsync(FirewallRuleNames.DiscoveryRule);
         return Success(request, "Firewall rule removed.");
     }
 
@@ -467,6 +520,7 @@ public sealed class ProxyWorker : BackgroundService
                 if (_firewallManager.HasPermission)
                 {
                     await _firewallManager.RemoveRuleAsync(FirewallRuleNames.ManagedRule, cancellationToken);
+                    await _firewallManager.RemoveRuleAsync(FirewallRuleNames.DiscoveryRule, cancellationToken);
                 }
                 return;
             }
@@ -487,8 +541,9 @@ public sealed class ProxyWorker : BackgroundService
                     .Where(client => client.Enabled)
                     .Select(client => client.IpOrCidr)
                     .ToList()
-                : new List<string>();
+                    : new List<string>();
 
+            // 1. Managed Proxy TCP Inbound Rule
             await _firewallManager.CreateRuleAsync(new FirewallRule
             {
                 Name = FirewallRuleNames.ManagedRule,
@@ -496,8 +551,23 @@ public sealed class ProxyWorker : BackgroundService
                 Port = configuration.Listener.Port,
                 Direction = "Inbound",
                 Action = "Allow",
+                Profile = "Private",
                 LocalAddresses = localAddresses,
                 RemoteAddresses = remoteAddresses,
+                InterfaceScope = configuration.Firewall.InterfaceScope
+            }, cancellationToken);
+
+            // 2. Managed Discovery UDP Inbound Rule (Port 37421, Private profile only)
+            await _firewallManager.CreateRuleAsync(new FirewallRule
+            {
+                Name = FirewallRuleNames.DiscoveryRule,
+                Protocol = "UDP",
+                Port = DiscoveryConstants.DefaultUdpPort,
+                Direction = "Inbound",
+                Action = "Allow",
+                Profile = "Private",
+                LocalAddresses = localAddresses,
+                RemoteAddresses = new List<string>(),
                 InterfaceScope = configuration.Firewall.InterfaceScope
             }, cancellationToken);
         }

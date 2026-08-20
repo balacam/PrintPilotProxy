@@ -42,6 +42,22 @@ public partial class LogsViewModel : ObservableObject
     [ObservableProperty] private bool _showSystemLogs = false;
     [ObservableProperty] private bool _hasSystemLogs = false;
 
+    partial void OnShowAccessLogsChanged(bool value)
+    {
+        if (value && ShowSystemLogs)
+        {
+            ShowSystemLogs = false;
+        }
+    }
+
+    partial void OnShowSystemLogsChanged(bool value)
+    {
+        if (value && ShowAccessLogs)
+        {
+            ShowAccessLogs = false;
+        }
+    }
+
     public ObservableCollection<ActivityLogEntry> AccessLogs { get; } = new();
     public ObservableCollection<SystemLogEntry> SystemLogs { get; } = new();
 

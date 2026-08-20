@@ -165,9 +165,18 @@ public partial class App : Application
 
         try
         {
-            var icoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "app.ico");
-            if (File.Exists(icoPath))
-                _notifyIcon.Icon = new System.Drawing.Icon(icoPath);
+            var exePath = Environment.ProcessPath;
+            if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
+            {
+                _notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
+            }
+
+            if (_notifyIcon.Icon == null)
+            {
+                var icoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "app.ico");
+                if (File.Exists(icoPath))
+                    _notifyIcon.Icon = new System.Drawing.Icon(icoPath);
+            }
         }
         catch { /* Icon not critical — tray still works */ }
 
@@ -226,6 +235,7 @@ public partial class App : Application
         services.AddTransient<DiagnosticsViewModel>();
         services.AddTransient<LanguageViewModel>();
         services.AddTransient<SecurityViewModel>();
+        services.AddTransient<AboutViewModel>();
         return services.BuildServiceProvider();
     }
 }

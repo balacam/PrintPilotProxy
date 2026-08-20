@@ -29,6 +29,7 @@ public partial class MainViewModel : ObservableObject
         ["Diagnostics"]     = (typeof(DiagnosticsPage),     typeof(DiagnosticsViewModel)),
         ["Security"]        = (typeof(SecurityPage),        typeof(SecurityViewModel)),
         ["Language"]        = (typeof(LanguagePage),        typeof(LanguageViewModel)),
+        ["About"]           = (typeof(AboutPage),           typeof(AboutViewModel)),
     };
 
     private readonly IServiceProvider _serviceProvider;

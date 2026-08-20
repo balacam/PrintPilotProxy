@@ -3,7 +3,7 @@
      xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
   <Package Name="PrintPilotProxy"
            Manufacturer="PrintPilotProxy"
-           Version="0.4.0.0"
+           Version="0.6.0.0"
            UpgradeCode="A47F96B2-2C4B-4E7B-98A1-1234567890AB"
            Scope="perMachine"
            InstallerVersion="500">
@@ -16,6 +16,9 @@
 
     <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
     <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+
+    <Icon Id="AppIcon" SourceFile="..\PrintPilotProxy.App\Resources\app.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon" />
 
     <Feature Id="MainFeature" Title="PrintPilotProxy" Level="1">
       <ComponentGroupRef Id="AppComponents" />
