@@ -8,6 +8,11 @@ namespace PrintPilotProxy.App.Tests;
 
 public class LogsViewModelTests
 {
+    public LogsViewModelTests()
+    {
+        PrintPilotProxy.App.Localization.LocalizationService.Instance.SetCulture("en-US");
+    }
+
     [Fact]
     public void ParseLogEntries_WithStandardSerilogLines_ParsesCorrectlyAndReversesOrder()
     {

@@ -97,7 +97,7 @@ public partial class LogsViewModel : ObservableObject, IDisposable
                 {
                     AccessLogs.Add(new ActivityLogEntry
                     {
-                        Time = r.Timestamp.ToLocalTime().ToString("HH:mm:ss"),
+                        Time = r.Timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
                         ClientIp = r.ClientIp,
                         Method = r.Method,
                         Destination = r.Destination,
