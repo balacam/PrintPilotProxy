@@ -1,6 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [0.9.3] - 2026-08-22
+### Fixed
+- Fixed specific network adapter address resolution type mismatch bug (`string.Equals(IPAddress)`).
+- Prevented secondary cleanup exception in `DisposeServer` from masking the primary proxy start failure message.
+- Ensured `AdapterName` is correctly assigned on network configuration apply.
 
 ## [0.8.6] - 2026-08-21
 ### Added

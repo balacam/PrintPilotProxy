@@ -23,6 +23,7 @@ public sealed class ProxyWorker : BackgroundService
     private readonly IIpcServer _ipcServer;
     private readonly IAccessControlList _acl;
     private readonly IDiagnosticsRunner _diagnostics;
+    private readonly IInternetConnectivityTester _internetTester;
     private readonly ISecurityAuditor _securityAuditor;
     private readonly IIpcSecurityValidator? _securityValidator;
     private readonly JsonSerializerOptions _jsonOptions = new()
@@ -42,6 +43,7 @@ public sealed class ProxyWorker : BackgroundService
         IIpcServer ipcServer,
         IAccessControlList acl,
         IDiagnosticsRunner diagnostics,
+        IInternetConnectivityTester internetTester,
         ISecurityAuditor securityAuditor,
         IIpcSecurityValidator? securityValidator = null)
     {
@@ -55,6 +57,7 @@ public sealed class ProxyWorker : BackgroundService
         _ipcServer = ipcServer;
         _acl = acl;
         _diagnostics = diagnostics;
+        _internetTester = internetTester;
         _securityAuditor = securityAuditor;
         _securityValidator = securityValidator;
     }
@@ -192,6 +195,7 @@ public sealed class ProxyWorker : BackgroundService
                 IpcMessageTypes.ApplyFirewallRule => await HandleApplyFirewallRuleAsync(request),
                 IpcMessageTypes.RemoveFirewallRule => await HandleRemoveFirewallRuleAsync(request),
                 IpcMessageTypes.RunDiagnostics => await HandleRunDiagnosticsAsync(request),
+                IpcMessageTypes.RunInternetTest => await HandleRunInternetTestAsync(request),
                 IpcMessageTypes.GetSecurityAudit => await HandleGetSecurityAuditAsync(request),
                 _ => Error(request, "Unknown management request.")
             };
@@ -323,6 +327,9 @@ public sealed class ProxyWorker : BackgroundService
         var wasRunning = _proxyEngine.GetStatus().State == ProxyState.Running;
         var requiresRestart = RequiresProxyRestart(previousConfiguration, updatedConfiguration);
 
+        _logger.LogInformation("[DIAG] ProxyConfigurationApplyStarted ListenMode={Mode} AdapterName={Adapter} ListenAddress={ListenAddress} Port={Port} RequiresRestart={RequiresRestart}",
+            updatedConfiguration.Listener.Mode, updatedConfiguration.Listener.AdapterName, updatedConfiguration.Listener.ListenAddress, updatedConfiguration.Listener.Port, requiresRestart);
+
         try
         {
             if (wasRunning && requiresRestart)
@@ -353,7 +360,7 @@ public sealed class ProxyWorker : BackgroundService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Configuration apply failed; restoring backup {BackupPath}.", backupPath);
+            _logger.LogError(ex, "[DIAG] ConfigurationApplyFailed RestoringBackup={BackupPath} Reason={Reason}", backupPath, ex.Message);
             try
             {
                 var restoredConfiguration = await _configManager.RestoreAsync(backupPath);
@@ -368,7 +375,7 @@ public sealed class ProxyWorker : BackgroundService
             }
             catch (Exception restoreException)
             {
-                _logger.LogCritical(restoreException, "Configuration restore failed after an apply error.");
+                _logger.LogCritical(restoreException, "[DIAG] ConfigurationRestoreFailed after an apply error.");
                 return Error(request, $"Configuration apply failed and automatic restore failed: {ex.Message}");
             }
         }
@@ -433,6 +440,19 @@ public sealed class ProxyWorker : BackgroundService
         };
     }
 
+    private async Task<IpcMessage> HandleRunInternetTestAsync(IpcMessage request)
+    {
+        var configuration = await _configManager.LoadAsync();
+        
+        var result = await _internetTester.RunTestAsync(configuration);
+        return new IpcMessage
+        {
+            Type = IpcMessageTypes.InternetTestResponse,
+            CorrelationId = request.CorrelationId,
+            Payload = result
+        };
+    }
+
     private async Task<IpcMessage> HandleGetSecurityAuditAsync(IpcMessage request)
     {
         var configuration = await _configManager.LoadAsync();
@@ -447,6 +467,9 @@ public sealed class ProxyWorker : BackgroundService
     private async Task ValidateRuntimeConfigurationAsync(ProxyConfiguration configuration, CancellationToken cancellationToken)
     {
         var candidateAddresses = await ResolveListenerAddressesAsync(configuration, cancellationToken);
+        _logger.LogInformation("[DIAG] ListenAddressResolved Mode={Mode} ResolvedIPs=[{IPList}] TargetPort={Port}",
+            configuration.Listener.Mode, string.Join(", ", candidateAddresses), configuration.Listener.Port);
+
         foreach (var address in candidateAddresses)
         {
             if (!_networkManager.IsPortAvailable(configuration.Listener.Port, address.ToString()))
@@ -503,7 +526,9 @@ public sealed class ProxyWorker : BackgroundService
             throw new InvalidOperationException("The selected listener address is invalid.");
         }
 
-        if (IPAddress.IsLoopback(address) || interfaces.SelectMany(networkInterface => networkInterface.Addresses).Any(localAddress => localAddress.Equals(address)))
+        if (IPAddress.IsLoopback(address) || interfaces.SelectMany(networkInterface => networkInterface.Addresses)
+                .Select(s => IPAddress.TryParse(s, out var ip) ? ip : null)
+                .Any(localIp => localIp != null && localIp.Equals(address)))
         {
             return new List<IPAddress> { address };
         }

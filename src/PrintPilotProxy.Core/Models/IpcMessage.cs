@@ -35,17 +35,18 @@ public static class IpcMessageTypes
     public const string UpdateConfiguration = "UpdateConfiguration";
     public const string GetRecentRequests = "GetRecentRequests";
     public const string RunDiagnostics = "RunDiagnostics";
+    public const string RunInternetTest = "RunInternetTest";
     public const string GetSecurityAudit = "GetSecurityAudit";
     public const string GetNetworkInterfaces = "GetNetworkInterfaces";
     public const string GetFirewallStatus = "GetFirewallStatus";
     public const string ApplyFirewallRule = "ApplyFirewallRule";
     public const string RemoveFirewallRule = "RemoveFirewallRule";
 
-    // Responses
     public const string StatusResponse = "StatusResponse";
     public const string ConfigurationResponse = "ConfigurationResponse";
     public const string RecentRequestsResponse = "RecentRequestsResponse";
     public const string DiagnosticsResponse = "DiagnosticsResponse";
+    public const string InternetTestResponse = "InternetTestResponse";
     public const string SecurityAuditResponse = "SecurityAuditResponse";
     public const string NetworkInterfacesResponse = "NetworkInterfacesResponse";
     public const string FirewallStatusResponse = "FirewallStatusResponse";

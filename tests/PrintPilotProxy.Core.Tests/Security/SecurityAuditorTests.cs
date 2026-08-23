@@ -17,14 +17,15 @@ public class SecurityAuditorTests
     }
 
     [Fact]
-    public void Audit_ListenAllInterfaces_WarnsAboutPublicAccess()
+    public void Audit_PublicListener_Warns()
     {
         var config = new ProxyConfiguration();
         config.Listener.Mode = ListenerMode.AllInterfaces;
+
         var auditor = new SecurityAuditor();
         var result = auditor.Audit(config);
-        
-        result.Checks.Should().Contain(c => c.Level == SecurityLevel.Warning && c.Message.Contains("listening on all interfaces"));
+
+        result.Checks.Should().Contain(c => c.Level == SecurityLevel.Warning && c.Message == "Sec.Check.Sec001.MsgFail");
     }
 
     [Fact]
@@ -35,7 +36,7 @@ public class SecurityAuditorTests
         var auditor = new SecurityAuditor();
         var result = auditor.Audit(config);
         
-        result.Checks.Should().Contain(c => c.Level == SecurityLevel.Info && c.Message.Contains("No allowed clients"));
+        result.Checks.Should().Contain(c => c.Level == SecurityLevel.Info && c.Message == "Sec.Check.Sec002.MsgEmpty");
     }
 
     [Fact]
@@ -43,11 +44,12 @@ public class SecurityAuditorTests
     {
         var config = new ProxyConfiguration();
         config.ClientAccess.Mode = ClientAccessMode.AllowList;
-        config.ClientAccess.AllowedClients.Add(new AllowedClient { Name = "All", IpOrCidr = "10.0.0.0/8" });
+        config.ClientAccess.AllowedClients.Add(new AllowedClient { Enabled = true, IpOrCidr = "10.0.0.0/8" });
+
         var auditor = new SecurityAuditor();
         var result = auditor.Audit(config);
-        
-        result.Checks.Should().Contain(c => c.Level == SecurityLevel.Warning && c.Message.Contains("broad subnet"));
+
+        result.Checks.Should().Contain(c => c.Level == SecurityLevel.Warning && c.Message == "Sec.Check.Sec006.MsgFailBroad");
     }
 
     [Fact]
@@ -55,10 +57,11 @@ public class SecurityAuditorTests
     {
         var config = new ProxyConfiguration();
         config.Security.DestinationPortRestrictionsEnabled = false;
+
         var auditor = new SecurityAuditor();
         var result = auditor.Audit(config);
-        
-        result.Checks.Should().Contain(c => c.Level == SecurityLevel.Warning && c.Message.Contains("port restrictions"));
+
+        result.Checks.Should().Contain(c => c.Level == SecurityLevel.Warning && c.Message == "Sec.Check.Sec005.MsgFail");
     }
 
     [Fact]

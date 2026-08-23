@@ -147,6 +147,15 @@ public sealed class IpcClientService
             : null;
     }
 
+    public async Task<string?> RunInternetTestAsync(CancellationToken ct = default)
+    {
+        var response = await SendAsync(
+            new IpcMessage { Type = IpcMessageTypes.RunInternetTest }, ct);
+        return response?.Type == IpcMessageTypes.InternetTestResponse
+            ? response.Payload
+            : null;
+    }
+
     // ─── Internal helpers ────────────────────────────────────────────────────
 
     private async Task<IpcMessage?> SendAsync(IpcMessage message, CancellationToken ct = default)

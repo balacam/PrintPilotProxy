@@ -3,7 +3,8 @@ param (
 )
 $ErrorActionPreference = "Stop"
 
-$rootDir = $PSScriptRoot | Split-Path -Parent
+$scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+$rootDir = if ($scriptDir) { Split-Path -Parent $scriptDir } else { (Get-Location).Path }
 Set-Location $rootDir
 $publishDir = Join-Path $rootDir "publish"
 
@@ -32,7 +33,8 @@ dotnet publish src/PrintPilotProxy.Service/PrintPilotProxy.Service.csproj -c Rel
 dotnet publish src/PrintPilotProxy.Cli/PrintPilotProxy.Cli.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:Version=$Version -o "$publishDir\staging\Cli"
 
 Write-Host "==> Building WiX MSI Installer..." -ForegroundColor Cyan
-dotnet build src/PrintPilotProxy.Installer/PrintPilotProxy.Installer.wixproj -c Release -p:OutputName="PrintPilotProxy-$Version-x64"
+New-Item "C:\Temp\wixobj" -ItemType Directory -Force | Out-Null
+dotnet build src/PrintPilotProxy.Installer/PrintPilotProxy.Installer.wixproj -c Release -p:OutputName="PrintPilotProxy-$Version-x64" -p:IntermediateOutputPath="C:\Temp\wixobj\\"
 
 Write-Host "==> Creating Portable ZIP archive..." -ForegroundColor Cyan
 $portableStage = Join-Path $rootDir "obj_portable_stage"

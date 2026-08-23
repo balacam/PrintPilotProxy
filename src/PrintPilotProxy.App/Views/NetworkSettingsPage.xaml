@@ -209,6 +209,97 @@
             </StackPanel>
         </Border>
 
+        <!-- Upstream Proxy -->
+        <Border Style="{StaticResource CardStyle}">
+            <StackPanel>
+                <Grid Margin="0,0,0,18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="38" Height="38" Margin="0,0,12,0" Background="{StaticResource AccentSoftBrush}" CornerRadius="10">
+                        <TextBlock Text="&#xE774;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="16"
+                                   Foreground="{StaticResource AccentHoverBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Internet Connection"
+                                   Style="{StaticResource SubheaderTextBlockStyle}"
+                                   Margin="0" />
+                        <TextBlock Text="Configure how the proxy connects to the internet."
+                                   Style="{StaticResource MutedTextBlockStyle}"
+                                   Margin="0,3,0,0" />
+                    </StackPanel>
+                    <Button Grid.Column="2" 
+                            Content="Test Connection" 
+                            Command="{Binding TestConnectionCommand}"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            VerticalAlignment="Center" />
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Style="{StaticResource InsetPanelStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Connection Mode" Style="{StaticResource FieldLabelTextBlockStyle}" Margin="0,0,0,12" />
+                            <RadioButton Content="Direct Connection"
+                                         GroupName="UpstreamModeGroup"
+                                         IsChecked="{Binding UpstreamModeDirect}"
+                                         Margin="0,0,0,12" />
+                            <RadioButton Content="Manual Proxy"
+                                         GroupName="UpstreamModeGroup"
+                                         IsChecked="{Binding UpstreamModeManual}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="2" Style="{StaticResource InsetPanelStyle}" IsEnabled="{Binding UpstreamModeManual}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="12" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Host and Port -->
+                            <StackPanel Grid.Row="0" Grid.Column="0">
+                                <TextBlock Text="Upstream Host" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                                <TextBox Text="{Binding UpstreamHost, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="2">
+                                <TextBlock Text="Port" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                                <TextBox Text="{Binding UpstreamPort, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            
+                            <!-- Credentials -->
+                            <StackPanel Grid.Row="2" Grid.Column="0">
+                                <TextBlock Text="Username (Optional)" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                                <TextBox Text="{Binding UpstreamUsername, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="2">
+                                <TextBlock Text="Password" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                                <!-- For simplicity, standard TextBox is used. A secure PasswordBox requires code-behind bindings, but standard TextBox is easier since this runs as User and sends to IPC. -->
+                                <TextBox Text="{Binding UpstreamPassword, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Border>
+
         <!-- Contextual result message -->
         <Border Margin="0,0,0,16"
                 Padding="13,10"

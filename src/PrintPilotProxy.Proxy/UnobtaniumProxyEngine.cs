@@ -21,6 +21,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
     private readonly IAccessControlList _acl;
     private readonly INetworkInterfaceDiscovery _networkDiscovery;
     private readonly IProxyAuthenticator? _authenticator;
+    private readonly IDataProtector _dataProtector;
     private ProxyServer? _proxyServer;
     private readonly List<ExplicitProxyEndPoint> _explicitEndPoints = new();
     private ProxyConfiguration? _configuration;
@@ -38,19 +39,38 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
     private readonly ConcurrentQueue<ProxyRequestEntry> _recentRequests = new();
     private const int MaxRecentRequests = 1000;
     private readonly SemaphoreSlim _lifecycleLock = new(1, 1);
+    private readonly ConcurrentDictionary<Guid, bool> _seenConnections = new();
+    private readonly ConcurrentDictionary<Guid, DateTime> _tunnelStartTimes = new();
 
     public event EventHandler<ProxyRequestEntry>? RequestProcessed;
     public event EventHandler<ProxyErrorEventArgs>? ErrorOccurred;
+
+    private string GetConnectionId(Guid twpConnectionId) 
+    {
+        return $"PPP-{DateTime.UtcNow:yyyyMMdd}-{twpConnectionId.ToString("N").Substring(0, 8)}";
+    }
+
+    private void EnsureClientConnectionLogged(SessionEventArgsBase e, string connectionId)
+    {
+        if (_seenConnections.TryAdd(e.ClientConnectionId, true))
+        {
+            var endpoint = e.ClientRemoteEndPoint as IPEndPoint;
+            _logger.LogInformation("[DIAG] ClientConnectionAccepted ConnectionId={ConnectionId} ClientIP={ClientIP} ClientPort={ClientPort}", 
+                connectionId, endpoint?.Address, endpoint?.Port);
+        }
+    }
 
     public UnobtaniumProxyEngine(
         ILogger<UnobtaniumProxyEngine> logger,
         IAccessControlList acl,
         INetworkInterfaceDiscovery networkDiscovery,
+        IDataProtector dataProtector,
         IProxyAuthenticator? authenticator = null)
     {
         _logger = logger;
         _acl = acl;
         _networkDiscovery = networkDiscovery;
+        _dataProtector = dataProtector;
         _authenticator = authenticator;
     }
 
@@ -83,8 +103,26 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                 ErrorOccurred?.Invoke(this, new ProxyErrorEventArgs(exception, "ProxyServer Exception"));
             };
 
+            if (configuration.UpstreamProxy.Mode == UpstreamProxyMode.Manual && !string.IsNullOrWhiteSpace(configuration.UpstreamProxy.Host))
+            {
+                var upstreamPassword = _dataProtector.Unprotect(configuration.UpstreamProxy.ProtectedPassword ?? string.Empty);
+                var externalProxy = new ExternalProxy
+                {
+                    HostName = configuration.UpstreamProxy.Host,
+                    Port = configuration.UpstreamProxy.Port,
+                    UserName = configuration.UpstreamProxy.Username,
+                    Password = upstreamPassword,
+                    ProxyType = ExternalProxyType.Http
+                };
+                _proxyServer.UpStreamHttpProxy = externalProxy;
+                _proxyServer.UpStreamHttpsProxy = externalProxy;
+            }
+
             _proxyServer.BeforeRequest += OnBeforeRequest;
             _explicitEndPoints.Clear();
+
+            _logger.LogInformation("[DIAG] ProxyStartStarted Mode={ListenerMode} ConfiguredAddress={ListenAddress} Port={Port}",
+                configuration.Listener.Mode, configuration.Listener.ListenAddress, configuration.Listener.Port);
 
             if (configuration.Listener.Mode == ListenerMode.Auto)
             {
@@ -100,6 +138,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                 {
                     var endpoint = new ExplicitProxyEndPoint(ip, configuration.Listener.Port, decryptSsl: false);
                     endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
+                    endpoint.BeforeTunnelConnectResponse += OnBeforeTunnelConnectResponse;
                     _proxyServer.AddEndPoint(endpoint);
                     _explicitEndPoints.Add(endpoint);
                 }
@@ -116,9 +155,12 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                     throw new InvalidOperationException("Use AllInterfaces mode to bind to every address.");
                 }
 
-                var isAssigned = IPAddress.IsLoopback(ipAddress) || (await _networkDiscovery.GetInterfacesAsync())
+                var interfaces = await _networkDiscovery.GetInterfacesAsync();
+                var isAssigned = IPAddress.IsLoopback(ipAddress) || interfaces
                     .SelectMany(networkInterface => networkInterface.Addresses)
-                    .Any(address => address.Equals(ipAddress));
+                    .Select(addrStr => IPAddress.TryParse(addrStr, out var parsed) ? parsed : null)
+                    .Any(localIp => localIp != null && localIp.Equals(ipAddress));
+
                 if (!isAssigned)
                 {
                     throw new InvalidOperationException("The configured listener address is not assigned to this computer.");
@@ -126,6 +168,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
 
                 var endpoint = new ExplicitProxyEndPoint(ipAddress, configuration.Listener.Port, decryptSsl: false);
                 endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
+                endpoint.BeforeTunnelConnectResponse += OnBeforeTunnelConnectResponse;
                 _proxyServer.AddEndPoint(endpoint);
                 _explicitEndPoints.Add(endpoint);
             }
@@ -149,6 +192,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
 
                 var endpoint = new ExplicitProxyEndPoint(selectedAddress, configuration.Listener.Port, decryptSsl: false);
                 endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
+                endpoint.BeforeTunnelConnectResponse += OnBeforeTunnelConnectResponse;
                 _proxyServer.AddEndPoint(endpoint);
                 _explicitEndPoints.Add(endpoint);
             }
@@ -156,6 +200,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             {
                 var endpoint = new ExplicitProxyEndPoint(IPAddress.Any, configuration.Listener.Port, decryptSsl: false);
                 endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
+                endpoint.BeforeTunnelConnectResponse += OnBeforeTunnelConnectResponse;
                 _proxyServer.AddEndPoint(endpoint);
                 _explicitEndPoints.Add(endpoint);
             }
@@ -167,13 +212,24 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             _state = ProxyState.Running;
             _startedAt = DateTimeOffset.UtcNow;
             
+            _logger.LogInformation("[DIAG] ProxyStartSucceeded ListeningOn=[{ListeningEndpoints}]",
+                string.Join(", ", _explicitEndPoints.Select(e => $"{e.IpAddress}:{e.Port}")));
             _logger.LogInformation("UnobtaniumProxyEngine started on {ListenerMode} mode on port {Port}", configuration.Listener.Mode, configuration.Listener.Port);
         }
         catch (Exception ex)
         {
             _state = ProxyState.Faulted;
-            DisposeServer();
-            _logger.LogError(ex, "Failed to start UnobtaniumProxyEngine.");
+            try
+            {
+                DisposeServer();
+            }
+            catch (Exception cleanupEx)
+            {
+                _logger.LogWarning(cleanupEx, "Error during proxy server cleanup after start failure.");
+            }
+
+            _logger.LogError(ex, "[DIAG] ProxyStartFailed ExceptionType={ExceptionType} ExceptionMessage={ExceptionMessage}",
+                ex.GetType().Name, ex.Message);
             throw;
         }
         finally
@@ -237,6 +293,15 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
     {
         e.DecryptSsl = false;
         
+        var connectionId = GetConnectionId(e.ClientConnectionId);
+        EnsureClientConnectionLogged(e, connectionId);
+
+        var targetHost = e.HttpClient.Request.RequestUri?.Host ?? "unknown";
+        var targetPort = e.HttpClient.Request.RequestUri?.Port ?? 0;
+        
+        _logger.LogInformation("[DIAG] CONNECT_RECEIVED ConnectionId={ConnectionId} TargetHost={TargetHost} TargetPort={TargetPort}",
+            connectionId, targetHost, targetPort);
+
         var clientIp = (e.ClientRemoteEndPoint as IPEndPoint)?.Address;
 
         bool isAllowed = clientIp != null 
@@ -252,15 +317,18 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
 
         if (_authenticator != null && (_configuration?.Security.RequireAuthentication == true || _authenticator.IsAuthenticationRequired))
         {
+            _logger.LogInformation("[DIAG] AuthenticationStarted ConnectionId={ConnectionId}", connectionId);
             var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 
                 ?? GetHeaderValue(e.HttpClient.Request.Headers, "X-PrintPilot-Auth");
             var authResult = _authenticator.Authenticate(authHeader, clientIp ?? IPAddress.Any);
             if (!authResult.IsSuccess)
             {
+                _logger.LogInformation("[DIAG] AuthenticationFailed ConnectionId={ConnectionId} Reason={Reason}", connectionId, authResult.FailureReason);
                 e.DenyConnect = true;
                 LogRequest(e, clientIp, 407, $"Proxy authentication required: {authResult.FailureReason}");
                 return Task.CompletedTask;
             }
+            _logger.LogInformation("[DIAG] AuthenticationSucceeded ConnectionId={ConnectionId}", connectionId);
         }
         
         var destinationUri = e.HttpClient.Request.RequestUri;
@@ -272,19 +340,79 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         }
 
         int destPort = destinationUri.Port;
-        if (!_acl.IsDestinationPortAllowed(destPort))
+        bool isDestAllowed = _acl.IsDestinationPortAllowed(destPort);
+        _logger.LogInformation("[DIAG] DestinationAclCheck ConnectionId={ConnectionId} TargetHost={TargetHost} TargetPort={TargetPort} Result={Result}",
+            connectionId, destinationUri.Host, destPort, isDestAllowed ? "Allowed" : "Denied");
+
+        if (!isDestAllowed)
         {
             e.DenyConnect = true;
             LogRequest(e, clientIp, 403, $"Destination port {destPort} is not allowed");
             return Task.CompletedTask;
         }
 
-        LogRequest(e, clientIp, 200, null);
+        var externalProxy = e.CustomUpStreamProxy ?? _proxyServer?.UpStreamHttpsProxy;
+        if (externalProxy != null)
+        {
+            _logger.LogInformation("[DIAG] UpstreamConnectionStarted ConnectionId={ConnectionId} UpstreamHost={UpstreamHost} UpstreamPort={UpstreamPort} TargetHost={TargetHost} TargetPort={TargetPort}",
+                connectionId, externalProxy.HostName, externalProxy.Port, targetHost, targetPort);
+        }
+        else
+        {
+            _logger.LogInformation("[DIAG] OutboundConnectionStarted ConnectionId={ConnectionId} TargetHost={TargetHost} TargetPort={TargetPort} Mode=Direct",
+                connectionId, targetHost, targetPort);
+        }
+
+        // We do not log 200 here anymore, because the target tunnel hasn't been established yet.
+        // We defer logging to OnBeforeTunnelConnectResponse.
+        return Task.CompletedTask;
+    }
+
+    private Task OnBeforeTunnelConnectResponse(object sender, TunnelConnectSessionEventArgs e)
+    {
+        var connectionId = GetConnectionId(e.ClientConnectionId);
+        var clientIp = (e.ClientRemoteEndPoint as IPEndPoint)?.Address;
+        
+        // If DenyConnect is true, we already logged it in Request.
+        if (e.DenyConnect) return Task.CompletedTask;
+
+        var statusCode = e.HttpClient.Response.StatusCode;
+        _logger.LogInformation("[DIAG] ConnectResponseSent ConnectionId={ConnectionId} StatusCode={StatusCode}", connectionId, statusCode);
+
+        if (statusCode >= 200 && statusCode < 300)
+        {
+            var targetHost = e.HttpClient.Request.RequestUri?.Host ?? "unknown";
+            var targetPort = e.HttpClient.Request.RequestUri?.Port ?? 0;
+            
+            _logger.LogInformation("[DIAG] UpstreamConnectionEstablished ConnectionId={ConnectionId}", connectionId);
+            _logger.LogInformation("[DIAG] TunnelEstablished ConnectionId={ConnectionId} TargetHost={TargetHost} TargetPort={TargetPort}", 
+                connectionId, targetHost, targetPort);
+            
+            _tunnelStartTimes[e.ClientConnectionId] = DateTime.UtcNow;
+            
+            LogRequest(e, clientIp, statusCode, null);
+        }
+        else
+        {
+            var errorType = e.Exception?.GetType().Name ?? "Unknown";
+            var errorMsg = e.Exception?.Message ?? $"Status code: {statusCode}";
+            
+            _logger.LogInformation("[DIAG] UpstreamConnectionFailed ConnectionId={ConnectionId} ErrorCategory={ErrorCategory} ExceptionType={ExceptionType} ErrorMessage={ErrorMessage}", 
+                connectionId, "TunnelError", errorType, errorMsg);
+            
+            _logger.LogInformation("[DIAG] TunnelFailed ConnectionId={ConnectionId} Reason={Reason}", connectionId, $"Failed to establish tunnel. Status: {statusCode}");
+            
+            LogRequest(e, clientIp, statusCode, $"Tunnel failed with status: {statusCode}");
+        }
+
         return Task.CompletedTask;
     }
 
     private Task OnBeforeRequest(object sender, SessionEventArgs e)
     {
+        var connectionId = GetConnectionId(e.ClientConnectionId);
+        EnsureClientConnectionLogged(e, connectionId);
+
         var clientIp = (e.ClientRemoteEndPoint as IPEndPoint)?.Address;
         
         bool isAllowed = clientIp != null 
@@ -300,11 +428,13 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
 
         if (_authenticator != null && (_configuration?.Security.RequireAuthentication == true || _authenticator.IsAuthenticationRequired))
         {
+            _logger.LogInformation("[DIAG] AuthenticationStarted ConnectionId={ConnectionId}", connectionId);
             var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 
                 ?? GetHeaderValue(e.HttpClient.Request.Headers, "X-PrintPilot-Auth");
             var authResult = _authenticator.Authenticate(authHeader, clientIp ?? IPAddress.Any);
             if (!authResult.IsSuccess)
             {
+                _logger.LogInformation("[DIAG] AuthenticationFailed ConnectionId={ConnectionId} Reason={Reason}", connectionId, authResult.FailureReason);
                 var challengeHeaders = new List<HttpHeader>
                 {
                     new("Proxy-Authenticate", $"{DiscoveryConstants.AuthScheme} realm=\"PrintPilotProxy\"")
@@ -313,6 +443,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                 LogRequest(e, clientIp, 407, $"Proxy authentication required: {authResult.FailureReason}");
                 return Task.CompletedTask;
             }
+            _logger.LogInformation("[DIAG] AuthenticationSucceeded ConnectionId={ConnectionId}", connectionId);
         }
         
         var destinationUri = e.HttpClient.Request.RequestUri;
@@ -324,7 +455,12 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         }
 
         int destPort = destinationUri.Port;
-        if (!_acl.IsDestinationPortAllowed(destPort))
+        bool isDestAllowed = _acl.IsDestinationPortAllowed(destPort);
+        
+        _logger.LogInformation("[DIAG] DestinationAclCheck ConnectionId={ConnectionId} TargetHost={TargetHost} TargetPort={TargetPort} Result={Result}",
+            connectionId, destinationUri.Host, destPort, isDestAllowed ? "Allowed" : "Denied");
+
+        if (!isDestAllowed)
         {
             RejectRequest(e, HttpStatusCode.Forbidden, $"Destination port {destPort} is not allowed");
             LogRequest(e, clientIp, 403, $"Destination port {destPort} is not allowed");
@@ -383,17 +519,40 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             return;
         }
 
-        _proxyServer.BeforeRequest -= OnBeforeRequest;
-        foreach (var endpoint in _explicitEndPoints)
+        try
         {
-            endpoint.BeforeTunnelConnectRequest -= OnBeforeTunnelConnectRequest;
-            _proxyServer.RemoveEndPoint(endpoint);
-        }
+            _proxyServer.BeforeRequest -= OnBeforeRequest;
+            foreach (var endpoint in _explicitEndPoints)
+            {
+                endpoint.BeforeTunnelConnectRequest -= OnBeforeTunnelConnectRequest;
+                endpoint.BeforeTunnelConnectResponse -= OnBeforeTunnelConnectResponse;
+                _proxyServer.RemoveEndPoint(endpoint);
+            }
 
-        _explicitEndPoints.Clear();
-        _proxyServer.Stop();
-        _proxyServer.Dispose();
-        _proxyServer = null;
+            _explicitEndPoints.Clear();
+
+            try
+            {
+                _proxyServer.Stop();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "ProxyServer.Stop() encountered an exception during cleanup (ignorable if server was not running).");
+            }
+
+            try
+            {
+                _proxyServer.Dispose();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "ProxyServer.Dispose() encountered an exception during cleanup.");
+            }
+        }
+        finally
+        {
+            _proxyServer = null;
+        }
     }
 
     private void ResetRunStatistics()

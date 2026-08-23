@@ -17,6 +17,11 @@ public sealed class ProxyConfiguration
     public ListenerSettings Listener { get; set; } = new();
 
     /// <summary>
+    /// Upstream proxy settings.
+    /// </summary>
+    public UpstreamProxySettings UpstreamProxy { get; set; } = new();
+
+    /// <summary>
     /// Client access control settings.
     /// </summary>
     public ClientAccessSettings ClientAccess { get; set; } = new();
@@ -100,6 +105,43 @@ public sealed class ListenerSettings
     /// Connection timeout in seconds.
     /// </summary>
     public int ConnectionTimeoutSeconds { get; set; } = 120;
+}
+
+public enum UpstreamProxyMode
+{
+    Direct,
+    Manual
+}
+
+/// <summary>
+/// Upstream proxy configuration.
+/// </summary>
+public sealed class UpstreamProxySettings
+{
+    /// <summary>
+    /// Mode for upstream proxy connection.
+    /// </summary>
+    public UpstreamProxyMode Mode { get; set; } = UpstreamProxyMode.Direct;
+
+    /// <summary>
+    /// Hostname or IP of the upstream proxy.
+    /// </summary>
+    public string? Host { get; set; }
+
+    /// <summary>
+    /// Port of the upstream proxy.
+    /// </summary>
+    public int Port { get; set; } = 8080;
+
+    /// <summary>
+    /// Username for upstream proxy authentication.
+    /// </summary>
+    public string? Username { get; set; }
+
+    /// <summary>
+    /// Protected password for upstream proxy authentication.
+    /// </summary>
+    public string? ProtectedPassword { get; set; }
 }
 
 public enum ClientAccessMode

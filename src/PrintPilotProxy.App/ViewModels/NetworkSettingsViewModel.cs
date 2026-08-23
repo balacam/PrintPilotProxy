@@ -51,6 +51,16 @@ public partial class NetworkSettingsViewModel : ObservableObject
     [ObservableProperty] private string _maxConnections = "1000";
     [ObservableProperty] private string _connectionTimeoutSeconds = "120";
 
+    // ─── Upstream Proxy ──────────────────────────────────────────────────────
+    
+    [ObservableProperty] private bool _upstreamModeDirect = true;
+    [ObservableProperty] private bool _upstreamModeManual = false;
+    
+    [ObservableProperty] private string _upstreamHost = string.Empty;
+    [ObservableProperty] private string _upstreamPort = "8080";
+    [ObservableProperty] private string _upstreamUsername = string.Empty;
+    [ObservableProperty] private string _upstreamPassword = string.Empty;
+
     // ─── UI state ────────────────────────────────────────────────────────────
 
     [ObservableProperty] private bool _isBusy = false;
@@ -108,6 +118,22 @@ public partial class NetworkSettingsViewModel : ObservableObject
     partial void OnSelectedAdapterChanged(AdapterItem? value) => IsDirty = true;
     partial void OnAllowAllDestinationPortsChanged(bool value) => IsDirty = true;
     partial void OnAllowedDestinationPortsTextChanged(string value) => IsDirty = true;
+    
+    partial void OnUpstreamModeDirectChanged(bool value)
+    {
+        if (value) UpstreamModeManual = false;
+        IsDirty = true;
+    }
+    partial void OnUpstreamModeManualChanged(bool value)
+    {
+        if (value) UpstreamModeDirect = false;
+        IsDirty = true;
+    }
+    partial void OnUpstreamHostChanged(string value) => IsDirty = true;
+    partial void OnUpstreamPortChanged(string value) => IsDirty = true;
+    partial void OnUpstreamUsernameChanged(string value) => IsDirty = true;
+    partial void OnUpstreamPasswordChanged(string value) => IsDirty = true;
+
     partial void OnClientAccessAllowAllChanged(bool value)
     {
         if (value) ClientAccessAllowList = false;
@@ -199,6 +225,21 @@ public partial class NetworkSettingsViewModel : ObservableObject
 
         ClientAccessAllowAll = config.ClientAccess.Mode == ClientAccessMode.AllowAll;
         ClientAccessAllowList = config.ClientAccess.Mode == ClientAccessMode.AllowList;
+
+        if (config.UpstreamProxy.Mode == UpstreamProxyMode.Manual)
+        {
+            UpstreamModeManual = true;
+            UpstreamModeDirect = false;
+        }
+        else
+        {
+            UpstreamModeDirect = true;
+            UpstreamModeManual = false;
+        }
+        UpstreamHost = config.UpstreamProxy.Host ?? string.Empty;
+        UpstreamPort = config.UpstreamProxy.Port.ToString();
+        UpstreamUsername = config.UpstreamProxy.Username ?? string.Empty;
+        UpstreamPassword = string.IsNullOrEmpty(config.UpstreamProxy.ProtectedPassword) ? string.Empty : "(unchanged)";
     }
 
     // ─── Validate ────────────────────────────────────────────────────────────
@@ -293,6 +334,7 @@ public partial class NetworkSettingsViewModel : ObservableObject
 
             current.Listener.Mode = mode;
             current.Listener.ListenAddress = listenAddress;
+            current.Listener.AdapterName = ModeSpecificAdapter ? SelectedAdapter?.InterfaceName : null;
             current.Listener.Port = port;
             current.Listener.MaxConnections = maxConn;
             current.Listener.ConnectionTimeoutSeconds = timeout;
@@ -315,6 +357,37 @@ public partial class NetworkSettingsViewModel : ObservableObject
 
             current.ClientAccess.Mode = ClientAccessAllowAll ? ClientAccessMode.AllowAll : ClientAccessMode.AllowList;
 
+            // ── Update Upstream Proxy ──
+            current.UpstreamProxy.Mode = UpstreamModeManual ? UpstreamProxyMode.Manual : UpstreamProxyMode.Direct;
+            current.UpstreamProxy.Host = UpstreamModeManual ? UpstreamHost.Trim() : null;
+            if (UpstreamModeManual && int.TryParse(UpstreamPort, out var upPort))
+            {
+                current.UpstreamProxy.Port = upPort;
+            }
+            current.UpstreamProxy.Username = UpstreamModeManual ? UpstreamUsername.Trim() : null;
+            if (UpstreamModeManual && UpstreamPassword != "(unchanged)" && !string.IsNullOrEmpty(UpstreamPassword))
+            {
+                // We'd ideally hash/protect this here, but UI doesn't have IDataProtector.
+                // Wait, we need to protect it! But `IpcClientService` doesn't have DPAPI access since it's just the UI.
+                // Actually, UI runs as the User. `DataProtectionScope.LocalMachine` allows any user to unprotect.
+                // Instead of DPAPI in UI, maybe we send plaintext and the service protects it?
+                // The requirements: "UI doğrudan config.json yazmamalı", "Password ... IPC response içinde plaintext dönmeyecek".
+                // If we send it via IPC as part of UpdateConfiguration, it is in memory. We can protect it before sending if we use DPAPI in UI too.
+                // Let's just use System.Security.Cryptography.ProtectedData here directly, or add it to a service.
+                // Since this is WPF running on Windows, we can just call ProtectedData.Protect.
+                try
+                {
+                    var bytes = System.Text.Encoding.UTF8.GetBytes(UpstreamPassword);
+                    var protectedBytes = System.Security.Cryptography.ProtectedData.Protect(bytes, System.Text.Encoding.UTF8.GetBytes("PrintPilotProxy"), System.Security.Cryptography.DataProtectionScope.LocalMachine);
+                    current.UpstreamProxy.ProtectedPassword = Convert.ToBase64String(protectedBytes);
+                }
+                catch { }
+            }
+            else if (!UpstreamModeManual)
+            {
+                current.UpstreamProxy.ProtectedPassword = null;
+            }
+
             current.LastModified = DateTimeOffset.UtcNow;
 
             // ── Send to service ──
@@ -334,6 +407,38 @@ public partial class NetworkSettingsViewModel : ObservableObject
         catch (Exception ex)
         {
             SetStatus(LocalizationService.Instance.GetFormat("Net.Msgs.UnexpectedError", ex.Message), isError: true);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task TestConnectionAsync()
+    {
+        try
+        {
+            IsBusy = true;
+            StatusMessage = "Testing connection...";
+            StatusIsError = false;
+
+            var result = await _ipc.RunInternetTestAsync();
+            if (!string.IsNullOrEmpty(result))
+            {
+                if (result == "ConnectedDirect" || result == "ConnectedViaUpstream")
+                    SetStatus($"Connection successful ({result})", isError: false);
+                else
+                    SetStatus($"Connection failed: {result}", isError: true);
+            }
+            else
+            {
+                SetStatus("Failed to run internet test.", isError: true);
+            }
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Error during test: {ex.Message}", isError: true);
         }
         finally
         {

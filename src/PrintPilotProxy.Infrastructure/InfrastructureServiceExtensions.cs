@@ -23,7 +23,9 @@ namespace PrintPilotProxy.Infrastructure
             services.AddSingleton<INetworkInterfaceDiscovery, WindowsNetworkDiscovery>();
 
             services.AddTransient<IDiagnosticsRunner, DiagnosticsRunner>();
+            services.AddTransient<IInternetConnectivityTester, InternetConnectivityTester>();
             services.AddTransient<ISecurityAuditor, SecurityAuditor>();
+            services.AddSingleton<IDataProtector, DpapiDataProtector>();
 
             services.AddSingleton<IIpcServer, NamedPipeIpcServer>();
             services.AddSingleton<IIpcClient, NamedPipeIpcClient>();

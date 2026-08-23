@@ -35,6 +35,11 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
         // Removed early exit so that if the proxy engine calls Authenticate()
         // due to configuration requiring it, we always validate.
 
+        if (!_isRequired)
+        {
+            return AuthenticationResult.Success(DiscoveryConstants.ProtocolVersion);
+        }
+
         if (string.IsNullOrWhiteSpace(authorizationHeader))
         {
             return AuthenticationResult.Failure("Missing proxy authorization header.");

@@ -23,12 +23,15 @@ flowchart TD
     end
 
     subgraph External Network
+        Upstream[Corporate Upstream Proxy\nOptional]
         SMTP[External SMTP Server\ne.g., Office365, SendGrid]
     end
 
     Client -.->|UDP 37421\nDiscovery| Service
     Client ===>|TCP 3128\nHTTP CONNECT| Proxy
-    Proxy ===>|TCP 443/587\nEncrypted Tunnel| SMTP
+    Proxy ===>|TCP 443/587\nEncrypted Tunnel\nOptional Basic Auth| Upstream
+    Upstream ===>|TCP 443/587| SMTP
+    Proxy ===>|Direct Connection\nIf no upstream| SMTP
 ```
 
 ## Component Breakdown

@@ -12,6 +12,7 @@ The schema matches the `ProxyConfiguration` class.
 | :--- | :--- | :--- |
 | `SchemaVersion` | int | Schema version for forward compatibility (Current: 2). |
 | `Listener` | object | Listener behavior. See [Listener Settings](#listener-settings). |
+| `UpstreamProxy` | object | Corporate upstream proxy. See [Upstream Proxy Settings](#upstream-proxy-settings). |
 | `ClientAccess` | object | Network access control. See [Client Access Settings](#client-access-settings). |
 | `Security` | object | Port restriction and auth. See [Security Settings](#security-settings). |
 | `Logging` | object | Log retention and levels. See [Logging Settings](#logging-settings). |
@@ -32,6 +33,18 @@ Defines how the proxy binds to network interfaces.
 | `Port` | int | `3128` | The TCP port for the HTTP CONNECT proxy. |
 | `MaxConnections` | int | `1000` | Max concurrent proxy connections. |
 | `ConnectionTimeoutSeconds` | int | `120` | Timeout for idle connections. |
+
+## Upstream Proxy Settings (`UpstreamProxy`)
+
+Configures how PrintPilotProxy routes traffic to the internet. Useful when PrintPilotProxy itself is behind a corporate network proxy.
+
+| Property | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `Mode` | string | `"Direct"` | Allowed values: `"Direct"`, `"Manual"`. If `"Direct"`, traffic is sent straight to the internet. |
+| `Host` | string | `""` | The hostname or IP address of the upstream proxy. Required if Mode is Manual. |
+| `Port` | int | `3128` | The port of the upstream proxy. |
+| `Username` | string | `null` | Username for basic authentication, if required by the upstream proxy. |
+| `ProtectedPassword` | string | `null` | DPAPI-encrypted password. Never edit this manually; configure via the UI. |
 
 ## Client Access Settings (`ClientAccess`)
 

@@ -141,4 +141,75 @@ public class NetworkSettingsViewModelTests
                 .Should().Be(expectedValid);
         }
     }
+
+    [Fact]
+    public async Task ApplyAsync_SpecificAdapterSelected_SetsCorrectAddressAndAdapterName()
+    {
+        ProxyConfiguration? updatedConfig = null;
+
+        var mockClient = new Mock<IIpcClient>();
+        mockClient.Setup(c => c.IsConnected).Returns(true);
+        mockClient.Setup(c => c.ConnectAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
+
+        var cfg = DefaultConfig();
+        var cfgJson = System.Text.Json.JsonSerializer.Serialize(cfg,
+            new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase });
+
+        mockClient.Setup(c => c.SendAsync(
+            It.Is<IpcMessage>(m => m.Type == IpcMessageTypes.GetConfiguration),
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new IpcMessage { Type = IpcMessageTypes.ConfigurationResponse, Payload = cfgJson });
+
+        var ifaces = new List<DiscoveredNetworkInterface>
+        {
+            new DiscoveredNetworkInterface
+            {
+                Name = "Ethernet1",
+                IsPrivate = true,
+                IsOperational = true,
+                Addresses = new List<string> { "192.168.10.10" }
+            }
+        };
+        var ifacesJson = System.Text.Json.JsonSerializer.Serialize(ifaces,
+            new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase });
+
+        mockClient.Setup(c => c.SendAsync(
+            It.Is<IpcMessage>(m => m.Type == IpcMessageTypes.GetNetworkInterfaces),
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new IpcMessage { Type = IpcMessageTypes.NetworkInterfacesResponse, Payload = ifacesJson });
+
+        mockClient.Setup(c => c.SendAsync(
+            It.Is<IpcMessage>(m => m.Type == IpcMessageTypes.UpdateConfiguration),
+            It.IsAny<CancellationToken>()))
+            .Callback<IpcMessage, CancellationToken>((msg, _) =>
+            {
+                updatedConfig = System.Text.Json.JsonSerializer.Deserialize<ProxyConfiguration>(msg.Payload!,
+                    new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase });
+            })
+            .ReturnsAsync(new IpcMessage { Type = IpcMessageTypes.Success, Payload = "Configuration updated." });
+
+        mockClient.Setup(c => c.SendAsync(
+            It.Is<IpcMessage>(m => m.Type == IpcMessageTypes.RestartProxy),
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new IpcMessage { Type = IpcMessageTypes.Success, Payload = "Proxy restarted." });
+
+        var ipc = new IpcClientService(mockClient.Object);
+        var vm = new NetworkSettingsViewModel(ipc);
+
+        // Allow LoadAsync to complete
+        await Task.Delay(100);
+
+        vm.ModeSpecificAdapter = true;
+        vm.SelectedAdapter = vm.DetectedAdapters.First(a => a.InterfaceName == "Ethernet1");
+        vm.ProxyPort = "3128";
+
+        await vm.ApplyCommand.ExecuteAsync(null);
+
+        vm.StatusIsError.Should().BeFalse();
+        updatedConfig.Should().NotBeNull();
+        updatedConfig!.Listener.Mode.Should().Be(ListenerMode.SpecificAddress);
+        updatedConfig.Listener.ListenAddress.Should().Be("192.168.10.10");
+        updatedConfig.Listener.AdapterName.Should().Be("Ethernet1");
+        updatedConfig.Listener.Port.Should().Be(3128);
+    }
 }
