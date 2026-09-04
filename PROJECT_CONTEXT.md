@@ -39,6 +39,8 @@ The proxy operates on a "deny-by-default" principle:
 - Configuration is stored locally at `C:\ProgramData\PrintPilotProxy\config.json`.
 - The root certificate for the underlying Unobtanium engine is stored in `C:\ProgramData\PrintPilotProxy\rootCert.pfx` (used for engine initialization, though MITM is disabled).
 - While the Core is .NET 8 Standard and platform-independent, the current hosting environment is tightly coupled to Windows (Windows Service & WPF). Linux support (systemd) is planned.
+- **Build & Test Ambiguity (MSB1011)**: The repository contains both `PrintPilotProxy.sln` and `PrintPilotProxy.slnx`. Developers and AI assistants must explicitly target `PrintPilotProxy.sln` (e.g., `dotnet build PrintPilotProxy.sln` and `dotnet test PrintPilotProxy.sln`) to avoid MSBuild error `MSB1011`.
+
 
 ## Documentation Index
 

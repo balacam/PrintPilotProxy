@@ -9,11 +9,16 @@ git clone https://github.com/PrintPilotProxy/PrintPilotProxy.git
 cd PrintPilotProxy
 
 # Restore dependencies
-dotnet restore
+dotnet restore PrintPilotProxy.sln
 
 # Build the entire solution
-dotnet build -c Release
+dotnet build PrintPilotProxy.sln -c Release
 ```
+
+> [!IMPORTANT]
+> **AI & Developer Note (MSB1011 Ambiguity)**: 
+> Always specify `PrintPilotProxy.sln` when invoking `dotnet build`, `dotnet test`, or `dotnet restore`. Because the repository contains both `PrintPilotProxy.sln` and `PrintPilotProxy.slnx`, invoking bare `dotnet build` without a target file will trigger MSBuild error `MSB1011: Specify which project or solution file to use`.
+
 
 ## Packaging
 The official releases are packaged in two formats:

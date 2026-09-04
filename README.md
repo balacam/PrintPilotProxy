@@ -75,8 +75,11 @@ Configure your PrintPilot clients to use the proxy server's IP and port (default
 ## Building from Source
 
 1. Clone the repository.
-2. Run `dotnet build`.
-3. Run tests with `dotnet test`.
+2. Build solution: `dotnet build PrintPilotProxy.sln`
+3. Run tests: `dotnet test PrintPilotProxy.sln`
+
+*(Note: Always specify `PrintPilotProxy.sln` to prevent MSBuild `MSB1011` ambiguity between `.sln` and `.slnx` files).*
+
 
 ## Contributing
 
