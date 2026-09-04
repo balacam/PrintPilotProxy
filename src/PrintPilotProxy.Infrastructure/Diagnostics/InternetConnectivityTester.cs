@@ -23,6 +23,10 @@ public class InternetConnectivityTester : IInternetConnectivityTester
 
     public async Task<string> RunTestAsync(ProxyConfiguration configuration, CancellationToken cancellationToken = default)
     {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        cts.CancelAfter(4000); // Ensure we return before the 5000ms IPC timeout
+        var token = cts.Token;
+
         try
         {
             if (configuration.UpstreamProxy.Mode == UpstreamProxyMode.Manual && !string.IsNullOrWhiteSpace(configuration.UpstreamProxy.Host))
@@ -35,13 +39,13 @@ public class InternetConnectivityTester : IInternetConnectivityTester
                     _dataProtector.Unprotect(configuration.UpstreamProxy.ProtectedPassword ?? string.Empty),
                     TargetHost, 
                     TargetPort, 
-                    cancellationToken);
+                    token);
             }
             else
             {
                 // Test Direct
                 using var client = new TcpClient();
-                await client.ConnectAsync(TargetHost, TargetPort, cancellationToken);
+                await client.ConnectAsync(TargetHost, TargetPort, token);
                 return "ConnectedDirect";
             }
         }

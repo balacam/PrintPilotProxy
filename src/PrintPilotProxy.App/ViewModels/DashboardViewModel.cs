@@ -86,7 +86,9 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
                 AccessMode = config.ClientAccess.Mode == ClientAccessMode.AllowAll 
                     ? LocalizationService.Instance["Net.ClientAccessAllowAll"]
                     : LocalizationService.Instance["Net.ClientAccessAllowList"];
-                AllowedClientsCount = config.ClientAccess.AllowedClients.Count.ToString();
+                AllowedClientsCount = config.ClientAccess.Mode == ClientAccessMode.AllowAll
+                    ? "∞"
+                    : config.ClientAccess.AllowedClients.Count.ToString();
                 AllowedPorts = config.Security.DestinationPortRestrictionsEnabled
                     ? string.Join(", ", config.Security.AllowedDestinationPorts)
                     : LocalizationService.Instance["Common.AllPorts"];
