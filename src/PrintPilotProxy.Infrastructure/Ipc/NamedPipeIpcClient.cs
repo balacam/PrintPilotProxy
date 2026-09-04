@@ -30,6 +30,19 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
 
     public async Task<bool> ConnectAsync(CancellationToken cancellationToken = default)
     {
+        await _lock.WaitAsync(cancellationToken);
+        try
+        {
+            return await ConnectCoreAsync(cancellationToken);
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+
+    private async Task<bool> ConnectCoreAsync(CancellationToken cancellationToken)
+    {
         if (IsConnected)
         {
             return true;
@@ -105,7 +118,7 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
 
         try
         {
-            if (!IsConnected && !await ConnectAsync(ct))
+            if (!IsConnected && !await ConnectCoreAsync(ct))
             {
                 throw new IOException("Could not connect to the PrintPilotProxy service.");
             }

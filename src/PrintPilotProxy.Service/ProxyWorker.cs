@@ -175,7 +175,7 @@ public sealed class ProxyWorker : BackgroundService
     {
         try
         {
-            var clientIdentity = request.ClientIdentity ?? IpcClientIdentity.CreateInteractiveUser();
+            var clientIdentity = request.ClientIdentity ?? IpcClientIdentity.Unknown;
             if (_securityValidator is not null && !_securityValidator.IsAuthorized(clientIdentity, request.Type, out var failureReason))
             {
                 return Error(request, failureReason ?? "Access denied: Unauthorized IPC caller.");
@@ -259,7 +259,10 @@ public sealed class ProxyWorker : BackgroundService
         {
             await _discoveryService.StopAsync();
         }
-        catch { }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Error stopping discovery service on proxy restart.");
+        }
 
         if (_proxyEngine.GetStatus().State is ProxyState.Running or ProxyState.Starting or ProxyState.Faulted)
         {

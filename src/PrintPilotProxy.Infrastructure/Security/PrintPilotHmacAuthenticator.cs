@@ -19,6 +19,9 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
     private static readonly TimeSpan MaxClockSkew = TimeSpan.FromMinutes(5);
     private readonly ILogger<PrintPilotHmacAuthenticator> _logger;
     private readonly bool _isRequired;
+    
+    // Tracks nonces to prevent replay attacks within the clock skew window
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<string, DateTimeOffset> _usedNonces = new(StringComparer.OrdinalIgnoreCase);
 
     public bool IsAuthenticationRequired => _isRequired;
 
@@ -100,7 +103,28 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
             return AuthenticationResult.Failure("Invalid authorization signature.");
         }
 
+        // Prevent Replay Attacks
+        if (!_usedNonces.TryAdd(nonce, requestTime))
+        {
+            _logger.LogWarning("Authentication failed for {ClientIp}: Replay attack detected (Nonce already used).", clientIp);
+            return AuthenticationResult.Failure("Replay attack detected: Nonce already used.");
+        }
+
+        CleanupExpiredNonces(now);
+
         return AuthenticationResult.Success(version);
+    }
+
+    private void CleanupExpiredNonces(DateTimeOffset now)
+    {
+        // Simple periodic cleanup of nonces older than the skew window
+        foreach (var kvp in _usedNonces)
+        {
+            if ((now - kvp.Value).Duration() > MaxClockSkew)
+            {
+                _usedNonces.TryRemove(kvp.Key, out _);
+            }
+        }
     }
 
     public string GenerateAuthHeader(int protocolVersion = 1, string? nonce = null, DateTimeOffset? timestamp = null)

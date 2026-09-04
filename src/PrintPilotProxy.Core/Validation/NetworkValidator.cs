@@ -104,6 +104,11 @@ public static class NetworkValidator
         var addressBytes = address.GetAddressBytes();
         var networkBytes = networkAddress.GetAddressBytes();
 
+        // Validate prefix length against address family maximum
+        var maxPrefix = address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6 ? 128 : 32;
+        if (prefixLength < 0 || prefixLength > maxPrefix)
+            return false;
+
         // Compare bit by bit up to prefix length
         var fullBytes = prefixLength / 8;
         var remainingBits = prefixLength % 8;

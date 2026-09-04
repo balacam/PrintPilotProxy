@@ -208,11 +208,14 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
     {
         if (!OperatingSystem.IsWindows())
         {
-            return IpcClientIdentity.CreateInteractiveUser();
+            return IpcClientIdentity.Unknown;
         }
 
         return ResolveWindowsCallerIdentity(stream);
     }
+
+    [System.Runtime.InteropServices.DllImport("advapi32.dll", SetLastError = true)]
+    private static extern bool GetTokenInformation(IntPtr TokenHandle, uint TokenInformationClass, out uint TokenInformation, uint TokenInformationLength, out uint ReturnLength);
 
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     private IpcClientIdentity ResolveWindowsCallerIdentity(NamedPipeServerStream stream)
@@ -232,9 +235,19 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
 
                 int activeConsoleSessionId = 0;
                 try { activeConsoleSessionId = (int)GetActiveConsoleSessionId(); } catch { }
+                
                 int callerSessionId = System.Diagnostics.Process.GetCurrentProcess().SessionId;
+                try 
+                {
+                    uint tokenSessionId = 0;
+                    if (GetTokenInformation(windowsIdentity.AccessToken.DangerousGetHandle(), 12, out tokenSessionId, 4, out uint returnLength))
+                    {
+                        callerSessionId = (int)tokenSessionId;
+                    }
+                } 
+                catch { }
 
-                bool isActiveConsoleUser = (callerSessionId == activeConsoleSessionId && callerSessionId != 0) || isSystem || isAdmin || isInteractive;
+                bool isActiveConsoleUser = (callerSessionId == activeConsoleSessionId && callerSessionId != 0) || isSystem || isAdmin;
 
                 identity = new IpcClientIdentity
                 {
@@ -248,12 +261,12 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
                 };
             });
 
-            return identity ?? IpcClientIdentity.CreateInteractiveUser();
+            return identity ?? IpcClientIdentity.Unknown;
         }
         catch (Exception ex)
         {
-            _logger.LogDebug(ex, "Could not resolve IPC client identity; assigning default interactive user context.");
-            return IpcClientIdentity.CreateInteractiveUser();
+            _logger.LogDebug(ex, "Could not resolve IPC client identity; assigning default unknown context.");
+            return IpcClientIdentity.Unknown;
         }
     }
 
@@ -263,7 +276,7 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
     private static async Task WriteResponseAsync(StreamWriter writer, IpcMessage response, CancellationToken cancellationToken)
         => await writer.WriteLineAsync(JsonSerializer.Serialize(response).AsMemory(), cancellationToken);
 
-    private static NamedPipeServerStream CreateSecureServerStream()
+    private NamedPipeServerStream CreateSecureServerStream()
     {
         if (!OperatingSystem.IsWindows())
         {
@@ -301,9 +314,11 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
                 outBufferSize: 4096,
                 pipeSecurity);
         }
-        catch (UnauthorizedAccessException)
+        catch (UnauthorizedAccessException ex)
         {
-            // Fallback to standard server stream with default system pipe security if ACL creation fails
+            // Log the security downgrade so administrators can investigate
+            _logger.LogWarning(ex, "Failed to create pipe with custom ACL; falling back to default system pipe security. " +
+                "The IPC pipe may have broader access than intended.");
             return new NamedPipeServerStream(
                 PipeName,
                 PipeDirection.InOut,

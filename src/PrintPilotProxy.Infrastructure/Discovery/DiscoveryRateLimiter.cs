@@ -13,7 +13,7 @@ public sealed class DiscoveryRateLimiter : IDiscoveryRateLimiter
     private readonly int _maxRequestsPerWindow;
     private readonly TimeSpan _windowDuration;
     private readonly ConcurrentDictionary<IPAddress, RequestCounter> _clients = new();
-    private DateTimeOffset _lastCleanup = DateTimeOffset.UtcNow;
+    private long _lastCleanupTicks = DateTimeOffset.UtcNow.Ticks;
     private readonly object _cleanupLock = new();
 
     public DiscoveryRateLimiter(int maxRequestsPerWindow = 10, TimeSpan? windowDuration = null)
@@ -38,7 +38,8 @@ public sealed class DiscoveryRateLimiter : IDiscoveryRateLimiter
 
     private void CleanupExpired(DateTimeOffset now)
     {
-        if (now - _lastCleanup < TimeSpan.FromSeconds(30))
+        var lastTicks = Interlocked.Read(ref _lastCleanupTicks);
+        if (now.Ticks - lastTicks < TimeSpan.FromSeconds(30).Ticks)
         {
             return;
         }
@@ -47,7 +48,8 @@ public sealed class DiscoveryRateLimiter : IDiscoveryRateLimiter
         {
             try
             {
-                if (now - _lastCleanup >= TimeSpan.FromSeconds(30))
+                lastTicks = Interlocked.Read(ref _lastCleanupTicks);
+                if (now.Ticks - lastTicks >= TimeSpan.FromSeconds(30).Ticks)
                 {
                     var cutoff = now - _windowDuration;
                     foreach (var kvp in _clients)
@@ -57,7 +59,7 @@ public sealed class DiscoveryRateLimiter : IDiscoveryRateLimiter
                             _clients.TryRemove(kvp.Key, out _);
                         }
                     }
-                    _lastCleanup = now;
+                    Interlocked.Exchange(ref _lastCleanupTicks, now.Ticks);
                 }
             }
             finally

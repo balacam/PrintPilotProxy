@@ -261,10 +261,17 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
 
     public ProxyStatus GetStatus()
     {
+        var currentState = _state;
+        string? listeningAddress;
+        lock (_explicitEndPoints)
+        {
+            listeningAddress = _explicitEndPoints.Any() ? string.Join(", ", _explicitEndPoints.Select(e => $"{e.IpAddress}:{e.Port}")) : null;
+        }
+        
         return new ProxyStatus
         {
-            State = _state,
-            ListeningAddress = _explicitEndPoints.Any() ? string.Join(", ", _explicitEndPoints.Select(e => $"{e.IpAddress}:{e.Port}")) : null,
+            State = currentState,
+            ListeningAddress = listeningAddress,
             StartedAt = _startedAt,
             TotalRequests = Interlocked.Read(ref _totalRequests),
             TotalErrors = Interlocked.Read(ref _totalErrors),
@@ -564,6 +571,8 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         _lastFailedRequest = null;
         _startedAt = null;
         _recentRequests.Clear();
+        _seenConnections.Clear();
+        _tunnelStartTimes.Clear();
     }
 
     private static string? GetHeaderValue(HeaderCollection? headers, string headerName)

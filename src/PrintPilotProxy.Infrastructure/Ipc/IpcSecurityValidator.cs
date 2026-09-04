@@ -20,6 +20,7 @@ public sealed class IpcSecurityValidator : IIpcSecurityValidator
         IpcMessageTypes.GetNetworkInterfaces,
         IpcMessageTypes.GetFirewallStatus,
         IpcMessageTypes.RunDiagnostics,
+        IpcMessageTypes.RunInternetTest,
         IpcMessageTypes.GetSecurityAudit
     };
 

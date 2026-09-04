@@ -250,8 +250,14 @@ public sealed class WindowsServiceManager : IPlatformServiceManager
                     await elevatedProcess.WaitForExitAsync(cancellationToken);
                     return new ScResult(elevatedProcess.ExitCode, "Elevated command completed.", string.Empty);
                 }
+                
+                // Process.Start returned null — the OS could not start the process
+                return new ScResult(5, "UAC elevation was required but the elevated process could not be started.", string.Empty);
             }
-            catch { /* User declined UAC prompt */ }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                // User declined the UAC prompt — return the original Access Denied result
+            }
         }
 
         if (throwOnError && result.ExitCode != 0)

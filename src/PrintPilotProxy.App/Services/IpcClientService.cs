@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using PrintPilotProxy.Core.Interfaces;
 using PrintPilotProxy.Core.Models;
 
@@ -15,6 +16,7 @@ namespace PrintPilotProxy.App.Services;
 public sealed class IpcClientService
 {
     private readonly IIpcClient _client;
+    private readonly ILogger<IpcClientService> _logger;
 
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
@@ -22,9 +24,10 @@ public sealed class IpcClientService
         PropertyNameCaseInsensitive = true
     };
 
-    public IpcClientService(IIpcClient client)
+    public IpcClientService(IIpcClient client, ILogger<IpcClientService>? logger = null)
     {
         _client = client;
+        _logger = logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<IpcClientService>.Instance;
     }
 
     // ─── Connection ──────────────────────────────────────────────────────────
@@ -164,8 +167,9 @@ public sealed class IpcClientService
         {
             return await _client.SendAsync(message, ct);
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogDebug(ex, "IPC request '{MessageType}' failed.", message.Type);
             return null;
         }
     }
