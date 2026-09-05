@@ -175,13 +175,13 @@ public sealed class SecuritySettings
     /// Allowed destination ports. Only traffic to these ports will be forwarded.
     /// Default: 80, 443.
     /// </summary>
-    public List<int> AllowedDestinationPorts { get; set; } = new() { 80, 443 };
+    public List<int> AllowedDestinationPorts { get; set; } = new() { 80, 443, 587, 465 };
 
     /// <summary>
     /// Whether destination port restrictions are enabled.
     /// When false, all destination ports are allowed (less secure).
     /// </summary>
-    public bool DestinationPortRestrictionsEnabled { get; set; } = false;
+    public bool DestinationPortRestrictionsEnabled { get; set; } = true;
 
     /// <summary>
     /// Whether proxy authentication is required (optional, in addition to IP ACL).

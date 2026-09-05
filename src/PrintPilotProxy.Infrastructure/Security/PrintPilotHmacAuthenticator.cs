@@ -115,9 +115,18 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
         return AuthenticationResult.Success(version);
     }
 
+    private DateTimeOffset _lastCleanup = DateTimeOffset.MinValue;
+    private readonly object _cleanupLock = new();
+
     private void CleanupExpiredNonces(DateTimeOffset now)
     {
-        // Simple periodic cleanup of nonces older than the skew window
+        if ((now - _lastCleanup).TotalMinutes < 1) return;
+        lock (_cleanupLock)
+        {
+            if ((now - _lastCleanup).TotalMinutes < 1) return;
+            _lastCleanup = now;
+        }
+
         foreach (var kvp in _usedNonces)
         {
             if ((now - kvp.Value).Duration() > MaxClockSkew)
