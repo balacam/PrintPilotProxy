@@ -287,17 +287,37 @@ public class MainViewModelNavigationTests
     [Fact]
     public void RealIpcClientService_ResolvesFromDiWithoutThrowing()
     {
-        var services = new ServiceCollection();
-        services.AddLogging();
-        PrintPilotProxy.Infrastructure.InfrastructureServiceExtensions.AddInfrastructureServices(services);
-        services.AddSingleton<IpcClientService>();
-        services.AddSingleton<MainViewModel>();
-        var sp = services.BuildServiceProvider();
+        Exception? threadException = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var services = new ServiceCollection();
+                services.AddLogging();
+                PrintPilotProxy.Infrastructure.InfrastructureServiceExtensions.AddInfrastructureServices(services);
+                services.AddSingleton<IpcClientService>();
+                services.AddSingleton<MainViewModel>();
+                var sp = services.BuildServiceProvider();
 
-        var ipcService = sp.GetRequiredService<IpcClientService>();
-        ipcService.Should().NotBeNull();
+                var ipcService = sp.GetRequiredService<IpcClientService>();
+                ipcService.Should().NotBeNull();
 
-        var mainVm = sp.GetRequiredService<MainViewModel>();
-        mainVm.Should().NotBeNull();
+                var mainVm = sp.GetRequiredService<MainViewModel>();
+                mainVm.Should().NotBeNull();
+            }
+            catch (Exception ex)
+            {
+                threadException = ex;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join(5000);
+
+        if (threadException != null)
+        {
+            throw threadException;
+        }
     }
 }
