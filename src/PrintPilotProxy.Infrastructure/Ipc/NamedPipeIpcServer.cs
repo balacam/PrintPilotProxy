@@ -298,10 +298,10 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
                 PipeAccessRights.FullControl,
                 AccessControlType.Allow));
 
-            // Authenticated users require ReadWrite + CreateNewInstance to connect and allow subsequent instances
+            // Clients may connect; only the service/admin may create server instances.
             pipeSecurity.AddAccessRule(new PipeAccessRule(
                 new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null),
-                PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance,
+                PipeAccessRights.ReadWrite,
                 AccessControlType.Allow));
 
             return NamedPipeServerStreamAcl.Create(
@@ -316,17 +316,8 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
         }
         catch (UnauthorizedAccessException ex)
         {
-            // Log the security downgrade so administrators can investigate
-            _logger.LogWarning(ex, "Failed to create pipe with custom ACL; falling back to default system pipe security. " +
-                "The IPC pipe may have broader access than intended.");
-            return new NamedPipeServerStream(
-                PipeName,
-                PipeDirection.InOut,
-                NamedPipeServerStream.MaxAllowedServerInstances,
-                PipeTransmissionMode.Byte,
-                PipeOptions.Asynchronous,
-                4096,
-                4096);
+            _logger.LogError(ex, "Cannot create management pipe with the required ACL. IPC remains unavailable.");
+            throw;
         }
     }
 

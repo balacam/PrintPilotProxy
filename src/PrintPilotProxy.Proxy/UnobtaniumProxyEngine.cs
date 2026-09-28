@@ -86,6 +86,8 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             }
 
             cancellationToken.ThrowIfCancellationRequested();
+            if (configuration.Security.RequireAuthentication && _authenticator is null)
+                throw new InvalidOperationException("Proxy authentication is enabled but no authenticator is registered.");
             _configuration = configuration;
             _state = ProxyState.Starting;
             ResetRunStatistics();
@@ -322,7 +324,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             return Task.CompletedTask;
         }
 
-        if (_authenticator != null && (_configuration?.Security.RequireAuthentication == true || _authenticator.IsAuthenticationRequired))
+        if (_authenticator != null && _configuration?.Security.RequireAuthentication == true)
         {
             _logger.LogInformation("[DIAG] AuthenticationStarted ConnectionId={ConnectionId}", connectionId);
             var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 
@@ -331,6 +333,11 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             if (!authResult.IsSuccess)
             {
                 _logger.LogInformation("[DIAG] AuthenticationFailed ConnectionId={ConnectionId} Reason={Reason}", connectionId, authResult.FailureReason);
+                e.HttpClient.Response.HttpVersion = e.HttpClient.Request.HttpVersion;
+                e.HttpClient.Response.StatusCode = 407;
+                e.HttpClient.Response.StatusDescription = "Proxy Authentication Required";
+                e.HttpClient.Response.Headers.AddHeader("Proxy-Authenticate", $"{DiscoveryConstants.AuthScheme} realm=\"PrintPilotProxy\"");
+                e.HttpClient.Response.ContentLength = 0;
                 e.DenyConnect = true;
                 LogRequest(e, clientIp, 407, $"Proxy authentication required: {authResult.FailureReason}");
                 return Task.CompletedTask;
@@ -433,7 +440,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             return Task.CompletedTask;
         }
 
-        if (_authenticator != null && (_configuration?.Security.RequireAuthentication == true || _authenticator.IsAuthenticationRequired))
+        if (_authenticator != null && _configuration?.Security.RequireAuthentication == true)
         {
             _logger.LogInformation("[DIAG] AuthenticationStarted ConnectionId={ConnectionId}", connectionId);
             var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 

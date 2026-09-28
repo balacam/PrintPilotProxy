@@ -35,13 +35,8 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
 
     public AuthenticationResult Authenticate(string? authorizationHeader, IPAddress clientIp)
     {
-        // Removed early exit so that if the proxy engine calls Authenticate()
-        // due to configuration requiring it, we always validate.
-
-        if (!_isRequired)
-        {
-            return AuthenticationResult.Success(DiscoveryConstants.ProtocolVersion);
-        }
+        // The engine owns the configuration switch. Calling this method always validates,
+        // even if the authenticator was constructed with an optional legacy policy.
 
         if (string.IsNullOrWhiteSpace(authorizationHeader))
         {
@@ -71,6 +66,10 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
         {
             return AuthenticationResult.Failure("Missing or invalid timestamp in authorization header.");
         }
+
+        if (timestampSeconds < DateTimeOffset.MinValue.ToUnixTimeSeconds()
+            || timestampSeconds > DateTimeOffset.MaxValue.ToUnixTimeSeconds())
+            return AuthenticationResult.Failure("Invalid authorization timestamp.");
 
         var requestTime = DateTimeOffset.FromUnixTimeSeconds(timestampSeconds);
         var now = DateTimeOffset.UtcNow;

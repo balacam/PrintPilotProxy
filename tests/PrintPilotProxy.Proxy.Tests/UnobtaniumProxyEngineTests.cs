@@ -242,4 +242,53 @@ public class UnobtaniumProxyEngineTests
         await act.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("The configured listener address is not assigned to this computer.");
     }
+
+    [Theory]
+    [InlineData(false, "200")]
+    [InlineData(true, "407")]
+    public async Task Connect_UsesConfigurationInsteadOfAuthenticatorDefault(bool required, string expectedStatus)
+    {
+        using var upstream = new System.Net.Sockets.TcpListener(IPAddress.Loopback, 0);
+        upstream.Start();
+        using var reservation = new System.Net.Sockets.TcpListener(IPAddress.Loopback, 0);
+        reservation.Start();
+        var proxyPort = ((IPEndPoint)reservation.LocalEndpoint).Port;
+        reservation.Stop();
+        _mockNetworkDiscovery.Setup(n => n.GetInterfacesAsync()).ReturnsAsync(new List<DiscoveredNetworkInterface>
+        {
+            new() { Name = "Loopback", IsOperational = true, Addresses = new List<string> { "127.0.0.1" } }
+        });
+        _mockAuthenticator.SetupGet(a => a.IsAuthenticationRequired).Returns(true);
+        _mockAuthenticator.Setup(a => a.Authenticate(It.IsAny<string>(), It.IsAny<IPAddress>()))
+            .Returns(AuthenticationResult.Failure("Missing header"));
+        var engine = new UnobtaniumProxyEngine(NullLogger<UnobtaniumProxyEngine>.Instance,
+            _mockAcl.Object, _mockNetworkDiscovery.Object, _mockDataProtector.Object, _mockAuthenticator.Object);
+        try
+        {
+            await engine.StartAsync(new ProxyConfiguration
+            {
+                Listener = new ListenerSettings { Mode = ListenerMode.SpecificAddress, ListenAddress = "127.0.0.1", Port = proxyPort },
+                Security = new SecuritySettings { RequireAuthentication = required, DestinationPortRestrictionsEnabled = false }
+            });
+            using var client = new System.Net.Sockets.TcpClient();
+            await client.ConnectAsync(IPAddress.Loopback, proxyPort);
+            var targetPort = ((IPEndPoint)upstream.LocalEndpoint).Port;
+            var request = System.Text.Encoding.ASCII.GetBytes($"CONNECT 127.0.0.1:{targetPort} HTTP/1.1\r\nHost: 127.0.0.1:{targetPort}\r\n\r\n");
+            await client.GetStream().WriteAsync(request);
+            using var reader = new System.IO.StreamReader(client.GetStream());
+            var status = await reader.ReadLineAsync().WaitAsync(TimeSpan.FromSeconds(10));
+            status.Should().Contain(expectedStatus);
+            _mockAuthenticator.Verify(a => a.Authenticate(It.IsAny<string>(), It.IsAny<IPAddress>()), required ? Times.Once() : Times.Never());
+        }
+        finally { await engine.StopAsync(); }
+    }
+
+    [Fact]
+    public async Task Start_WithRequiredAuthenticationButNoAuthenticator_FailsClosed()
+    {
+        var engine = new UnobtaniumProxyEngine(NullLogger<UnobtaniumProxyEngine>.Instance,
+            _mockAcl.Object, _mockNetworkDiscovery.Object, _mockDataProtector.Object);
+        var start = () => engine.StartAsync(new ProxyConfiguration { Security = new SecuritySettings { RequireAuthentication = true } });
+        await start.Should().ThrowAsync<InvalidOperationException>();
+    }
 }

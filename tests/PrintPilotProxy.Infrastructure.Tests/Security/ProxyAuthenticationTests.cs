@@ -98,12 +98,19 @@ public class ProxyAuthenticationTests
     }
 
     [Fact]
-    public void Authenticate_WhenNotRequired_AlwaysSucceeds()
+    public void Authenticate_WhenInvoked_ValidatesEvenWithOptionalLegacyPolicy()
     {
         var optionalAuth = new PrintPilotHmacAuthenticator(isRequired: false);
 
         var result = optionalAuth.Authenticate(null, _clientIp);
 
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Authenticate_OutOfRangeTimestamp_ReturnsFailureWithoutThrowing()
+    {
+        var result = _authenticator.Authenticate("PrintPilot-HMAC v=1,ts=9223372036854775807,nonce=abcdef,sig=invalid", _clientIp);
+        result.IsSuccess.Should().BeFalse();
     }
 }

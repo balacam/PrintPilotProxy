@@ -43,12 +43,13 @@ namespace PrintPilotProxy.Infrastructure.Platform
                     var usersSid = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);
                     var rule = new FileSystemAccessRule(
                         usersSid,
-                        FileSystemRights.Modify | FileSystemRights.Synchronize,
+                        FileSystemRights.ReadAndExecute | FileSystemRights.Synchronize,
                         InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
                         PropagationFlags.None,
                         AccessControlType.Allow);
 
-                    directorySecurity.AddAccessRule(rule);
+                    // Replace the broad legacy Users rule; the service writes via SYSTEM/admin rights.
+                    directorySecurity.SetAccessRule(rule);
                     directoryInfo.SetAccessControl(directorySecurity);
                 }
                 catch
