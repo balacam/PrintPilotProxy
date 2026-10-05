@@ -92,6 +92,10 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             _state = ProxyState.Starting;
             ResetRunStatistics();
             _proxyServer = new ProxyServer(userTrustRootCertificate: false);
+
+            // The configured idle timeout is an engine setting; without this the engine's own default applied
+            // whatever the operator entered.
+            _proxyServer.ConnectionTimeOutSeconds = configuration.Listener.ConnectionTimeoutSeconds;
             
             // Generate and store certificate in ProgramData instead of Program Files
             var dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "PrintPilotProxy");
@@ -324,6 +328,8 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             return Task.CompletedTask;
         }
 
+        WarnIfOverConnectionLimit();
+
         if (_authenticator != null && _configuration?.Security.RequireAuthentication == true)
         {
             _logger.LogInformation("[DIAG] AuthenticationStarted ConnectionId={ConnectionId}", connectionId);
@@ -440,6 +446,8 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             return Task.CompletedTask;
         }
 
+        WarnIfOverConnectionLimit();
+
         if (_authenticator != null && _configuration?.Security.RequireAuthentication == true)
         {
             _logger.LogInformation("[DIAG] AuthenticationStarted ConnectionId={ConnectionId}", connectionId);
@@ -485,6 +493,30 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         return Task.CompletedTask;
     }
     
+    private long _lastLimitWarningTicks;
+
+    /// <summary>
+    /// Reports when more client connections are open than <c>Listener.MaxConnections</c>. This is deliberately a
+    /// warning and not a refusal: the engine's connection count includes half-open connections and ones that only
+    /// disappear after the idle timeout, so refusing on it would let any LAN host lock every client out by opening
+    /// connections without finishing a request. The idle timeout (<c>ConnectionTimeoutSeconds</c>) is enforced.
+    /// </summary>
+    private void WarnIfOverConnectionLimit()
+    {
+        var current = _proxyServer?.ClientConnectionCount ?? 0;
+        var max = _configuration?.Listener.MaxConnections ?? int.MaxValue;
+        if (!ConnectionLimit.IsExceeded(current, max)) return;
+
+        var now = DateTime.UtcNow.Ticks;
+        var last = Interlocked.Read(ref _lastLimitWarningTicks);
+        if (now - last < TimeSpan.FromMinutes(1).Ticks) return;
+        if (Interlocked.CompareExchange(ref _lastLimitWarningTicks, now, last) != last) return;
+
+        _logger.LogWarning(
+            "{Current} client connections are open (configured maximum {Max}). The limit is advisory: connections are not refused.",
+            current, max);
+    }
+
     private void RejectRequest(SessionEventArgs e, HttpStatusCode status, string message)
     {
         e.GenericResponse(message, status, new List<HttpHeader>());
