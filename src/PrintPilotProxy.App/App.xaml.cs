@@ -18,6 +18,8 @@ public partial class App : Application
 {
     private static Mutex? _mutex;
     private static EventWaitHandle? _eventWaitHandle;
+    private readonly CancellationTokenSource _signalStop = new();
+    private Task? _signalListener;
 
     public IServiceProvider Services { get; }
 
@@ -54,11 +56,14 @@ public partial class App : Application
         try
         {
             _eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset, eventName);
-            Task.Run(() =>
+            var signal = _eventWaitHandle;
+            var stopped = _signalStop.Token.WaitHandle;
+            _signalListener = Task.Run(() =>
             {
-                while (_eventWaitHandle.WaitOne())
+                while (WaitHandle.WaitAny(new WaitHandle[] { signal, stopped }) == 0)
                 {
-                    Dispatcher.Invoke(ShowMainWindow);
+                    if (_signalStop.IsCancellationRequested) break;
+                    Dispatcher.BeginInvoke(ShowMainWindow);
                 }
             });
         }
@@ -82,7 +87,10 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        _signalStop.Cancel();
+        _signalListener?.GetAwaiter().GetResult();
         _eventWaitHandle?.Dispose();
+        _signalStop.Dispose();
         _mutex?.ReleaseMutex();
         _mutex?.Dispose();
         _notifyIcon?.Dispose();

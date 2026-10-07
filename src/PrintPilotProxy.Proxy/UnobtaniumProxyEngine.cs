@@ -39,8 +39,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
     private readonly ConcurrentQueue<ProxyRequestEntry> _recentRequests = new();
     private const int MaxRecentRequests = 1000;
     private readonly SemaphoreSlim _lifecycleLock = new(1, 1);
-    private readonly ConcurrentDictionary<Guid, bool> _seenConnections = new();
-    private readonly ConcurrentDictionary<Guid, DateTime> _tunnelStartTimes = new();
+    private readonly BoundedConnectionHistory _seenConnections = new();
 
     public event EventHandler<ProxyRequestEntry>? RequestProcessed;
     public event EventHandler<ProxyErrorEventArgs>? ErrorOccurred;
@@ -52,7 +51,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
 
     private void EnsureClientConnectionLogged(SessionEventArgsBase e, string connectionId)
     {
-        if (_seenConnections.TryAdd(e.ClientConnectionId, true))
+        if (_seenConnections.TryAdd(e.ClientConnectionId))
         {
             var endpoint = e.ClientRemoteEndPoint as IPEndPoint;
             _logger.LogInformation("[DIAG] ClientConnectionAccepted ConnectionId={ConnectionId} ClientIP={ClientIP} ClientPort={ClientPort}", 
@@ -408,7 +407,6 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             _logger.LogInformation("[DIAG] TunnelEstablished ConnectionId={ConnectionId} TargetHost={TargetHost} TargetPort={TargetPort}", 
                 connectionId, targetHost, targetPort);
             
-            _tunnelStartTimes[e.ClientConnectionId] = DateTime.UtcNow;
             
             LogRequest(e, clientIp, statusCode, null);
         }
@@ -611,7 +609,6 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         _startedAt = null;
         _recentRequests.Clear();
         _seenConnections.Clear();
-        _tunnelStartTimes.Clear();
     }
 
     private static string? GetHeaderValue(HeaderCollection? headers, string headerName)
