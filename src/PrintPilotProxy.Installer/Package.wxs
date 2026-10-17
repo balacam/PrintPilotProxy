@@ -20,6 +20,21 @@
     <Icon Id="AppIcon" SourceFile="..\PrintPilotProxy.App\Resources\app.ico" />
     <Property Id="ARPPRODUCTICON" Value="AppIcon" />
 
+    <!-- PROXY-018: the service creates its Windows Firewall rules at runtime, so an uninstall must remove them too.
+         Runs only on a real uninstall (not on a major upgrade); a missing rule is not an error. -->
+    <CustomAction Id="RemoveProxyFirewallRule"
+                  Directory="System64Folder"
+                  ExeCommand="&quot;[System64Folder]netsh.exe&quot; advfirewall firewall delete rule name=&quot;PrintPilotProxy&quot;"
+                  Execute="deferred" Impersonate="no" Return="ignore" />
+    <CustomAction Id="RemoveProxyDiscoveryFirewallRule"
+                  Directory="System64Folder"
+                  ExeCommand="&quot;[System64Folder]netsh.exe&quot; advfirewall firewall delete rule name=&quot;PrintPilotProxy Discovery (UDP-In)&quot;"
+                  Execute="deferred" Impersonate="no" Return="ignore" />
+    <InstallExecuteSequence>
+      <Custom Action="RemoveProxyFirewallRule" Before="RemoveFiles" Condition="REMOVE=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE" />
+      <Custom Action="RemoveProxyDiscoveryFirewallRule" After="RemoveProxyFirewallRule" Condition="REMOVE=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE" />
+    </InstallExecuteSequence>
+
     <Feature Id="MainFeature" Title="PrintPilotProxy" Level="1">
       <ComponentGroupRef Id="AppComponents" />
       <ComponentGroupRef Id="ServiceComponents" />
