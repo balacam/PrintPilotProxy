@@ -19,6 +19,9 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
 {
     public const string PipeName = "PrintPilotProxy";
     private const int MaxMessageCharacters = 1024 * 1024;
+    private const int MaxConcurrentConnections = 32;
+    private static readonly TimeSpan ReadIdleTimeout = TimeSpan.FromSeconds(60);
+    private readonly SemaphoreSlim _connectionBudget = new(MaxConcurrentConnections, MaxConcurrentConnections);
 
     private readonly ILogger<NamedPipeIpcServer> _logger;
     private CancellationTokenSource? _cts;
@@ -85,6 +88,13 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
                 var stream = CreateSecureServerStream();
                 await stream.WaitForConnectionAsync(cancellationToken);
 
+                if (!await _connectionBudget.WaitAsync(0, cancellationToken))
+                {
+                    _logger.LogWarning("IPC connection budget ({Max}) exhausted; rejecting a client.", MaxConcurrentConnections);
+                    await stream.DisposeAsync();
+                    continue;
+                }
+
                 _ = Task.Run(async () =>
                 {
                     try
@@ -101,6 +111,10 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Error handling IPC client connection.");
+                    }
+                    finally
+                    {
+                        _connectionBudget.Release();
                     }
                 }, cancellationToken);
             }
@@ -123,6 +137,35 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
         }
     }
 
+    /// <summary>Reads one newline-terminated message without ever buffering more than the size limit.</summary>
+    private static async Task<(string? Line, bool TooLong)> ReadBoundedLineAsync(StreamReader reader, CancellationToken cancellationToken)
+    {
+        var sb = new StringBuilder();
+        var buffer = new char[1];
+        while (true)
+        {
+            var read = await reader.ReadAsync(buffer.AsMemory(0, 1), cancellationToken);
+            if (read == 0)
+            {
+                return sb.Length == 0 ? (null, false) : (sb.ToString(), false);
+            }
+
+            var ch = buffer[0];
+            if (ch == (char)10)
+            {
+                if (sb.Length > 0 && sb[sb.Length - 1] == (char)13) sb.Length--;
+                return (sb.ToString(), false);
+            }
+
+            if (sb.Length >= MaxMessageCharacters)
+            {
+                return (null, true);
+            }
+
+            sb.Append(ch);
+        }
+    }
+
     private async Task HandleConnectionAsync(NamedPipeServerStream stream, CancellationToken cancellationToken)
     {
         using var reader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: false,
@@ -132,13 +175,28 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
 
         while (stream.IsConnected && !cancellationToken.IsCancellationRequested)
         {
-            string? line = await reader.ReadLineAsync(cancellationToken);
-            if (line is null)
+            string? line;
+            bool tooLong;
+            using (var idle = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
+            {
+                idle.CancelAfter(ReadIdleTimeout);
+                try
+                {
+                    (line, tooLong) = await ReadBoundedLineAsync(reader, idle.Token);
+                }
+                catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+                {
+                    _logger.LogWarning("IPC client idle for {Seconds}s; closing the connection.", ReadIdleTimeout.TotalSeconds);
+                    break;
+                }
+            }
+
+            if (line is null && !tooLong)
             {
                 break;
             }
 
-            if (line.Length > MaxMessageCharacters)
+            if (tooLong)
             {
                 await WriteResponseAsync(writer, new IpcMessage
                 {
