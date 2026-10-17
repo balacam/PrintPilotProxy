@@ -124,6 +124,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             }
 
             _proxyServer.BeforeRequest += OnBeforeRequest;
+        _proxyServer.BeforeResponse += OnBeforeResponse;
             _explicitEndPoints.Clear();
 
             _logger.LogInformation("[DIAG] ProxyStartStarted Mode={ListenerMode} ConfiguredAddress={ListenAddress} Port={Port}",
@@ -285,7 +286,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             LastFailedRequest = _lastFailedRequest,
             ActiveConnections = _proxyServer?.ClientConnectionCount ?? 0,
             EngineName = "Unobtanium Web Proxy",
-            EngineVersion = "0.7.0"
+            EngineVersion = typeof(ProxyServer).Assembly.GetName().Version?.ToString(3) ?? "unknown"
         };
     }
 
@@ -487,10 +488,29 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             return Task.CompletedTask;
         }
 
-        LogRequest(e, clientIp, 200, null);
+        // The outcome is only known once the upstream answers, so it is recorded in OnBeforeResponse.
+        e.UserData = AllowedRequestMarker;
         return Task.CompletedTask;
     }
-    
+
+    private const string AllowedRequestMarker = "printpilot-allowed";
+
+    private Task OnBeforeResponse(object sender, SessionEventArgs e)
+    {
+        // Requests rejected locally were already logged with their own status; only allowed ones are completed here.
+        if (!Equals(e.UserData, AllowedRequestMarker))
+        {
+            return Task.CompletedTask;
+        }
+
+        e.UserData = null;
+        var clientIp = (e.ClientRemoteEndPoint as IPEndPoint)?.Address;
+        var status = e.HttpClient.Response.StatusCode;
+        var length = e.HttpClient.Response.ContentLength;
+        LogRequest(e, clientIp, status, status >= 400 ? $"Upstream responded with status {status}" : null, length > 0 ? length : 0);
+        return Task.CompletedTask;
+    }
+
     private long _lastLimitWarningTicks;
 
     /// <summary>
@@ -520,7 +540,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         e.GenericResponse(message, status, new List<HttpHeader>());
     }
 
-    private void LogRequest(SessionEventArgsBase e, IPAddress? clientIp, int statusCode, string? error)
+    private void LogRequest(SessionEventArgsBase e, IPAddress? clientIp, int statusCode, string? error, long bytesTransferred = 0)
     {
         Interlocked.Increment(ref _totalRequests);
         
@@ -541,7 +561,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             Method = e.HttpClient.Request.Method ?? "UNKNOWN",
             Destination = e.HttpClient.Request.RequestUri?.ToString() ?? "Unknown",
             StatusCode = statusCode,
-            BytesTransferred = 0,
+            BytesTransferred = bytesTransferred,
             ErrorMessage = error
         };
 
@@ -566,6 +586,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         try
         {
             _proxyServer.BeforeRequest -= OnBeforeRequest;
+        _proxyServer.BeforeResponse -= OnBeforeResponse;
             foreach (var endpoint in _explicitEndPoints)
             {
                 endpoint.BeforeTunnelConnectRequest -= OnBeforeTunnelConnectRequest;
