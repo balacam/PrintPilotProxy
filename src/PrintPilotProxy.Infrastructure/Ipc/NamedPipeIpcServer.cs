@@ -346,6 +346,13 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
             var pipeSecurity = new PipeSecurity();
             pipeSecurity.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
 
+            // The management pipe is local only (PROXY-007): refuse anything that arrives over the network (SMB),
+            // even from an authenticated account. A deny entry wins over the allow entries below.
+            pipeSecurity.AddAccessRule(new PipeAccessRule(
+                new SecurityIdentifier(WellKnownSidType.NetworkSid, null),
+                PipeAccessRights.FullControl,
+                AccessControlType.Deny));
+
             // LocalSystem and BuiltinAdministrators require FullControl (which includes PipeAccessRights.CreateNewInstance)
             pipeSecurity.AddAccessRule(new PipeAccessRule(
                 new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null),
