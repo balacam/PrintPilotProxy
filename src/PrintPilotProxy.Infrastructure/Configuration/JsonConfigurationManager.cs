@@ -32,6 +32,27 @@ namespace PrintPilotProxy.Infrastructure.Configuration
             };
         }
 
+        // Reads accept both numbers and names for enums (the documentation uses names); writes keep the existing numeric form.
+        private static readonly JsonSerializerOptions ReadOptions = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: true) }
+        };
+
+        private static void NormalizeMissingSections(ProxyConfiguration config)
+        {
+            config.Listener ??= new ListenerSettings();
+            config.UpstreamProxy ??= new UpstreamProxySettings();
+            config.ClientAccess ??= new ClientAccessSettings();
+            config.ClientAccess.AllowedClients ??= new List<AllowedClient>();
+            config.Security ??= new SecuritySettings();
+            config.Security.AllowedDestinationPorts ??= new List<int>();
+            config.Logging ??= new LoggingSettings();
+            config.Service ??= new ServiceSettings();
+            config.Firewall ??= new FirewallSettings();
+            config.Language ??= new LanguageSettings();
+        }
+
         public async Task<ProxyConfiguration> LoadAsync(CancellationToken cancellationToken = default)
         {
             await _semaphore.WaitAsync(cancellationToken);
@@ -56,7 +77,8 @@ namespace PrintPilotProxy.Infrastructure.Configuration
                     schemaVersion = versionElement.GetInt32();
                 }
 
-                var config = JsonSerializer.Deserialize<ProxyConfiguration>(json, _jsonOptions) ?? new ProxyConfiguration();
+                var config = JsonSerializer.Deserialize<ProxyConfiguration>(json, ReadOptions) ?? new ProxyConfiguration();
+                NormalizeMissingSections(config);
 
                 if (schemaVersion < 2)
                 {

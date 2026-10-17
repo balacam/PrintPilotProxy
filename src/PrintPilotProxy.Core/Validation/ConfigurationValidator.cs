@@ -15,8 +15,22 @@ public static class ConfigurationValidator
     {
         var errors = new List<string>();
 
+        // A hand-edited or partially written file can leave whole sections null (PROXY-016).
+        if (config.Listener is null) errors.Add("The listener section is missing.");
+        if (config.UpstreamProxy is null) errors.Add("The upstream proxy section is missing.");
+        if (config.ClientAccess is null) errors.Add("The client access section is missing.");
+        if (config.Security is null) errors.Add("The security section is missing.");
+        if (config.Logging is null) errors.Add("The logging section is missing.");
+        if (config.Service is null) errors.Add("The service section is missing.");
+        if (errors.Count > 0)
+        {
+            return errors;
+        }
+
         // Listener validation
         ValidateListener(config.Listener, errors);
+
+        ValidateUpstream(config.UpstreamProxy, errors);
 
         // Allowed clients validation
         ValidateClientAccess(config.ClientAccess, errors);
@@ -33,8 +47,36 @@ public static class ConfigurationValidator
         return errors;
     }
 
+    private static void ValidateUpstream(UpstreamProxySettings upstream, List<string> errors)
+    {
+        if (!Enum.IsDefined(upstream.Mode))
+        {
+            errors.Add($"Upstream proxy mode {(int)upstream.Mode} is not valid.");
+            return;
+        }
+
+        if (upstream.Mode == UpstreamProxyMode.Manual)
+        {
+            if (string.IsNullOrWhiteSpace(upstream.Host))
+            {
+                errors.Add("An upstream proxy host must be provided when the upstream mode is Manual.");
+            }
+
+            if (!NetworkValidator.IsValidPort(upstream.Port))
+            {
+                errors.Add($"Upstream proxy port {upstream.Port} is not valid. Must be between 1 and 65535.");
+            }
+        }
+    }
+
     private static void ValidateListener(ListenerSettings listener, List<string> errors)
     {
+        if (!Enum.IsDefined(listener.Mode))
+        {
+            errors.Add($"Listener mode {(int)listener.Mode} is not valid.");
+            return;
+        }
+
         if (listener.Mode == ListenerMode.SpecificAddress)
         {
             if (string.IsNullOrWhiteSpace(listener.ListenAddress))
@@ -70,9 +112,14 @@ public static class ConfigurationValidator
 
     private static void ValidateClientAccess(ClientAccessSettings clientAccess, List<string> errors)
     {
+        if (!Enum.IsDefined(clientAccess.Mode))
+        {
+            errors.Add($"Client access mode {(int)clientAccess.Mode} is not valid.");
+        }
+
         var seenNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var client in clientAccess.AllowedClients)
+        foreach (var client in clientAccess.AllowedClients ?? new List<AllowedClient>())
         {
             if (string.IsNullOrWhiteSpace(client.Name))
             {
