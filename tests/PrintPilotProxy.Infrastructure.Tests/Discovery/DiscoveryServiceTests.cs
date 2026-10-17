@@ -93,6 +93,11 @@ public class DiscoveryServiceTests
             {
                 Listener = new ListenerSettings { Port = 8080 }
             });
+        _mockProxyEngine.Setup(e => e.GetStatus()).Returns(new ProxyStatus
+        {
+            State = ProxyState.Running,
+            ListeningAddress = "192.168.1.10:8080"
+        });
 
         var service = CreateService();
         var request = new DiscoveryRequest

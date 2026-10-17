@@ -148,13 +148,25 @@ public sealed class ProxyDiscoveryService : IProxyDiscoveryService
 
             RequestReceived?.Invoke(this, new DiscoveryRequestEventArgs(request, clientEndPoint));
 
-            // Determine active proxy port
-            var proxyPort = await DetermineActiveProxyPortAsync();
+            var status = _proxyEngine.GetStatus();
+            var listeners = ParseEffectiveListeners(status.ListeningAddress);
+
+            // Determine active proxy port: the port the engine really listens on wins over the saved configuration (PROXY-013).
+            var proxyPort = listeners.Port ?? await DetermineActiveProxyPortAsync();
 
             // Determine optimal local host IP matching the client's network interface
             var (hostIp, interfaceName) = await ResolveHostAddressForClientAsync(clientEndPoint.Address);
 
-            var status = _proxyEngine.GetStatus();
+            // A loopback-only listener must never be advertised under a LAN address (interface inventory can change at runtime, so other binds are not restricted).
+            if (listeners.Addresses is { Count: > 0 } listening && listening.All(IPAddress.IsLoopback) && !listening.Contains(hostIp))
+            {
+                var wanted = IPAddress.IsLoopback(clientEndPoint.Address)
+                    ? listening.FirstOrDefault(IPAddress.IsLoopback)
+                    : listening.FirstOrDefault(a => !IPAddress.IsLoopback(a));
+                hostIp = wanted ?? listening[0];
+                interfaceName = null;
+            }
+
             var instanceId = _instanceProvider.GetInstanceId();
             var appVersion = typeof(ProxyDiscoveryService).Assembly.GetName().Version?.ToString(3) ?? "0.5.0";
 
@@ -186,6 +198,40 @@ public sealed class ProxyDiscoveryService : IProxyDiscoveryService
             _logger.LogError(ex, "Error handling discovery request from {ClientEndPoint}.", clientEndPoint);
             return null;
         }
+    }
+
+    /// <summary>
+    /// Reads the engine's effective listener inventory ("ip:port, ip:port"). A wildcard bind or no listener
+    /// means there is nothing to restrict the advertised address to.
+    /// </summary>
+    public static (List<IPAddress>? Addresses, int? Port) ParseEffectiveListeners(string? listeningAddress)
+    {
+        if (string.IsNullOrWhiteSpace(listeningAddress))
+        {
+            return (null, null);
+        }
+
+        var addresses = new List<IPAddress>();
+        int? port = null;
+        foreach (var part in listeningAddress.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            var colon = part.LastIndexOf(':');
+            if (colon <= 0 || !IPAddress.TryParse(part.Substring(0, colon).Trim('[', ']'), out var address) ||
+                !int.TryParse(part.Substring(colon + 1), out var parsedPort) || parsedPort is < 1 or > 65535)
+            {
+                return (null, null);
+            }
+
+            if (address.Equals(IPAddress.Any) || address.Equals(IPAddress.IPv6Any))
+            {
+                return (null, parsedPort);
+            }
+
+            addresses.Add(address);
+            port ??= parsedPort;
+        }
+
+        return (addresses.Count > 0 ? addresses : null, port);
     }
 
     private async Task<int> DetermineActiveProxyPortAsync()
