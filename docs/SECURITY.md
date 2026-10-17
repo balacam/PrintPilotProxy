@@ -10,14 +10,20 @@ Please do not report security vulnerabilities through public GitHub issues. Inst
 Its primary purpose is to allow restricted internal clients to reach external servers (like Office365 or SendGrid) securely.
 
 ## 1. Network ACL (Access Control List)
-By default, the proxy operates in `AllowAll` mode for ease of setup. For production environments, this MUST be changed to `AllowList`.
+A new installation starts in `AllowList` mode with an empty list, so no client is accepted until it is added. A configuration file that already exists keeps its mode; if it is `AllowAll`, change it to `AllowList` for production. The service logs a warning at start when the proxy listens on a publicly routable address, or accepts everyone without authentication on a non-loopback address.
 - **IP / CIDR Validation**: The proxy verifies the incoming socket's IP address against the configured `AllowedClients` list.
 - **Action**: Any connection from an IP not on the allow list is immediately dropped (HTTP 403 Forbidden).
+
+### Protecting the configuration and the management channel
+- **Secret handling**: `config.json` and its backups are readable only by SYSTEM and Administrators (inheritance is removed). The management API never returns the stored upstream password; it shows `(unchanged)`, and sending that value back keeps the stored password.
+- **Who may change settings**: by default the logged-in console user and administrators may start, stop and reconfigure the proxy through the service pipe. Set `Ipc:RequireAdministrator` to `true` in the service's `appsettings.json` to require an administrator; the service logs a warning at start while it is `false`.
+- **Concurrency**: commands that change state are executed one at a time, and a repeated command (same correlation id) returns the earlier answer instead of running twice.
+- **Logs**: `Logging.RetentionDays`, `Logging.MaxSizeMb`, `Logging.MinimumLevel` and `Logging.RequestLoggingEnabled` are honoured by the service.
 
 ## 2. Destination Port Restrictions
 Forward proxies can be abused to connect to internal services or send spam if unrestricted.
 - **Enabled via Config**: `Security.DestinationPortRestrictionsEnabled = true`
-- **Behavior**: The proxy inspects the requested URI in the HTTP `CONNECT` request. If the destination port is not explicitly in `AllowedDestinationPorts` (default 80, 443), the connection is dropped (HTTP 403 Forbidden).
+- **Behavior**: The proxy inspects the requested URI in the HTTP `CONNECT` request. If the destination port is not explicitly in `AllowedDestinationPorts` (default 80, 443, 587, 465), the connection is dropped (HTTP 403 Forbidden).
 
 ## 3. Cryptographic HMAC Authentication (Zero-Touch)
 To prevent unauthorized software on *allowed* IP addresses from abusing the proxy, PrintPilotProxy supports a zero-touch cryptographic authentication scheme (`PrintPilot-HMAC`).

@@ -42,7 +42,7 @@ Configures how PrintPilotProxy routes traffic to the internet. Useful when Print
 | :--- | :--- | :--- | :--- |
 | `Mode` | string | `"Direct"` | Allowed values: `"Direct"`, `"Manual"`. If `"Direct"`, traffic is sent straight to the internet. |
 | `Host` | string | `""` | The hostname or IP address of the upstream proxy. Required if Mode is Manual. |
-| `Port` | int | `3128` | The port of the upstream proxy. |
+| `Port` | int | `8080` | The port of the upstream proxy. |
 | `Username` | string | `null` | Username for basic authentication, if required by the upstream proxy. |
 | `ProtectedPassword` | string | `null` | DPAPI-encrypted password. Never edit this manually; configure via the UI. |
 
@@ -52,15 +52,15 @@ Controls which IP addresses can connect to the proxy. **Deny-by-default is recom
 
 | Property | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `Mode` | string | `"AllowAll"` | Allowed values: `"AllowAll"`, `"AllowList"`. Change to `AllowList` for security. |
-| `AllowedClients` | array | `[]` | List of explicit client objects. Each object contains `Name` (string), `IpAddressOrCidr` (string), and `IsEnabled` (bool). |
+| `Mode` | string | `"AllowList"` on a new installation, `"AllowAll"` if the field is missing from an existing file | Allowed values: `"AllowAll"`, `"AllowList"`. A fresh install creates its configuration with `AllowList` and an empty list, so no client is accepted until one is added. Existing configuration files keep whatever mode they already contain. |
+| `AllowedClients` | array | `[]` | List of explicit client objects. Each object contains `Name` (string), `IpOrCidr` (string), `Description` (string) and `Enabled` (bool, default `true`); `Id`, `CreatedAt` and `ModifiedAt` are maintained automatically. |
 
 ## Security Settings (`Security`)
 
 | Property | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `DestinationPortRestrictionsEnabled`| bool | `false` | If true, only connections to `AllowedDestinationPorts` are permitted. |
-| `AllowedDestinationPorts` | array of int | `[80, 443]` | The outbound ports the proxy is allowed to connect to. |
+| `DestinationPortRestrictionsEnabled`| bool | `true` | If true, only connections to `AllowedDestinationPorts` are permitted. |
+| `AllowedDestinationPorts` | array of int | `[80, 443, 587, 465]` | The outbound ports the proxy is allowed to connect to (web and SMTP submission). |
 | `RequireAuthentication` | bool | `false` | If true, requires valid HMAC authentication headers from the client. |
 
 ## Logging Settings (`Logging`)
