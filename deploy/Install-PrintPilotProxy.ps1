@@ -38,7 +38,18 @@ if (!(Test-Path $DataDir)) { New-Item -ItemType Directory -Path $DataDir -Force 
 
 Write-Host "Configuring folder permissions for $DataDir..."
 try {
-    icacls $DataDir /grant "*S-1-5-32-545:(OI)(CI)M" /T /Q | Out-Null
+    # Least privilege: SYSTEM and Administrators own the data folder. Standard users may only read it, and may
+    # write only to the logs folder (the management app writes its diagnostic log there). config.json and the
+    # backups folder hold the protected upstream password and stay private to SYSTEM/Administrators.
+    $LogsDir = Join-Path $DataDir "logs"
+    if (!(Test-Path $LogsDir)) { New-Item -ItemType Directory -Path $LogsDir -Force | Out-Null }
+    icacls $DataDir /inheritance:r /grant:r "*S-1-5-18:(OI)(CI)F" "*S-1-5-32-544:(OI)(CI)F" "*S-1-5-32-545:(OI)(CI)RX" /Q | Out-Null
+    icacls $LogsDir /grant "*S-1-5-32-545:(OI)(CI)M" /Q | Out-Null
+    foreach ($Private in @((Join-Path $DataDir "config.json"), (Join-Path $DataDir "backups"))) {
+        if (Test-Path $Private) {
+            icacls $Private /inheritance:r /grant:r "*S-1-5-18:(OI)(CI)F" "*S-1-5-32-544:(OI)(CI)F" /Q | Out-Null
+        }
+    }
 } catch {
     Write-Warning "Could not update folder ACLs on $DataDir."
 }
