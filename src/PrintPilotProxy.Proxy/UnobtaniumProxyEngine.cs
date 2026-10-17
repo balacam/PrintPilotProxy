@@ -559,7 +559,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             Timestamp = DateTimeOffset.UtcNow,
             ClientIp = clientIp?.ToString() ?? "Unknown",
             Method = e.HttpClient.Request.Method ?? "UNKNOWN",
-            Destination = e.HttpClient.Request.RequestUri?.ToString() ?? "Unknown",
+            Destination = PrintPilotProxy.Core.Validation.RequestUriMasker.Mask(e.HttpClient.Request.RequestUri),
             StatusCode = statusCode,
             BytesTransferred = bytesTransferred,
             ErrorMessage = error

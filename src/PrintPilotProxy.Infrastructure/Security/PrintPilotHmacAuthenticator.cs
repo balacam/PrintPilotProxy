@@ -19,6 +19,8 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
     private static readonly TimeSpan MaxClockSkew = TimeSpan.FromMinutes(5);
     private readonly ILogger<PrintPilotHmacAuthenticator> _logger;
     private readonly bool _isRequired;
+    private readonly int _maxTrackedNonces;
+    private const int MaxNonceLength = 128;
     
     // Tracks nonces to prevent replay attacks within the clock skew window
     private readonly System.Collections.Concurrent.ConcurrentDictionary<string, DateTimeOffset> _usedNonces = new(StringComparer.OrdinalIgnoreCase);
@@ -27,9 +29,11 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
 
     public PrintPilotHmacAuthenticator(
         bool isRequired = true,
-        ILogger<PrintPilotHmacAuthenticator>? logger = null)
+        ILogger<PrintPilotHmacAuthenticator>? logger = null,
+        int maxTrackedNonces = 100_000)
     {
         _isRequired = isRequired;
+        _maxTrackedNonces = Math.Max(1, maxTrackedNonces);
         _logger = logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<PrintPilotHmacAuthenticator>.Instance;
     }
 
@@ -80,7 +84,7 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
             return AuthenticationResult.Failure("Authorization timestamp expired or clock skew too large.");
         }
 
-        if (!parameters.TryGetValue("nonce", out var nonce) || string.IsNullOrWhiteSpace(nonce) || nonce.Length < 6)
+        if (!parameters.TryGetValue("nonce", out var nonce) || string.IsNullOrWhiteSpace(nonce) || nonce.Length < 6 || nonce.Length > MaxNonceLength)
         {
             return AuthenticationResult.Failure("Missing or invalid nonce in authorization header.");
         }
@@ -102,6 +106,17 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
             return AuthenticationResult.Failure("Invalid authorization signature.");
         }
 
+        // Keep the replay cache bounded (PROXY-010): drop expired entries first, then refuse new ones rather than grow without limit.
+        if (_usedNonces.Count >= _maxTrackedNonces)
+        {
+            CleanupExpiredNonces(now, force: true);
+            if (_usedNonces.Count >= _maxTrackedNonces)
+            {
+                _logger.LogWarning("Authentication refused for {ClientIp}: the replay cache is full.", clientIp);
+                return AuthenticationResult.Failure("Too many recent authentications. Try again shortly.");
+            }
+        }
+
         // Prevent Replay Attacks
         if (!_usedNonces.TryAdd(nonce, requestTime))
         {
@@ -117,12 +132,12 @@ public sealed class PrintPilotHmacAuthenticator : IProxyAuthenticator
     private DateTimeOffset _lastCleanup = DateTimeOffset.MinValue;
     private readonly object _cleanupLock = new();
 
-    private void CleanupExpiredNonces(DateTimeOffset now)
+    private void CleanupExpiredNonces(DateTimeOffset now, bool force = false)
     {
-        if ((now - _lastCleanup).TotalMinutes < 1) return;
+        if (!force && (now - _lastCleanup).TotalMinutes < 1) return;
         lock (_cleanupLock)
         {
-            if ((now - _lastCleanup).TotalMinutes < 1) return;
+            if (!force && (now - _lastCleanup).TotalMinutes < 1) return;
             _lastCleanup = now;
         }
 
