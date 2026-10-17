@@ -28,21 +28,21 @@ public static class ConfigurationValidator
         }
 
         // Listener validation
-        ValidateListener(config.Listener, errors);
+        ValidateListener(config.Listener!, errors);
 
-        ValidateUpstream(config.UpstreamProxy, errors);
+        ValidateUpstream(config.UpstreamProxy!, errors);
 
         // Allowed clients validation
-        ValidateClientAccess(config.ClientAccess, errors);
+        ValidateClientAccess(config.ClientAccess!, errors);
 
         // Security validation
-        ValidateSecurity(config.Security, errors);
+        ValidateSecurity(config.Security!, errors);
 
         // Logging validation
-        ValidateLogging(config.Logging, errors);
+        ValidateLogging(config.Logging!, errors);
 
         // Service validation
-        ValidateService(config.Service, errors);
+        ValidateService(config.Service!, errors);
 
         return errors;
     }

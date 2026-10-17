@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using PrintPilotProxy.Infrastructure;
 using PrintPilotProxy.Infrastructure.Ipc;
 using PrintPilotProxy.Core.Validation;
 using System.Threading;
@@ -83,6 +84,7 @@ public class Program
             builder.AddConsole();
             builder.SetMinimumLevel(LogLevel.Information);
         });
+        services.AddInfrastructureServices();
         services.AddProxyServices();
 
         var serviceProvider = services.BuildServiceProvider();
@@ -90,7 +92,8 @@ public class Program
 
         var config = new ProxyConfiguration
         {
-            Listener = new ListenerSettings { ListenAddress = System.Net.IPAddress.Loopback.ToString(), Port = 8080 },
+            // SpecificAddress is required: with the default Auto mode the engine would ignore ListenAddress and could bind to LAN addresses.
+            Listener = new ListenerSettings { Mode = ListenerMode.SpecificAddress, ListenAddress = System.Net.IPAddress.Loopback.ToString(), Port = 8080 },
             Security = new SecuritySettings 
             { 
                 DestinationPortRestrictionsEnabled = true,
@@ -136,9 +139,9 @@ public class Program
         Console.WriteLine("Usage: PrintPilotProxy.Cli [command]");
         Console.WriteLine();
         Console.WriteLine("Commands:");
-        Console.WriteLine("  start    Start the proxy engine directly (headless mode)");
-        Console.WriteLine("  stop     Stop the proxy engine through the Windows service");
-        Console.WriteLine("  status   Query the status of the running proxy service");
+        Console.WriteLine("  start    Run a standalone engine on 127.0.0.1:8080 in this console (Ctrl+C to stop)");
+        Console.WriteLine("  stop     Stop the proxy engine of the installed Windows service (not a 'start' instance)");
+        Console.WriteLine("  status   Query the installed Windows service (not a 'start' instance)");
         Console.WriteLine("  validate [path] Validate a configuration file without changing it");
         Console.WriteLine("  version  Print version information");
         Console.WriteLine("  help     Show this help text");
