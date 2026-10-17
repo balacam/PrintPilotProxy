@@ -197,11 +197,15 @@ namespace PrintPilotProxy.Infrastructure.Configuration
                     throw new FileNotFoundException("Configuration file not found to backup.");
                 }
 
-                string fileName = $"config_backup_{DateTime.UtcNow:yyyyMMdd_HHmmss}.json";
-                string destPath = Path.Combine(_pathProvider.BackupDirectory, fileName);
-                ClearFileReadOnlyAttribute(destPath);
-                
-                File.Copy(sourcePath, destPath, overwrite: true);
+                // Millisecond resolution plus a uniqueness check: two applies within one second must not overwrite each other's backup.
+                string stamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss_fff");
+                string destPath = Path.Combine(_pathProvider.BackupDirectory, $"config_backup_{stamp}.json");
+                for (int attempt = 1; File.Exists(destPath); attempt++)
+                {
+                    destPath = Path.Combine(_pathProvider.BackupDirectory, $"config_backup_{stamp}_{attempt}.json");
+                }
+
+                File.Copy(sourcePath, destPath, overwrite: false);
                 ClearFileReadOnlyAttribute(destPath);
                 _logger.LogInformation("Configuration backed up to {Path}", destPath);
                 return destPath;

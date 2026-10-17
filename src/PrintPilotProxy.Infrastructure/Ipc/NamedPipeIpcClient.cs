@@ -102,6 +102,15 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
         catch (Exception ex) when (!cancellationToken.IsCancellationRequested &&
                                     ex is IOException or TimeoutException or OperationCanceledException)
         {
+            // A command that changes the service may already have run when only the reply was lost (PROXY-009):
+            // repeating it blindly could apply it twice, so report the unknown outcome instead.
+            if (_requestSent && !IsReadOnlyCommand(message.Type))
+            {
+                Disconnect();
+                throw new IOException(
+                    $"The service did not answer '{message.Type}' in time. It may have been applied; check the current state before trying again.", ex);
+            }
+
             _logger.LogDebug(ex, "IPC request failed; will disconnect and retry once.");
             Disconnect();
         }
@@ -110,8 +119,26 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
         return await SendCoreAsync(message, cancellationToken);
     }
 
+    private bool _requestSent;
+
+    private static readonly HashSet<string> ReadOnlyCommands = new(StringComparer.Ordinal)
+    {
+        IpcMessageTypes.GetStatus,
+        IpcMessageTypes.GetConfiguration,
+        IpcMessageTypes.GetRecentRequests,
+        IpcMessageTypes.RunDiagnostics,
+        IpcMessageTypes.RunInternetTest,
+        IpcMessageTypes.GetSecurityAudit,
+        IpcMessageTypes.GetNetworkInterfaces,
+        IpcMessageTypes.GetFirewallStatus
+    };
+
+    /// <summary>True for commands that only read state and are safe to send again.</summary>
+    public static bool IsReadOnlyCommand(string? type) => type is not null && ReadOnlyCommands.Contains(type);
+
     private async Task<IpcMessage> SendCoreAsync(IpcMessage message, CancellationToken cancellationToken)
     {
+        _requestSent = false;
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         cts.CancelAfter(IoTimeoutMs);
         var ct = cts.Token;
@@ -125,6 +152,7 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
 
             var json = JsonSerializer.Serialize(message);
             await _writer!.WriteLineAsync(json.AsMemory(), ct);
+            _requestSent = true;
             var responseJson = await _reader!.ReadLineAsync(ct);
             if (string.IsNullOrWhiteSpace(responseJson))
             {
