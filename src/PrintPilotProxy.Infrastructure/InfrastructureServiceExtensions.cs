@@ -29,6 +29,8 @@ namespace PrintPilotProxy.Infrastructure
 
             services.AddSingleton<IIpcServer, NamedPipeIpcServer>();
             services.AddSingleton<IIpcClient, NamedPipeIpcClient>();
+            services.AddSingleton<IpcSecurityOptions>(sp =>
+                IpcSecurityOptions.FromConfiguration(sp.GetService<Microsoft.Extensions.Configuration.IConfiguration>()));
             services.AddSingleton<IIpcSecurityValidator, IpcSecurityValidator>();
 
             services.AddSingleton<IProxyInstanceProvider, PersistentProxyInstanceProvider>();

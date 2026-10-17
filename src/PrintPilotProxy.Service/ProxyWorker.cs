@@ -32,6 +32,21 @@ public sealed class ProxyWorker : BackgroundService
         WriteIndented = false
     };
 
+    // State-changing commands run one at a time, and a repeated command (same correlation id, e.g. a client retry
+    // after a timeout) gets the earlier answer instead of being applied twice.
+    private readonly SemaphoreSlim _mutationGate = new(1, 1);
+    private readonly PrintPilotProxy.Infrastructure.Ipc.RecentCommandResults _recentCommands = new();
+    private static readonly HashSet<string> MutatingCommands = new(StringComparer.OrdinalIgnoreCase)
+    {
+        IpcMessageTypes.StartProxy,
+        IpcMessageTypes.StopProxy,
+        IpcMessageTypes.RestartProxy,
+        IpcMessageTypes.UpdateConfiguration,
+        IpcMessageTypes.ApplyFirewallRule,
+        IpcMessageTypes.RemoveFirewallRule
+    };
+    private volatile bool _requestLoggingEnabled = true;
+
     public ProxyWorker(
         ILogger<ProxyWorker> logger,
         IProxyEngine proxyEngine,
@@ -72,6 +87,7 @@ public sealed class ProxyWorker : BackgroundService
         {
             await _ipcServer.StartAsync(stoppingToken);
             var configuration = await _configManager.LoadAsync(stoppingToken);
+            _requestLoggingEnabled = configuration.Logging?.RequestLoggingEnabled ?? true;
             _acl.Refresh(configuration);
 
             if (configuration.Service.AutoStartProxy)
@@ -167,6 +183,11 @@ public sealed class ProxyWorker : BackgroundService
 
     private void OnRequestProcessed(object? sender, ProxyRequestEntry request)
     {
+        if (!_requestLoggingEnabled)
+        {
+            return;
+        }
+
         _logger.LogInformation("Proxy request: {ClientIp} {Method} {Destination} - {StatusCode}",
             request.ClientIp, request.Method, request.Destination, request.StatusCode);
     }
@@ -181,6 +202,44 @@ public sealed class ProxyWorker : BackgroundService
                 return Error(request, failureReason ?? "Access denied: Unauthorized IPC caller.");
             }
 
+            if (MutatingCommands.Contains(request.Type))
+            {
+                return await DispatchMutatingAsync(request);
+            }
+
+            return await DispatchAsync(request);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error handling IPC request {RequestType}.", request.Type);
+            return Error(request, ex.Message);
+        }
+    }
+
+    private async Task<IpcMessage> DispatchMutatingAsync(IpcMessage request)
+    {
+        await _mutationGate.WaitAsync();
+        try
+        {
+            if (_recentCommands.TryGet(request.CorrelationId, request.Type, out var earlier))
+            {
+                _logger.LogWarning("IPC command {Command} was repeated (correlation {CorrelationId}); returning the earlier result without applying it again.",
+                    request.Type, request.CorrelationId);
+                return earlier;
+            }
+
+            var result = await DispatchAsync(request);
+            _recentCommands.Store(request.CorrelationId, request.Type, result);
+            return result;
+        }
+        finally
+        {
+            _mutationGate.Release();
+        }
+    }
+
+    private async Task<IpcMessage> DispatchAsync(IpcMessage request)
+    {
             return request.Type switch
             {
                 IpcMessageTypes.GetStatus => HandleGetStatus(request),
@@ -199,12 +258,6 @@ public sealed class ProxyWorker : BackgroundService
                 IpcMessageTypes.GetSecurityAudit => await HandleGetSecurityAuditAsync(request),
                 _ => Error(request, "Unknown management request.")
             };
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error handling IPC request {RequestType}.", request.Type);
-            return Error(request, ex.Message);
-        }
     }
 
     private IpcMessage HandleGetStatus(IpcMessage request) => new()
@@ -292,8 +345,22 @@ public sealed class ProxyWorker : BackgroundService
         {
             Type = IpcMessageTypes.ConfigurationResponse,
             CorrelationId = request.CorrelationId,
-            Payload = JsonSerializer.Serialize(configuration, _jsonOptions)
+            Payload = JsonSerializer.Serialize(MaskSecrets(configuration), _jsonOptions)
         };
+    }
+
+    /// <summary>
+    /// Management clients never receive the stored upstream password ciphertext, only a placeholder. Sending the
+    /// placeholder back unchanged keeps the stored value.
+    /// </summary>
+    private ProxyConfiguration MaskSecrets(ProxyConfiguration configuration)
+    {
+        var copy = JsonSerializer.Deserialize<ProxyConfiguration>(JsonSerializer.Serialize(configuration, _jsonOptions), _jsonOptions)
+                   ?? new ProxyConfiguration();
+        copy.UpstreamProxy ??= new UpstreamProxySettings();
+        copy.UpstreamProxy.ProtectedPassword = ConfigurationSecrets.Mask(copy.UpstreamProxy.ProtectedPassword);
+
+        return copy;
     }
 
     private async Task<IpcMessage> HandleUpdateConfigurationAsync(IpcMessage request)
@@ -307,6 +374,13 @@ public sealed class ProxyWorker : BackgroundService
         if (updatedConfiguration is null)
         {
             return Error(request, "The configuration payload is invalid.");
+        }
+
+        if (updatedConfiguration.UpstreamProxy?.ProtectedPassword == ConfigurationSecrets.UnchangedSentinel)
+        {
+            var stored = await _configManager.LoadAsync();
+            updatedConfiguration.UpstreamProxy.ProtectedPassword =
+                ConfigurationSecrets.Resolve(updatedConfiguration.UpstreamProxy.ProtectedPassword, stored.UpstreamProxy?.ProtectedPassword);
         }
 
         var validationErrors = _configManager.Validate(updatedConfiguration);
@@ -346,6 +420,7 @@ public sealed class ProxyWorker : BackgroundService
             }
             await _configManager.SaveAsync(updatedConfiguration);
             _acl.Refresh(updatedConfiguration);
+            _requestLoggingEnabled = updatedConfiguration.Logging?.RequestLoggingEnabled ?? true;
             await ConfigureFirewallAsync(updatedConfiguration, CancellationToken.None);
 
             if (wasRunning && requiresRestart)

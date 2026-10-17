@@ -24,6 +24,24 @@ namespace PrintPilotProxy.Infrastructure.Platform
             EnsureDirectoryWithPermissions(BackupDirectory);
 
             EnsureFileNotReadOnly(ConfigurationFilePath);
+            EnsureSecretsPrivate();
+        }
+
+        private static int _secretsRestricted;
+
+        /// <summary>
+        /// The configuration file and the backup folder hold the protected upstream password. Once per process they are
+        /// limited to SYSTEM and Administrators, which also removes any legacy broad grant on them.
+        /// </summary>
+        private void EnsureSecretsPrivate()
+        {
+            if (System.Threading.Interlocked.Exchange(ref _secretsRestricted, 1) == 1)
+            {
+                return;
+            }
+
+            PrivateFileAcl.Apply(BackupDirectory);
+            PrivateFileAcl.Apply(ConfigurationFilePath);
         }
 
         private static void EnsureDirectoryWithPermissions(string path)

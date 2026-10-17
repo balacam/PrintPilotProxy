@@ -211,6 +211,8 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                 _explicitEndPoints.Add(endpoint);
             }
 
+            WarnAboutExposure(configuration);
+
 #pragma warning disable CS0618
             _proxyServer.Start(false); // Starting proxy server
 #pragma warning restore CS0618
@@ -509,6 +511,34 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         var length = e.HttpClient.Response.ContentLength;
         LogRequest(e, clientIp, status, status >= 400 ? $"Upstream responded with status {status}" : null, length > 0 ? length : 0);
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Tells the operator when the proxy is open to the internet or to every client on the network. Nothing is blocked;
+    /// existing setups keep working, but the risk is visible in the log.
+    /// </summary>
+    private void WarnAboutExposure(ProxyConfiguration configuration)
+    {
+        List<IPAddress> addresses;
+        lock (_explicitEndPoints)
+        {
+            addresses = _explicitEndPoints.Select(e => e.IpAddress).ToList();
+        }
+
+        foreach (var address in addresses.Where(PrintPilotProxy.Core.Validation.NetworkAddressClassifier.IsPubliclyRoutable))
+        {
+            _logger.LogWarning(
+                "The proxy is listening on {Address}, a publicly routable address. Anyone who can reach it from the internet can try to use it. " +
+                "Bind a specific private address or put a firewall in front of it.", address);
+        }
+
+        var open = configuration.ClientAccess.Mode == ClientAccessMode.AllowAll && !configuration.Security.RequireAuthentication;
+        if (open && addresses.Any(a => !IPAddress.IsLoopback(a)))
+        {
+            _logger.LogWarning(
+                "Client access is AllowAll with no authentication: every client that can reach the proxy may use it. " +
+                "Switch ClientAccess.Mode to AllowList or enable authentication.");
+        }
     }
 
     private long _lastLimitWarningTicks;

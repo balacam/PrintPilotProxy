@@ -35,10 +35,19 @@ public sealed class IpcSecurityValidator : IIpcSecurityValidator
     };
 
     private readonly ILogger<IpcSecurityValidator> _logger;
+    private readonly IpcSecurityOptions _options;
 
-    public IpcSecurityValidator(ILogger<IpcSecurityValidator>? logger = null)
+    public IpcSecurityValidator(ILogger<IpcSecurityValidator>? logger = null, IpcSecurityOptions? options = null)
     {
         _logger = logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<IpcSecurityValidator>.Instance;
+        _options = options ?? new IpcSecurityOptions();
+
+        if (!_options.RequireAdministrator)
+        {
+            _logger.LogWarning(
+                "Management policy: the person at the console may start, stop and reconfigure the proxy without administrator rights. " +
+                "Set Ipc:RequireAdministrator=true (appsettings.json or the Ipc__RequireAdministrator environment variable) to require an Administrator.");
+        }
     }
 
     public bool IsReadOnlyCommand(string commandType)
@@ -82,7 +91,7 @@ public sealed class IpcSecurityValidator : IIpcSecurityValidator
             return true;
         }
 
-        if (clientIdentity.IsActiveConsoleUser)
+        if (clientIdentity.IsActiveConsoleUser && !_options.RequireAdministrator)
         {
             _logger.LogDebug("IPC command '{Command}' authorized for active desktop session user '{User}'.", commandType, clientIdentity.Name);
             return true;

@@ -62,7 +62,10 @@ namespace PrintPilotProxy.Infrastructure.Configuration
                 if (!File.Exists(filePath))
                 {
                     _logger.LogInformation("Configuration file not found, creating default.");
+                    // A fresh install starts closed: no client is allowed until an administrator adds one.
+                    // Existing configuration files are never changed by this.
                     var defaultConfig = new ProxyConfiguration();
+                    defaultConfig.ClientAccess.Mode = ClientAccessMode.AllowList;
                     await SaveInternalAsync(defaultConfig, cancellationToken);
                     return defaultConfig;
                 }
@@ -92,6 +95,7 @@ namespace PrintPilotProxy.Infrastructure.Configuration
                         _pathProvider.BackupDirectory,
                         $"config_pre_migration_{DateTime.UtcNow:yyyyMMdd_HHmmss_fff}.json");
                     File.Copy(filePath, preMigrationBackup, overwrite: false);
+                    Platform.PrivateFileAcl.Apply(preMigrationBackup, _logger);
                     
                     if (root.TryGetProperty("listener", out var listenerElement) && listenerElement.ValueKind == JsonValueKind.Object)
                     {
@@ -174,6 +178,8 @@ namespace PrintPilotProxy.Infrastructure.Configuration
                 fs.Flush(flushToDisk: true);
             }
 
+            // The file carries the protected upstream password: keep it to SYSTEM and Administrators.
+            Platform.PrivateFileAcl.Apply(tempFilePath, _logger);
             File.Move(tempFilePath, configurationPath, overwrite: true);
             ClearFileReadOnlyAttribute(configurationPath);
 
@@ -207,6 +213,7 @@ namespace PrintPilotProxy.Infrastructure.Configuration
 
                 File.Copy(sourcePath, destPath, overwrite: false);
                 ClearFileReadOnlyAttribute(destPath);
+                Platform.PrivateFileAcl.Apply(destPath, _logger);
                 _logger.LogInformation("Configuration backed up to {Path}", destPath);
                 return destPath;
             }
