@@ -207,7 +207,8 @@ public class NetworkSettingsViewModelTests
 
         vm.StatusIsError.Should().BeFalse();
         updatedConfig.Should().NotBeNull();
-        updatedConfig!.Listener.Mode.Should().Be(ListenerMode.SpecificAddress);
+        // PROXY-015: the adapter choice is kept as SpecificAdapter so the service re-resolves the address after a DHCP change.
+        updatedConfig!.Listener.Mode.Should().Be(ListenerMode.SpecificAdapter);
         updatedConfig.Listener.ListenAddress.Should().Be("192.168.10.10");
         updatedConfig.Listener.AdapterName.Should().Be("Ethernet1");
         updatedConfig.Listener.Port.Should().Be(3128);

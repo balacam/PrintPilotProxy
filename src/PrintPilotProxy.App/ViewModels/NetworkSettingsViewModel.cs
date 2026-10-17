@@ -210,7 +210,11 @@ public partial class NetworkSettingsViewModel : ObservableObject
 
         if (ModeSpecificAdapter || ModeSpecificIp)
         {
-            var match = DetectedAdapters.FirstOrDefault(a => a.IpAddress == config.Listener.ListenAddress);
+            // A stored adapter name wins over the (DHCP-dependent) address, so the selection survives a round trip.
+            var match = (config.Listener.Mode == ListenerMode.SpecificAdapter && !string.IsNullOrWhiteSpace(config.Listener.AdapterName)
+                    ? DetectedAdapters.FirstOrDefault(a => string.Equals(a.InterfaceName, config.Listener.AdapterName, StringComparison.OrdinalIgnoreCase))
+                    : null)
+                ?? DetectedAdapters.FirstOrDefault(a => a.IpAddress == config.Listener.ListenAddress);
             if (match != null)
                 SelectedAdapter = match;
         }
@@ -299,7 +303,8 @@ public partial class NetworkSettingsViewModel : ObservableObject
                     SetStatus(LocalizationService.Instance["Net.Msgs.SelectAdapter"], isError: true);
                     return;
                 }
-                mode = ListenerMode.SpecificAddress;
+                // Keep the adapter mode: the service resolves the adapter's current address when it starts (DHCP-aware).
+                mode = ListenerMode.SpecificAdapter;
                 listenAddress = SelectedAdapter.IpAddress;
             }
             else // ModeSpecificIp
@@ -396,8 +401,15 @@ public partial class NetworkSettingsViewModel : ObservableObject
             {
                 _originalConfig = current;
                 IsDirty = false;
-                await _ipc.RestartProxyAsync();
-                SetStatus(LocalizationService.Instance["Net.Msgs.Applied"], isError: false);
+                var (restarted, restartMessage) = await _ipc.RestartProxyAsync();
+                if (restarted)
+                {
+                    SetStatus(LocalizationService.Instance["Net.Msgs.Applied"], isError: false);
+                }
+                else
+                {
+                    SetStatus(LocalizationService.Instance.GetFormat("Net.Msgs.ApplyFailed", restartMessage), isError: true);
+                }
             }
             else
             {
