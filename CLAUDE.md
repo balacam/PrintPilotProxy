@@ -23,4 +23,4 @@ CI is `.github/workflows/build.yml` (windows-latest, same three commands). Packa
 - Clients find the proxy by UDP broadcast on 37421 and connect on TCP 3128. Changing either breaks deployed PrintPilot clients.
 - The proxy is a transport only. Authentication, licensing and device enrollment belong to PrintPilotServer / `alacam.it`.
 - `.agents/rules/documentation-maintenance.md` applies: update `docs/` or `PROJECT_CONTEXT.md` with behaviour changes. `DOCUMENTATION_AUDIT.md` records known doc drift.
-- `$portableStage/` at the repo root is a build leftover; check before relying on it.
+- `docs/archive/` holds one-off history (e.g. the 0.1.0 release note); `CHANGELOG.md` is the current change record.
