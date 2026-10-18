@@ -11,7 +11,7 @@ dotnet build PrintPilotProxy.sln --configuration Release --no-restore
 dotnet test PrintPilotProxy.sln --configuration Release --no-build
 ```
 
-CI is `.github/workflows/build.yml` (windows-latest, same three commands). Packaging and release: `docs/BUILD.md`, `RELEASE.md`, `src/PrintPilotProxy.Installer`.
+There is no CI in this repo (the workflow was removed on 2026-10-18 because GitHub Actions did not start on this account); run the commands above locally before pushing. Packaging and release: `docs/BUILD.md`, `RELEASE.md`, `src/PrintPilotProxy.Installer`.
 
 ## Layout
 
