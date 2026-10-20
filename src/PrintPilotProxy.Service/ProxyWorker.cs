@@ -114,7 +114,18 @@ public sealed class ProxyWorker : BackgroundService
             // Keep the Windows Service alive when the engine fails. The IPC
             // endpoint remains usable so an administrator can inspect and fix
             // the configuration instead of being left with a restart loop.
-            _logger.LogCritical(ex, "PrintPilotProxy service worker stopped unexpectedly.");
+            _logger.LogCritical(ex, "PrintPilotProxy service worker failed to start the proxy; the management channel stays open.");
+            // Do not fall through to the finally block yet: it stops the IPC server, which would lock the administrator
+            // out of the very channel that is needed to see and repair a broken configuration. The proxy itself stays
+            // stopped; the worker only waits for the service to be shut down.
+            try
+            {
+                await Task.Delay(Timeout.InfiniteTimeSpan, stoppingToken);
+            }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                // Expected during service shutdown.
+            }
         }
         finally
         {
