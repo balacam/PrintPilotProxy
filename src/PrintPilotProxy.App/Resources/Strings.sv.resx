@@ -308,4 +308,74 @@
   <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Proxymotor stoppad.</value></data>
   <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Proxymotor omstartad.</value></data>
   <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Kommandokörningen misslyckades.</value></data>
+  <data name="Nav.About" xml:space="preserve"><value>Om</value></data>
+  <data name="Page.About" xml:space="preserve"><value>Om</value></data>
+  <data name="About.SystemInfo" xml:space="preserve"><value>System och miljö</value></data>
+  <data name="About.Version" xml:space="preserve"><value>Version</value></data>
+  <data name="About.Runtime" xml:space="preserve"><value>Körmiljö</value></data>
+  <data name="About.Platform" xml:space="preserve"><value>Operativsystem</value></data>
+  <data name="About.Architecture" xml:space="preserve"><value>Arkitektur</value></data>
+  <data name="About.InstallLocation" xml:space="preserve"><value>Installationsmapp</value></data>
+  <data name="About.Links" xml:space="preserve"><value>Verktyg och lagring</value></data>
+  <data name="About.CopySysInfo" xml:space="preserve"><value>Kopiera systeminformation</value></data>
+  <data name="About.CopySysInfoDesc" xml:space="preserve"><value>Kopiera information om maskinvara, körmiljö och operativsystem till urklipp</value></data>
+  <data name="About.OpenLogs" xml:space="preserve"><value>Öppna loggmappen</value></data>
+  <data name="About.OpenLogsDesc" xml:space="preserve"><value>Visa proxyns åtkomstloggar och tjänstens diagnostikfiler</value></data>
+  <data name="About.OpenConfig" xml:space="preserve"><value>Öppna datamappen</value></data>
+  <data name="About.OpenConfigDesc" xml:space="preserve"><value>Visa programmets konfiguration och tillståndsfiler</value></data>
+  <data name="About.KeyFeatures" xml:space="preserve"><value>Huvudfunktioner</value></data>
+  <data name="About.Feature2.Title" xml:space="preserve"><value>Åtkomstkontroll och ACL</value></data>
+  <data name="About.Feature3.Title" xml:space="preserve"><value>Robust Windows-tjänst</value></data>
+  <data name="About.Feature4.Title" xml:space="preserve"><value>Diagnostik och granskning</value></data>
+  <data name="About.SysInfoCopied" xml:space="preserve"><value>Systeminformationen har kopierats till urklipp!</value></data>
+  <data name="About.Subtitle" xml:space="preserve"><value>Säker framåtproxy för PrintPilot-klienter i begränsade nätverk.</value></data>
+  <data name="About.Description" xml:space="preserve"><value>PrintPilotProxy låter PrintPilot-klienter i begränsade nätverk, till exempel sjukhus, banker och företagsintranät, nå sina externa tjänster genom en kontrollerad HTTP CONNECT-tunnel. Åtkomst nekas som standard: endast tillåtna klient-IP-adresser och målportar accepteras, med valfri HMAC-autentisering. Krypterad trafik skickas vidare utan att dekrypteras.</value></data>
+  <data name="About.Feature1.Title" xml:space="preserve"><value>Krypterad tunnling</value></data>
+  <data name="About.Feature1.Desc" xml:space="preserve"><value>HTTP CONNECT-tunnlar för klienttrafiken hela vägen; TLS-trafik dekrypteras eller inspekteras aldrig.</value></data>
+  <data name="About.Feature2.Desc" xml:space="preserve"><value>Lista över tillåtna klienter (IP/CIDR) med neka som standard, begränsning av målportar och valfri HMAC-autentisering.</value></data>
+  <data name="About.Feature3.Desc" xml:space="preserve"><value>Körs i bakgrunden som en Windows-tjänst, startar om proxyn efter fel och tillämpar konfigurationsändringar direkt.</value></data>
+  <data name="About.Feature4.Desc" xml:space="preserve"><value>Inbyggd säkerhetsgranskning, trafikövervakning i realtid och strukturerade diagnostikloggar.</value></data>
+  <data name="About.Copyright" xml:space="preserve"><value>Copyright © 2026 balacam. Distribueras under MIT-licensen.</value></data>
+  <data name="Eyebrow.Application" xml:space="preserve"><value>PROGRAM</value></data>
+  <data name="Eyebrow.AccessControl" xml:space="preserve"><value>ÅTKOMSTKONTROLL</value></data>
+  <data name="Eyebrow.Overview" xml:space="preserve"><value>ÖVERSIKT</value></data>
+  <data name="Eyebrow.SystemHealth" xml:space="preserve"><value>SYSTEMHÄLSA</value></data>
+  <data name="Eyebrow.NetworkSecurity" xml:space="preserve"><value>NÄTVERKSSÄKERHET</value></data>
+  <data name="Eyebrow.Preferences" xml:space="preserve"><value>INSTÄLLNINGAR</value></data>
+  <data name="Eyebrow.Observability" xml:space="preserve"><value>ÖVERVAKNING</value></data>
+  <data name="Eyebrow.ControlCenter" xml:space="preserve"><value>KONTROLLCENTER</value></data>
+  <data name="Eyebrow.Operations" xml:space="preserve"><value>DRIFT</value></data>
+  <data name="Eyebrow.Configuration" xml:space="preserve"><value>KONFIGURATION</value></data>
+  <data name="Eyebrow.SecurityPosture" xml:space="preserve"><value>SÄKERHETSLÄGE</value></data>
+  <data name="About.ProductionReady" xml:space="preserve"><value>PRODUKTIONSKLAR</value></data>
+  <data name="MainWindow.Subtitle" xml:space="preserve"><value>Hanteringskonsol</value></data>
+  <data name="Cli.NamePlaceholder" xml:space="preserve"><value>t.ex. PrintPilot-PC-01</value></data>
+  <data name="Cli.IpPlaceholder" xml:space="preserve"><value>192.168.1.0/24 eller 10.0.0.5</value></data>
+  <data name="Cli.DescriptionPlaceholder" xml:space="preserve"><value>t.ex. Ekonomiavdelningens dator</value></data>
+  <data name="Net.InternetConnection" xml:space="preserve"><value>Internetanslutning</value></data>
+  <data name="Net.InternetConnectionDesc" xml:space="preserve"><value>Ange hur proxyn ansluter till internet.</value></data>
+  <data name="Net.TestConnection" xml:space="preserve"><value>Testa anslutningen</value></data>
+  <data name="Net.ConnectionMode" xml:space="preserve"><value>Anslutningsläge</value></data>
+  <data name="Net.UpstreamDirect" xml:space="preserve"><value>Direktanslutning</value></data>
+  <data name="Net.UpstreamManual" xml:space="preserve"><value>Manuell proxy</value></data>
+  <data name="Net.UpstreamHost" xml:space="preserve"><value>Värd för överordnad proxy</value></data>
+  <data name="Net.UpstreamPort" xml:space="preserve"><value>Port</value></data>
+  <data name="Net.UpstreamUsername" xml:space="preserve"><value>Användarnamn (valfritt)</value></data>
+  <data name="Net.UpstreamPassword" xml:space="preserve"><value>Lösenord</value></data>
+  <data name="Net.UpstreamPasswordHint" xml:space="preserve"><value>Lämna tomt för att behålla det sparade lösenordet.</value></data>
+  <data name="Net.Msgs.PasswordProtectFailed" xml:space="preserve"><value>Lösenordet kunde inte krypteras, så inga ändringar tillämpades: {0}</value></data>
+  <data name="Net.Msgs.TestRunning" xml:space="preserve"><value>Testar internetanslutningen...</value></data>
+  <data name="Net.Msgs.TestConnectedDirect" xml:space="preserve"><value>Anslutningen lyckades: internet kan nås direkt.</value></data>
+  <data name="Net.Msgs.TestConnectedViaUpstream" xml:space="preserve"><value>Anslutningen lyckades: internet kan nås via den överordnade proxyn.</value></data>
+  <data name="Net.Msgs.TestFailed" xml:space="preserve"><value>Anslutningen misslyckades: {0}</value></data>
+  <data name="Net.Msgs.TestNoResult" xml:space="preserve"><value>Internettestet kunde inte köras.</value></data>
+  <data name="Net.Msgs.TestError" xml:space="preserve"><value>Fel under testet: {0}</value></data>
+  <data name="Net.Test.DNSFailure" xml:space="preserve"><value>DNS-namnuppslagningen misslyckades.</value></data>
+  <data name="Net.Test.TargetUnreachable" xml:space="preserve"><value>Testadressen kunde inte nås.</value></data>
+  <data name="Net.Test.Timeout" xml:space="preserve"><value>Anslutningen överskred tidsgränsen.</value></data>
+  <data name="Net.Test.UnknownFailure" xml:space="preserve"><value>Ett okänt fel uppstod.</value></data>
+  <data name="Net.Test.UpstreamUnavailable" xml:space="preserve"><value>Den överordnade proxyn kan inte nås.</value></data>
+  <data name="Net.Test.UpstreamAuthenticationFailed" xml:space="preserve"><value>Den överordnade proxyn avvisade användarnamnet eller lösenordet.</value></data>
+  <data name="Page.ProxySettings" xml:space="preserve"><value>Proxyinställningar</value></data>
+  <data name="ProxySettings.Moved" xml:space="preserve"><value>Den här sidan har flyttats till Nätverksinställningar.</value></data>
 </root>

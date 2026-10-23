@@ -4,7 +4,7 @@
              xmlns:loc="clr-namespace:PrintPilotProxy.App.Localization">
     <StackPanel>
         <StackPanel Margin="0,0,0,20">
-            <TextBlock Text="SECURITY POSTURE" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+            <TextBlock Text="{loc:Loc Key=Eyebrow.SecurityPosture}" Style="{StaticResource PageEyebrowTextBlockStyle}" />
             <TextBlock Text="{loc:Loc Key=Page.Security}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
         </StackPanel>
 

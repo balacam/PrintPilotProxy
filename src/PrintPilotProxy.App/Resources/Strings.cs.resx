@@ -308,4 +308,74 @@
   <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Proxy modul byl zastaven.</value></data>
   <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Proxy modul byl restartován.</value></data>
   <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Provedení příkazu se nezdařilo.</value></data>
+  <data name="Nav.About" xml:space="preserve"><value>O aplikaci</value></data>
+  <data name="Page.About" xml:space="preserve"><value>O aplikaci</value></data>
+  <data name="About.SystemInfo" xml:space="preserve"><value>Systém a prostředí</value></data>
+  <data name="About.Version" xml:space="preserve"><value>Verze</value></data>
+  <data name="About.Runtime" xml:space="preserve"><value>Běhové prostředí</value></data>
+  <data name="About.Platform" xml:space="preserve"><value>Operační systém</value></data>
+  <data name="About.Architecture" xml:space="preserve"><value>Architektura</value></data>
+  <data name="About.InstallLocation" xml:space="preserve"><value>Instalační složka</value></data>
+  <data name="About.Links" xml:space="preserve"><value>Nástroje a úložiště</value></data>
+  <data name="About.CopySysInfo" xml:space="preserve"><value>Kopírovat informace o systému</value></data>
+  <data name="About.CopySysInfoDesc" xml:space="preserve"><value>Zkopírovat podrobnosti o hardwaru, běhovém prostředí a systému do schránky</value></data>
+  <data name="About.OpenLogs" xml:space="preserve"><value>Otevřít složku protokolů</value></data>
+  <data name="About.OpenLogsDesc" xml:space="preserve"><value>Zobrazit protokoly přístupu k proxy a diagnostické soubory služby</value></data>
+  <data name="About.OpenConfig" xml:space="preserve"><value>Otevřít datovou složku</value></data>
+  <data name="About.OpenConfigDesc" xml:space="preserve"><value>Zobrazit konfiguraci programu a stavové soubory</value></data>
+  <data name="About.KeyFeatures" xml:space="preserve"><value>Hlavní funkce</value></data>
+  <data name="About.Feature2.Title" xml:space="preserve"><value>Řízení přístupu a ACL</value></data>
+  <data name="About.Feature3.Title" xml:space="preserve"><value>Odolná služba Windows</value></data>
+  <data name="About.Feature4.Title" xml:space="preserve"><value>Diagnostika a audit</value></data>
+  <data name="About.SysInfoCopied" xml:space="preserve"><value>Informace o systému byly zkopírovány do schránky!</value></data>
+  <data name="About.Subtitle" xml:space="preserve"><value>Zabezpečený dopředný proxy server pro klienty PrintPilot v sítích s omezeným přístupem.</value></data>
+  <data name="About.Description" xml:space="preserve"><value>PrintPilotProxy umožňuje klientům PrintPilot v sítích s omezeným přístupem, jako jsou nemocnice, banky a firemní intranety, připojit se k externím službám přes řízený tunel HTTP CONNECT. Přístup je ve výchozím stavu odepřen: přijímány jsou jen povolené IP adresy klientů a cílové porty, volitelně s ověřováním HMAC. Šifrovaný provoz se předává, aniž by byl dešifrován.</value></data>
+  <data name="About.Feature1.Title" xml:space="preserve"><value>Šifrované tunelování</value></data>
+  <data name="About.Feature1.Desc" xml:space="preserve"><value>Tunely HTTP CONNECT přenášejí provoz klientů od začátku do konce; provoz TLS se nikdy nedešifruje ani nekontroluje.</value></data>
+  <data name="About.Feature2.Desc" xml:space="preserve"><value>Seznam povolených klientů IP/CIDR s výchozím odepřením, omezení cílových portů a volitelné ověřování HMAC.</value></data>
+  <data name="About.Feature3.Desc" xml:space="preserve"><value>Běží na pozadí jako služba Windows, po selhání proxy znovu spustí a změny konfigurace použije okamžitě.</value></data>
+  <data name="About.Feature4.Desc" xml:space="preserve"><value>Vestavěný bezpečnostní audit, sledování provozu v reálném čase a strukturované diagnostické protokoly.</value></data>
+  <data name="About.Copyright" xml:space="preserve"><value>Copyright © 2026 balacam. Šířeno pod licencí MIT.</value></data>
+  <data name="Eyebrow.Application" xml:space="preserve"><value>APLIKACE</value></data>
+  <data name="Eyebrow.AccessControl" xml:space="preserve"><value>ŘÍZENÍ PŘÍSTUPU</value></data>
+  <data name="Eyebrow.Overview" xml:space="preserve"><value>PŘEHLED</value></data>
+  <data name="Eyebrow.SystemHealth" xml:space="preserve"><value>STAV SYSTÉMU</value></data>
+  <data name="Eyebrow.NetworkSecurity" xml:space="preserve"><value>ZABEZPEČENÍ SÍTĚ</value></data>
+  <data name="Eyebrow.Preferences" xml:space="preserve"><value>PŘEDVOLBY</value></data>
+  <data name="Eyebrow.Observability" xml:space="preserve"><value>MONITOROVÁNÍ</value></data>
+  <data name="Eyebrow.ControlCenter" xml:space="preserve"><value>ŘÍDICÍ CENTRUM</value></data>
+  <data name="Eyebrow.Operations" xml:space="preserve"><value>PROVOZ</value></data>
+  <data name="Eyebrow.Configuration" xml:space="preserve"><value>KONFIGURACE</value></data>
+  <data name="Eyebrow.SecurityPosture" xml:space="preserve"><value>STAV ZABEZPEČENÍ</value></data>
+  <data name="About.ProductionReady" xml:space="preserve"><value>PŘIPRAVENO PRO PROVOZ</value></data>
+  <data name="MainWindow.Subtitle" xml:space="preserve"><value>Konzole pro správu</value></data>
+  <data name="Cli.NamePlaceholder" xml:space="preserve"><value>např. PrintPilot-PC-01</value></data>
+  <data name="Cli.IpPlaceholder" xml:space="preserve"><value>192.168.1.0/24 nebo 10.0.0.5</value></data>
+  <data name="Cli.DescriptionPlaceholder" xml:space="preserve"><value>např. Pracovní stanice účtárny</value></data>
+  <data name="Net.InternetConnection" xml:space="preserve"><value>Připojení k internetu</value></data>
+  <data name="Net.InternetConnectionDesc" xml:space="preserve"><value>Nastavte, jak se proxy připojuje k internetu.</value></data>
+  <data name="Net.TestConnection" xml:space="preserve"><value>Otestovat připojení</value></data>
+  <data name="Net.ConnectionMode" xml:space="preserve"><value>Režim připojení</value></data>
+  <data name="Net.UpstreamDirect" xml:space="preserve"><value>Přímé připojení</value></data>
+  <data name="Net.UpstreamManual" xml:space="preserve"><value>Ruční proxy</value></data>
+  <data name="Net.UpstreamHost" xml:space="preserve"><value>Hostitel nadřazené proxy</value></data>
+  <data name="Net.UpstreamPort" xml:space="preserve"><value>Port</value></data>
+  <data name="Net.UpstreamUsername" xml:space="preserve"><value>Uživatelské jméno (volitelné)</value></data>
+  <data name="Net.UpstreamPassword" xml:space="preserve"><value>Heslo</value></data>
+  <data name="Net.UpstreamPasswordHint" xml:space="preserve"><value>Ponechte prázdné, chcete-li zachovat uložené heslo.</value></data>
+  <data name="Net.Msgs.PasswordProtectFailed" xml:space="preserve"><value>Heslo se nepodařilo zašifrovat, proto nebyly použity žádné změny: {0}</value></data>
+  <data name="Net.Msgs.TestRunning" xml:space="preserve"><value>Probíhá test připojení k internetu...</value></data>
+  <data name="Net.Msgs.TestConnectedDirect" xml:space="preserve"><value>Připojení bylo úspěšné: internet je dostupný přímo.</value></data>
+  <data name="Net.Msgs.TestConnectedViaUpstream" xml:space="preserve"><value>Připojení bylo úspěšné: internet je dostupný přes nadřazenou proxy.</value></data>
+  <data name="Net.Msgs.TestFailed" xml:space="preserve"><value>Připojení selhalo: {0}</value></data>
+  <data name="Net.Msgs.TestNoResult" xml:space="preserve"><value>Test internetu se nepodařilo spustit.</value></data>
+  <data name="Net.Msgs.TestError" xml:space="preserve"><value>Chyba během testu: {0}</value></data>
+  <data name="Net.Test.DNSFailure" xml:space="preserve"><value>Překlad názvů DNS selhal.</value></data>
+  <data name="Net.Test.TargetUnreachable" xml:space="preserve"><value>Testovací adresa není dostupná.</value></data>
+  <data name="Net.Test.Timeout" xml:space="preserve"><value>Vypršel časový limit připojení.</value></data>
+  <data name="Net.Test.UnknownFailure" xml:space="preserve"><value>Došlo k neznámé chybě.</value></data>
+  <data name="Net.Test.UpstreamUnavailable" xml:space="preserve"><value>Nadřazená proxy není dostupná.</value></data>
+  <data name="Net.Test.UpstreamAuthenticationFailed" xml:space="preserve"><value>Nadřazená proxy odmítla uživatelské jméno nebo heslo.</value></data>
+  <data name="Page.ProxySettings" xml:space="preserve"><value>Nastavení proxy</value></data>
+  <data name="ProxySettings.Moved" xml:space="preserve"><value>Tato stránka byla přesunuta do Nastavení sítě.</value></data>
 </root>

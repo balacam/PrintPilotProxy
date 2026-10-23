@@ -124,7 +124,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             }
 
             _proxyServer.BeforeRequest += OnBeforeRequest;
-        _proxyServer.BeforeResponse += OnBeforeResponse;
+            _proxyServer.BeforeResponse += OnBeforeResponse;
             _explicitEndPoints.Clear();
 
             _logger.LogInformation("[DIAG] ProxyStartStarted Mode={ListenerMode} ConfiguredAddress={ListenAddress} Port={Port}",
@@ -142,11 +142,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                 
                 foreach (var ip in ips)
                 {
-                    var endpoint = new ExplicitProxyEndPoint(ip, configuration.Listener.Port, decryptSsl: false);
-                    endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
-                    endpoint.BeforeTunnelConnectResponse += OnBeforeTunnelConnectResponse;
-                    _proxyServer.AddEndPoint(endpoint);
-                    _explicitEndPoints.Add(endpoint);
+                    AddEndPoint(ip, configuration.Listener.Port);
                 }
             }
             else if (configuration.Listener.Mode == ListenerMode.SpecificAddress)
@@ -172,11 +168,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                     throw new InvalidOperationException("The configured listener address is not assigned to this computer.");
                 }
 
-                var endpoint = new ExplicitProxyEndPoint(ipAddress, configuration.Listener.Port, decryptSsl: false);
-                endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
-                endpoint.BeforeTunnelConnectResponse += OnBeforeTunnelConnectResponse;
-                _proxyServer.AddEndPoint(endpoint);
-                _explicitEndPoints.Add(endpoint);
+                AddEndPoint(ipAddress, configuration.Listener.Port);
             }
             else if (configuration.Listener.Mode == ListenerMode.SpecificAdapter)
             {
@@ -190,25 +182,28 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                         networkInterface.Name,
                         configuration.Listener.AdapterName,
                         StringComparison.OrdinalIgnoreCase));
-                var selectedAddressStr = selectedAdapter?.Addresses.FirstOrDefault();
-                if (string.IsNullOrEmpty(selectedAddressStr) || !IPAddress.TryParse(selectedAddressStr, out var selectedAddress))
+                // Every usable address on the adapter is bound, as in Auto mode. Binding only the first one could leave
+                // the proxy on an IPv6 address alone, because Windows often lists IPv6 first, and IPv4 clients would
+                // then be unable to connect.
+                var selectedAddresses = (selectedAdapter?.Addresses ?? new List<string>())
+                    .Select(addrStr => IPAddress.TryParse(addrStr, out var parsed) ? parsed : null)
+                    .Where(ip => ip != null)
+                    .Select(ip => ip!)
+                    .Distinct()
+                    .ToList();
+                if (selectedAddresses.Count == 0)
                 {
                     throw new InvalidOperationException("The selected network adapter has no usable assigned IP address.");
                 }
 
-                var endpoint = new ExplicitProxyEndPoint(selectedAddress, configuration.Listener.Port, decryptSsl: false);
-                endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
-                endpoint.BeforeTunnelConnectResponse += OnBeforeTunnelConnectResponse;
-                _proxyServer.AddEndPoint(endpoint);
-                _explicitEndPoints.Add(endpoint);
+                foreach (var selectedAddress in selectedAddresses)
+                {
+                    AddEndPoint(selectedAddress, configuration.Listener.Port);
+                }
             }
             else if (configuration.Listener.Mode == ListenerMode.AllInterfaces)
             {
-                var endpoint = new ExplicitProxyEndPoint(IPAddress.Any, configuration.Listener.Port, decryptSsl: false);
-                endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
-                endpoint.BeforeTunnelConnectResponse += OnBeforeTunnelConnectResponse;
-                _proxyServer.AddEndPoint(endpoint);
-                _explicitEndPoints.Add(endpoint);
+                AddEndPoint(IPAddress.Any, configuration.Listener.Port);
             }
 
             WarnAboutExposure(configuration);
@@ -256,7 +251,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
                 return;
             }
 
-        _state = ProxyState.Stopping;
+            _state = ProxyState.Stopping;
             DisposeServer();
             _state = ProxyState.Stopped;
             _logger.LogInformation("UnobtaniumProxyEngine stopped.");
@@ -319,57 +314,19 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
 
         var clientIp = (e.ClientRemoteEndPoint as IPEndPoint)?.Address;
 
-        bool isAllowed = clientIp != null 
-            ? _acl.IsAllowed(clientIp) 
-            : _configuration?.ClientAccess.Mode == ClientAccessMode.AllowAll;
-
-        if (!isAllowed)
+        if (EvaluateAccess(e, clientIp, connectionId) is { } denial)
         {
-            e.DenyConnect = true;
-            LogRequest(e, clientIp, 403, "Access denied by ACL");
-            return Task.CompletedTask;
-        }
-
-        WarnIfOverConnectionLimit();
-
-        if (_authenticator != null && _configuration?.Security.RequireAuthentication == true)
-        {
-            _logger.LogInformation("[DIAG] AuthenticationStarted ConnectionId={ConnectionId}", connectionId);
-            var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 
-                ?? GetHeaderValue(e.HttpClient.Request.Headers, "X-PrintPilot-Auth");
-            var authResult = _authenticator.Authenticate(authHeader, clientIp ?? IPAddress.Any);
-            if (!authResult.IsSuccess)
+            if (denial.StatusCode == 407)
             {
-                _logger.LogInformation("[DIAG] AuthenticationFailed ConnectionId={ConnectionId} Reason={Reason}", connectionId, authResult.FailureReason);
                 e.HttpClient.Response.HttpVersion = e.HttpClient.Request.HttpVersion;
                 e.HttpClient.Response.StatusCode = 407;
                 e.HttpClient.Response.StatusDescription = "Proxy Authentication Required";
-                e.HttpClient.Response.Headers.AddHeader("Proxy-Authenticate", $"{DiscoveryConstants.AuthScheme} realm=\"PrintPilotProxy\"");
+                e.HttpClient.Response.Headers.AddHeader("Proxy-Authenticate", AuthenticateChallenge);
                 e.HttpClient.Response.ContentLength = 0;
-                e.DenyConnect = true;
-                LogRequest(e, clientIp, 407, $"Proxy authentication required: {authResult.FailureReason}");
-                return Task.CompletedTask;
             }
-            _logger.LogInformation("[DIAG] AuthenticationSucceeded ConnectionId={ConnectionId}", connectionId);
-        }
-        
-        var destinationUri = e.HttpClient.Request.RequestUri;
-        if (destinationUri is null)
-        {
-            e.DenyConnect = true;
-            LogRequest(e, clientIp, 400, "Destination URI is missing");
-            return Task.CompletedTask;
-        }
 
-        int destPort = destinationUri.Port;
-        bool isDestAllowed = _acl.IsDestinationPortAllowed(destPort);
-        _logger.LogInformation("[DIAG] DestinationAclCheck ConnectionId={ConnectionId} TargetHost={TargetHost} TargetPort={TargetPort} Result={Result}",
-            connectionId, destinationUri.Host, destPort, isDestAllowed ? "Allowed" : "Denied");
-
-        if (!isDestAllowed)
-        {
             e.DenyConnect = true;
-            LogRequest(e, clientIp, 403, $"Destination port {destPort} is not allowed");
+            LogRequest(e, clientIp, denial.StatusCode, denial.LogReason);
             return Task.CompletedTask;
         }
 
@@ -435,58 +392,14 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         EnsureClientConnectionLogged(e, connectionId);
 
         var clientIp = (e.ClientRemoteEndPoint as IPEndPoint)?.Address;
-        
-        bool isAllowed = clientIp != null 
-            ? _acl.IsAllowed(clientIp) 
-            : _configuration?.ClientAccess.Mode == ClientAccessMode.AllowAll;
 
-        if (!isAllowed)
+        if (EvaluateAccess(e, clientIp, connectionId) is { } denial)
         {
-            RejectRequest(e, HttpStatusCode.Forbidden, "Access denied by ACL");
-            LogRequest(e, clientIp, 403, "Access denied by ACL");
-            return Task.CompletedTask;
-        }
-
-        WarnIfOverConnectionLimit();
-
-        if (_authenticator != null && _configuration?.Security.RequireAuthentication == true)
-        {
-            _logger.LogInformation("[DIAG] AuthenticationStarted ConnectionId={ConnectionId}", connectionId);
-            var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization") 
-                ?? GetHeaderValue(e.HttpClient.Request.Headers, "X-PrintPilot-Auth");
-            var authResult = _authenticator.Authenticate(authHeader, clientIp ?? IPAddress.Any);
-            if (!authResult.IsSuccess)
-            {
-                _logger.LogInformation("[DIAG] AuthenticationFailed ConnectionId={ConnectionId} Reason={Reason}", connectionId, authResult.FailureReason);
-                var challengeHeaders = new List<HttpHeader>
-                {
-                    new("Proxy-Authenticate", $"{DiscoveryConstants.AuthScheme} realm=\"PrintPilotProxy\"")
-                };
-                e.GenericResponse("Proxy Authentication Required", HttpStatusCode.ProxyAuthenticationRequired, challengeHeaders);
-                LogRequest(e, clientIp, 407, $"Proxy authentication required: {authResult.FailureReason}");
-                return Task.CompletedTask;
-            }
-            _logger.LogInformation("[DIAG] AuthenticationSucceeded ConnectionId={ConnectionId}", connectionId);
-        }
-        
-        var destinationUri = e.HttpClient.Request.RequestUri;
-        if (destinationUri is null)
-        {
-            RejectRequest(e, HttpStatusCode.BadRequest, "Destination URI is required");
-            LogRequest(e, clientIp, 400, "Destination URI is missing");
-            return Task.CompletedTask;
-        }
-
-        int destPort = destinationUri.Port;
-        bool isDestAllowed = _acl.IsDestinationPortAllowed(destPort);
-        
-        _logger.LogInformation("[DIAG] DestinationAclCheck ConnectionId={ConnectionId} TargetHost={TargetHost} TargetPort={TargetPort} Result={Result}",
-            connectionId, destinationUri.Host, destPort, isDestAllowed ? "Allowed" : "Denied");
-
-        if (!isDestAllowed)
-        {
-            RejectRequest(e, HttpStatusCode.Forbidden, $"Destination port {destPort} is not allowed");
-            LogRequest(e, clientIp, 403, $"Destination port {destPort} is not allowed");
+            var headers = denial.StatusCode == 407
+                ? new List<HttpHeader> { new("Proxy-Authenticate", AuthenticateChallenge) }
+                : new List<HttpHeader>();
+            e.GenericResponse(denial.ResponseMessage, (HttpStatusCode)denial.StatusCode, headers);
+            LogRequest(e, clientIp, denial.StatusCode, denial.LogReason);
             return Task.CompletedTask;
         }
 
@@ -565,9 +478,65 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             current, max);
     }
 
-    private void RejectRequest(SessionEventArgs e, HttpStatusCode status, string message)
+    private static readonly string AuthenticateChallenge = $"{DiscoveryConstants.AuthScheme} realm=\"PrintPilotProxy\"";
+
+    /// <summary>Why a request is refused: the status code, the reason recorded in the request log, and the body text.</summary>
+    private sealed record AccessDenial(int StatusCode, string LogReason, string ResponseMessage);
+
+    /// <summary>
+    /// Applies the deny-by-default checks shared by CONNECT tunnels and plain HTTP requests, in order: client ACL,
+    /// proxy authentication, then destination port. Returns <c>null</c> when the request may proceed.
+    /// </summary>
+    private AccessDenial? EvaluateAccess(SessionEventArgsBase e, IPAddress? clientIp, string connectionId)
     {
-        e.GenericResponse(message, status, new List<HttpHeader>());
+        var isAllowed = clientIp != null
+            ? _acl.IsAllowed(clientIp)
+            : _configuration?.ClientAccess.Mode == ClientAccessMode.AllowAll;
+
+        if (!isAllowed)
+        {
+            return new AccessDenial(403, "Access denied by ACL", "Access denied by ACL");
+        }
+
+        WarnIfOverConnectionLimit();
+
+        if (_authenticator != null && _configuration?.Security.RequireAuthentication == true)
+        {
+            _logger.LogInformation("[DIAG] AuthenticationStarted ConnectionId={ConnectionId}", connectionId);
+            var authHeader = GetHeaderValue(e.HttpClient.Request.Headers, "Proxy-Authorization")
+                ?? GetHeaderValue(e.HttpClient.Request.Headers, "X-PrintPilot-Auth");
+            var authResult = _authenticator.Authenticate(authHeader, clientIp ?? IPAddress.Any);
+            if (!authResult.IsSuccess)
+            {
+                _logger.LogInformation("[DIAG] AuthenticationFailed ConnectionId={ConnectionId} Reason={Reason}", connectionId, authResult.FailureReason);
+                return new AccessDenial(407, $"Proxy authentication required: {authResult.FailureReason}", "Proxy Authentication Required");
+            }
+            _logger.LogInformation("[DIAG] AuthenticationSucceeded ConnectionId={ConnectionId}", connectionId);
+        }
+
+        var destinationUri = e.HttpClient.Request.RequestUri;
+        if (destinationUri is null)
+        {
+            return new AccessDenial(400, "Destination URI is missing", "Destination URI is required");
+        }
+
+        var destPort = destinationUri.Port;
+        var isDestAllowed = _acl.IsDestinationPortAllowed(destPort);
+        _logger.LogInformation("[DIAG] DestinationAclCheck ConnectionId={ConnectionId} TargetHost={TargetHost} TargetPort={TargetPort} Result={Result}",
+            connectionId, destinationUri.Host, destPort, isDestAllowed ? "Allowed" : "Denied");
+
+        return isDestAllowed
+            ? null
+            : new AccessDenial(403, $"Destination port {destPort} is not allowed", $"Destination port {destPort} is not allowed");
+    }
+
+    private void AddEndPoint(IPAddress address, int port)
+    {
+        var endpoint = new ExplicitProxyEndPoint(address, port, decryptSsl: false);
+        endpoint.BeforeTunnelConnectRequest += OnBeforeTunnelConnectRequest;
+        endpoint.BeforeTunnelConnectResponse += OnBeforeTunnelConnectResponse;
+        _proxyServer!.AddEndPoint(endpoint);
+        _explicitEndPoints.Add(endpoint);
     }
 
     private void LogRequest(SessionEventArgsBase e, IPAddress? clientIp, int statusCode, string? error, long bytesTransferred = 0)
@@ -616,7 +585,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         try
         {
             _proxyServer.BeforeRequest -= OnBeforeRequest;
-        _proxyServer.BeforeResponse -= OnBeforeResponse;
+            _proxyServer.BeforeResponse -= OnBeforeResponse;
             foreach (var endpoint in _explicitEndPoints)
             {
                 endpoint.BeforeTunnelConnectRequest -= OnBeforeTunnelConnectRequest;

@@ -4,7 +4,7 @@
              xmlns:loc="clr-namespace:PrintPilotProxy.App.Localization">
     <StackPanel>
         <StackPanel Margin="0,0,0,20">
-            <TextBlock Text="ACCESS CONTROL" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+            <TextBlock Text="{loc:Loc Key=Eyebrow.AccessControl}" Style="{StaticResource PageEyebrowTextBlockStyle}" />
             <TextBlock Text="{loc:Loc Key=Page.AllowedClients}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
         </StackPanel>
 
@@ -69,21 +69,21 @@
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="{loc:Loc Key=Cli.Name}" Style="{StaticResource FieldLabelTextBlockStyle}" />
                         <TextBox Text="{Binding NewClientName, UpdateSourceTrigger=PropertyChanged}"
-                                 Tag="e.g. PrintPilot-PC-01"
+                                 Tag="{loc:Loc Key=Cli.NamePlaceholder}"
                                  Style="{StaticResource PlaceholderTextBoxStyle}" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="{loc:Loc Key=Cli.IpOrCidr}" Style="{StaticResource FieldLabelTextBlockStyle}" />
                         <TextBox Text="{Binding NewClientIpOrCidr, UpdateSourceTrigger=PropertyChanged}"
-                                 Tag="192.168.1.0/24 or 10.0.0.5"
+                                 Tag="{loc:Loc Key=Cli.IpPlaceholder}"
                                  Style="{StaticResource PlaceholderTextBoxStyle}" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="4">
                         <TextBlock Text="{loc:Loc Key=Cli.DescriptionOptional}" Style="{StaticResource FieldLabelTextBlockStyle}" />
                         <TextBox Text="{Binding NewClientDescription, UpdateSourceTrigger=PropertyChanged}"
-                                 Tag="e.g. Accounting workstation"
+                                 Tag="{loc:Loc Key=Cli.DescriptionPlaceholder}"
                                  Style="{StaticResource PlaceholderTextBoxStyle}" />
                     </StackPanel>
 

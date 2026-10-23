@@ -308,4 +308,74 @@
   <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Motorul proxy a fost oprit.</value></data>
   <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Motorul proxy a fost repornit.</value></data>
   <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Execuția comenzii a eșuat.</value></data>
+  <data name="Nav.About" xml:space="preserve"><value>Despre</value></data>
+  <data name="Page.About" xml:space="preserve"><value>Despre</value></data>
+  <data name="About.SystemInfo" xml:space="preserve"><value>Sistem și mediu</value></data>
+  <data name="About.Version" xml:space="preserve"><value>Versiune</value></data>
+  <data name="About.Runtime" xml:space="preserve"><value>Mediu de rulare</value></data>
+  <data name="About.Platform" xml:space="preserve"><value>Sistem de operare</value></data>
+  <data name="About.Architecture" xml:space="preserve"><value>Arhitectură</value></data>
+  <data name="About.InstallLocation" xml:space="preserve"><value>Director de instalare</value></data>
+  <data name="About.Links" xml:space="preserve"><value>Instrumente și stocare</value></data>
+  <data name="About.CopySysInfo" xml:space="preserve"><value>Copiază informațiile de sistem</value></data>
+  <data name="About.CopySysInfoDesc" xml:space="preserve"><value>Copiază în clipboard detaliile despre hardware, mediul de rulare și sistemul de operare</value></data>
+  <data name="About.OpenLogs" xml:space="preserve"><value>Deschide folderul de jurnale</value></data>
+  <data name="About.OpenLogsDesc" xml:space="preserve"><value>Vizualizează jurnalele de acces ale proxy-ului și fișierele de diagnoză ale serviciului</value></data>
+  <data name="About.OpenConfig" xml:space="preserve"><value>Deschide folderul de date</value></data>
+  <data name="About.OpenConfigDesc" xml:space="preserve"><value>Vizualizează configurația programului și fișierele de stare</value></data>
+  <data name="About.KeyFeatures" xml:space="preserve"><value>Funcționalități principale</value></data>
+  <data name="About.Feature2.Title" xml:space="preserve"><value>Control acces și ACL</value></data>
+  <data name="About.Feature3.Title" xml:space="preserve"><value>Serviciu Windows rezilient</value></data>
+  <data name="About.Feature4.Title" xml:space="preserve"><value>Diagnoză și audit</value></data>
+  <data name="About.SysInfoCopied" xml:space="preserve"><value>Informațiile de sistem au fost copiate în clipboard!</value></data>
+  <data name="About.Subtitle" xml:space="preserve"><value>Proxy de redirecționare securizat pentru clienții PrintPilot din rețele restricționate.</value></data>
+  <data name="About.Description" xml:space="preserve"><value>PrintPilotProxy permite clienților PrintPilot din rețele restricționate, precum spitale, bănci și intraneturi corporative, să își acceseze serviciile externe printr-un tunel HTTP CONNECT controlat. Accesul este refuzat implicit: sunt acceptate doar adresele IP ale clienților și porturile de destinație permise, cu autentificare HMAC opțională. Traficul criptat este transmis fără a fi decriptat.</value></data>
+  <data name="About.Feature1.Title" xml:space="preserve"><value>Tunelare criptată</value></data>
+  <data name="About.Feature1.Desc" xml:space="preserve"><value>Tunelurile HTTP CONNECT transportă traficul clienților cap la cap; traficul TLS nu este niciodată decriptat sau inspectat.</value></data>
+  <data name="About.Feature2.Desc" xml:space="preserve"><value>Listă de clienți IP/CIDR permiși cu refuz implicit, restricții pentru porturile de destinație și autentificare HMAC opțională.</value></data>
+  <data name="About.Feature3.Desc" xml:space="preserve"><value>Rulează în fundal ca serviciu Windows, repornește proxy-ul după erori și aplică imediat modificările de configurație.</value></data>
+  <data name="About.Feature4.Desc" xml:space="preserve"><value>Audit de securitate integrat, monitorizarea traficului în timp real și jurnale de diagnoză structurate.</value></data>
+  <data name="About.Copyright" xml:space="preserve"><value>Copyright © 2026 balacam. Distribuit sub licența MIT.</value></data>
+  <data name="Eyebrow.Application" xml:space="preserve"><value>APLICAȚIE</value></data>
+  <data name="Eyebrow.AccessControl" xml:space="preserve"><value>CONTROL ACCES</value></data>
+  <data name="Eyebrow.Overview" xml:space="preserve"><value>PREZENTARE GENERALĂ</value></data>
+  <data name="Eyebrow.SystemHealth" xml:space="preserve"><value>STAREA SISTEMULUI</value></data>
+  <data name="Eyebrow.NetworkSecurity" xml:space="preserve"><value>SECURITATEA REȚELEI</value></data>
+  <data name="Eyebrow.Preferences" xml:space="preserve"><value>PREFERINȚE</value></data>
+  <data name="Eyebrow.Observability" xml:space="preserve"><value>MONITORIZARE</value></data>
+  <data name="Eyebrow.ControlCenter" xml:space="preserve"><value>CENTRU DE CONTROL</value></data>
+  <data name="Eyebrow.Operations" xml:space="preserve"><value>OPERAȚIUNI</value></data>
+  <data name="Eyebrow.Configuration" xml:space="preserve"><value>CONFIGURARE</value></data>
+  <data name="Eyebrow.SecurityPosture" xml:space="preserve"><value>NIVELUL DE SECURITATE</value></data>
+  <data name="About.ProductionReady" xml:space="preserve"><value>PREGĂTIT PENTRU PRODUCȚIE</value></data>
+  <data name="MainWindow.Subtitle" xml:space="preserve"><value>Consolă de administrare</value></data>
+  <data name="Cli.NamePlaceholder" xml:space="preserve"><value>ex.: PrintPilot-PC-01</value></data>
+  <data name="Cli.IpPlaceholder" xml:space="preserve"><value>192.168.1.0/24 sau 10.0.0.5</value></data>
+  <data name="Cli.DescriptionPlaceholder" xml:space="preserve"><value>ex.: Stația de lucru de la contabilitate</value></data>
+  <data name="Net.InternetConnection" xml:space="preserve"><value>Conexiune la internet</value></data>
+  <data name="Net.InternetConnectionDesc" xml:space="preserve"><value>Configurați modul în care proxy-ul se conectează la internet.</value></data>
+  <data name="Net.TestConnection" xml:space="preserve"><value>Testează conexiunea</value></data>
+  <data name="Net.ConnectionMode" xml:space="preserve"><value>Mod de conectare</value></data>
+  <data name="Net.UpstreamDirect" xml:space="preserve"><value>Conexiune directă</value></data>
+  <data name="Net.UpstreamManual" xml:space="preserve"><value>Proxy manual</value></data>
+  <data name="Net.UpstreamHost" xml:space="preserve"><value>Gazda proxy-ului din amonte</value></data>
+  <data name="Net.UpstreamPort" xml:space="preserve"><value>Port</value></data>
+  <data name="Net.UpstreamUsername" xml:space="preserve"><value>Nume de utilizator (opțional)</value></data>
+  <data name="Net.UpstreamPassword" xml:space="preserve"><value>Parolă</value></data>
+  <data name="Net.UpstreamPasswordHint" xml:space="preserve"><value>Lăsați necompletat pentru a păstra parola salvată.</value></data>
+  <data name="Net.Msgs.PasswordProtectFailed" xml:space="preserve"><value>Parola nu a putut fi criptată, așa că nu s-a aplicat nicio modificare: {0}</value></data>
+  <data name="Net.Msgs.TestRunning" xml:space="preserve"><value>Se testează conexiunea la internet...</value></data>
+  <data name="Net.Msgs.TestConnectedDirect" xml:space="preserve"><value>Conexiune reușită: internetul este accesibil direct.</value></data>
+  <data name="Net.Msgs.TestConnectedViaUpstream" xml:space="preserve"><value>Conexiune reușită: internetul este accesibil prin proxy-ul din amonte.</value></data>
+  <data name="Net.Msgs.TestFailed" xml:space="preserve"><value>Conexiune eșuată: {0}</value></data>
+  <data name="Net.Msgs.TestNoResult" xml:space="preserve"><value>Testul de internet nu a putut fi rulat.</value></data>
+  <data name="Net.Msgs.TestError" xml:space="preserve"><value>Eroare în timpul testului: {0}</value></data>
+  <data name="Net.Test.DNSFailure" xml:space="preserve"><value>Rezolvarea numelor DNS a eșuat.</value></data>
+  <data name="Net.Test.TargetUnreachable" xml:space="preserve"><value>Adresa de test nu a putut fi accesată.</value></data>
+  <data name="Net.Test.Timeout" xml:space="preserve"><value>Conexiunea a expirat.</value></data>
+  <data name="Net.Test.UnknownFailure" xml:space="preserve"><value>A apărut o eroare necunoscută.</value></data>
+  <data name="Net.Test.UpstreamUnavailable" xml:space="preserve"><value>Proxy-ul din amonte nu poate fi accesat.</value></data>
+  <data name="Net.Test.UpstreamAuthenticationFailed" xml:space="preserve"><value>Proxy-ul din amonte a respins numele de utilizator sau parola.</value></data>
+  <data name="Page.ProxySettings" xml:space="preserve"><value>Setări proxy</value></data>
+  <data name="ProxySettings.Moved" xml:space="preserve"><value>Această pagină a fost mutată în Setări de rețea.</value></data>
 </root>

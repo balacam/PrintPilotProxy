@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <TextBlock Text="OVERVIEW" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+                <TextBlock Text="{loc:Loc Key=Eyebrow.Overview}" Style="{StaticResource PageEyebrowTextBlockStyle}" />
                 <TextBlock Text="{loc:Loc Key=Page.Dashboard}"
                            Style="{StaticResource HeaderTextBlockStyle}"
                            Margin="0" />

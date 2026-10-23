@@ -5,7 +5,7 @@
     <StackPanel>
         <!-- Page header -->
         <StackPanel Margin="0,0,0,20">
-            <TextBlock Text="APPLICATION" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+            <TextBlock Text="{loc:Loc Key=Eyebrow.Application}" Style="{StaticResource PageEyebrowTextBlockStyle}" />
             <TextBlock Text="{loc:Loc Key=Page.About}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
         </StackPanel>
 
@@ -55,7 +55,7 @@
                         <Border Margin="8,0,0,0"
                                 Style="{StaticResource SuccessBadgeStyle}"
                                 VerticalAlignment="Center">
-                            <TextBlock Text="PRODUCTION READY"
+                            <TextBlock Text="{loc:Loc Key=About.ProductionReady}"
                                        FontSize="10"
                                        FontWeight="Bold"
                                        Foreground="{StaticResource SuccessBrush}" />
