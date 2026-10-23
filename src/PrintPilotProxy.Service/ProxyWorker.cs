@@ -93,14 +93,7 @@ public sealed class ProxyWorker : BackgroundService
             if (configuration.Service.AutoStartProxy)
             {
                 await StartConfiguredProxyWithRecoveryAsync(configuration, stoppingToken);
-                try
-                {
-                    await _discoveryService.StartAsync(stoppingToken);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "Failed to start discovery service. Proxy service remains functional.");
-                }
+                await TryStartDiscoveryAsync("Failed to start discovery service. Proxy service remains functional.", stoppingToken);
             }
 
             await Task.Delay(Timeout.InfiniteTimeSpan, stoppingToken);
@@ -132,16 +125,9 @@ public sealed class ProxyWorker : BackgroundService
             _proxyEngine.RequestProcessed -= OnRequestProcessed;
             _ipcServer.MessageReceived -= HandleIpcMessageAsync;
 
-            try
-            {
-                await _discoveryService.StopAsync(CancellationToken.None);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Error stopping discovery service during service shutdown.");
-            }
+            await TryStopDiscoveryAsync("Error stopping discovery service during service shutdown.");
 
-            if (_proxyEngine.GetStatus().State is ProxyState.Running or ProxyState.Starting or ProxyState.Faulted)
+            if (IsEngineActive())
             {
                 try
                 {
@@ -165,10 +151,7 @@ public sealed class ProxyWorker : BackgroundService
         {
             try
             {
-                await ValidateRuntimeConfigurationAsync(configuration, cancellationToken);
-                await ConfigureFirewallAsync(configuration, cancellationToken);
-                _acl.Refresh(configuration);
-                await _proxyEngine.StartAsync(configuration, cancellationToken);
+                await StartEngineAsync(configuration, cancellationToken);
                 return;
             }
             catch (Exception ex) when (!cancellationToken.IsCancellationRequested)
@@ -251,32 +234,28 @@ public sealed class ProxyWorker : BackgroundService
 
     private async Task<IpcMessage> DispatchAsync(IpcMessage request)
     {
-            return request.Type switch
-            {
-                IpcMessageTypes.GetStatus => HandleGetStatus(request),
-                IpcMessageTypes.StartProxy => await HandleStartProxyAsync(request),
-                IpcMessageTypes.StopProxy => await HandleStopProxyAsync(request),
-                IpcMessageTypes.RestartProxy => await HandleRestartProxyAsync(request),
-                IpcMessageTypes.GetConfiguration => await HandleGetConfigurationAsync(request),
-                IpcMessageTypes.UpdateConfiguration => await HandleUpdateConfigurationAsync(request),
-                IpcMessageTypes.GetRecentRequests => HandleGetRecentRequests(request),
-                IpcMessageTypes.GetNetworkInterfaces => await HandleGetNetworkInterfacesAsync(request),
-                IpcMessageTypes.GetFirewallStatus => await HandleGetFirewallStatusAsync(request),
-                IpcMessageTypes.ApplyFirewallRule => await HandleApplyFirewallRuleAsync(request),
-                IpcMessageTypes.RemoveFirewallRule => await HandleRemoveFirewallRuleAsync(request),
-                IpcMessageTypes.RunDiagnostics => await HandleRunDiagnosticsAsync(request),
-                IpcMessageTypes.RunInternetTest => await HandleRunInternetTestAsync(request),
-                IpcMessageTypes.GetSecurityAudit => await HandleGetSecurityAuditAsync(request),
-                _ => Error(request, "Unknown management request.")
-            };
+        return request.Type switch
+        {
+            IpcMessageTypes.GetStatus => HandleGetStatus(request),
+            IpcMessageTypes.StartProxy => await HandleStartProxyAsync(request),
+            IpcMessageTypes.StopProxy => await HandleStopProxyAsync(request),
+            IpcMessageTypes.RestartProxy => await HandleRestartProxyAsync(request),
+            IpcMessageTypes.GetConfiguration => await HandleGetConfigurationAsync(request),
+            IpcMessageTypes.UpdateConfiguration => await HandleUpdateConfigurationAsync(request),
+            IpcMessageTypes.GetRecentRequests => HandleGetRecentRequests(request),
+            IpcMessageTypes.GetNetworkInterfaces => await HandleGetNetworkInterfacesAsync(request),
+            IpcMessageTypes.GetFirewallStatus => await HandleGetFirewallStatusAsync(request),
+            IpcMessageTypes.ApplyFirewallRule => await HandleApplyFirewallRuleAsync(request),
+            IpcMessageTypes.RemoveFirewallRule => await HandleRemoveFirewallRuleAsync(request),
+            IpcMessageTypes.RunDiagnostics => await HandleRunDiagnosticsAsync(request),
+            IpcMessageTypes.RunInternetTest => await HandleRunInternetTestAsync(request),
+            IpcMessageTypes.GetSecurityAudit => await HandleGetSecurityAuditAsync(request),
+            _ => Error(request, "Unknown management request.")
+        };
     }
 
-    private IpcMessage HandleGetStatus(IpcMessage request) => new()
-    {
-        Type = IpcMessageTypes.StatusResponse,
-        CorrelationId = request.CorrelationId,
-        Payload = JsonSerializer.Serialize(_proxyEngine.GetStatus(), _jsonOptions)
-    };
+    private IpcMessage HandleGetStatus(IpcMessage request)
+        => JsonResponse(request, IpcMessageTypes.StatusResponse, _proxyEngine.GetStatus());
 
     private async Task<IpcMessage> HandleStartProxyAsync(IpcMessage request)
     {
@@ -286,78 +265,36 @@ public sealed class ProxyWorker : BackgroundService
             return Success(request, "Proxy is already running.");
         }
 
-        var configuration = await _configManager.LoadAsync();
-        await ValidateRuntimeConfigurationAsync(configuration, CancellationToken.None);
-        await ConfigureFirewallAsync(configuration, CancellationToken.None);
-        _acl.Refresh(configuration);
-        await _proxyEngine.StartAsync(configuration);
-        try
-        {
-            await _discoveryService.StartAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Failed to start discovery service on proxy start.");
-        }
+        await StartEngineAsync(await _configManager.LoadAsync(), CancellationToken.None);
+        await TryStartDiscoveryAsync("Failed to start discovery service on proxy start.");
         return Success(request, "Proxy started.");
     }
 
     private async Task<IpcMessage> HandleStopProxyAsync(IpcMessage request)
     {
-        try
-        {
-            await _discoveryService.StopAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Error stopping discovery service on proxy stop.");
-        }
-
+        await TryStopDiscoveryAsync("Error stopping discovery service on proxy stop.");
         await _proxyEngine.StopAsync();
         return Success(request, "Proxy stopped.");
     }
 
     private async Task<IpcMessage> HandleRestartProxyAsync(IpcMessage request)
     {
-        try
-        {
-            await _discoveryService.StopAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Error stopping discovery service on proxy restart.");
-        }
+        await TryStopDiscoveryAsync("Error stopping discovery service on proxy restart.");
 
-        if (_proxyEngine.GetStatus().State is ProxyState.Running or ProxyState.Starting or ProxyState.Faulted)
+        if (IsEngineActive())
         {
             await _proxyEngine.StopAsync();
         }
 
-        var configuration = await _configManager.LoadAsync();
-        await ValidateRuntimeConfigurationAsync(configuration, CancellationToken.None);
-        await ConfigureFirewallAsync(configuration, CancellationToken.None);
-        _acl.Refresh(configuration);
-        await _proxyEngine.StartAsync(configuration);
-        try
-        {
-            await _discoveryService.StartAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Failed to start discovery service on proxy restart.");
-        }
+        await StartEngineAsync(await _configManager.LoadAsync(), CancellationToken.None);
+        await TryStartDiscoveryAsync("Failed to start discovery service on proxy restart.");
         return Success(request, "Proxy restarted.");
     }
 
     private async Task<IpcMessage> HandleGetConfigurationAsync(IpcMessage request)
     {
         var configuration = await _configManager.LoadAsync();
-        return new IpcMessage
-        {
-            Type = IpcMessageTypes.ConfigurationResponse,
-            CorrelationId = request.CorrelationId,
-            Payload = JsonSerializer.Serialize(MaskSecrets(configuration), _jsonOptions)
-        };
+        return JsonResponse(request, IpcMessageTypes.ConfigurationResponse, MaskSecrets(configuration));
     }
 
     /// <summary>
@@ -470,33 +407,19 @@ public sealed class ProxyWorker : BackgroundService
         }
     }
 
-    private IpcMessage HandleGetRecentRequests(IpcMessage request) => new()
-    {
-        Type = IpcMessageTypes.RecentRequestsResponse,
-        CorrelationId = request.CorrelationId,
-        Payload = JsonSerializer.Serialize(_proxyEngine.GetRecentRequests(100), _jsonOptions)
-    };
+    private IpcMessage HandleGetRecentRequests(IpcMessage request)
+        => JsonResponse(request, IpcMessageTypes.RecentRequestsResponse, _proxyEngine.GetRecentRequests(100));
 
     private async Task<IpcMessage> HandleGetNetworkInterfacesAsync(IpcMessage request)
     {
         var interfaces = await _networkDiscovery.GetInterfacesAsync();
-        return new IpcMessage
-        {
-            Type = IpcMessageTypes.NetworkInterfacesResponse,
-            CorrelationId = request.CorrelationId,
-            Payload = JsonSerializer.Serialize(interfaces, _jsonOptions)
-        };
+        return JsonResponse(request, IpcMessageTypes.NetworkInterfacesResponse, interfaces);
     }
 
     private async Task<IpcMessage> HandleGetFirewallStatusAsync(IpcMessage request)
     {
         var status = await _firewallManager.GetStatusAsync(FirewallRuleNames.ManagedRule);
-        return new IpcMessage
-        {
-            Type = IpcMessageTypes.FirewallStatusResponse,
-            CorrelationId = request.CorrelationId,
-            Payload = JsonSerializer.Serialize(status, _jsonOptions)
-        };
+        return JsonResponse(request, IpcMessageTypes.FirewallStatusResponse, status);
     }
 
     private async Task<IpcMessage> HandleApplyFirewallRuleAsync(IpcMessage request)
@@ -521,18 +444,12 @@ public sealed class ProxyWorker : BackgroundService
     private async Task<IpcMessage> HandleRunDiagnosticsAsync(IpcMessage request)
     {
         var results = await _diagnostics.RunAllAsync();
-        return new IpcMessage
-        {
-            Type = IpcMessageTypes.DiagnosticsResponse,
-            CorrelationId = request.CorrelationId,
-            Payload = JsonSerializer.Serialize(results, _jsonOptions)
-        };
+        return JsonResponse(request, IpcMessageTypes.DiagnosticsResponse, results);
     }
 
     private async Task<IpcMessage> HandleRunInternetTestAsync(IpcMessage request)
     {
         var configuration = await _configManager.LoadAsync();
-        
         var result = await _internetTester.RunTestAsync(configuration);
         return new IpcMessage
         {
@@ -545,12 +462,43 @@ public sealed class ProxyWorker : BackgroundService
     private async Task<IpcMessage> HandleGetSecurityAuditAsync(IpcMessage request)
     {
         var configuration = await _configManager.LoadAsync();
-        return new IpcMessage
+        return JsonResponse(request, IpcMessageTypes.SecurityAuditResponse, _securityAuditor.Audit(configuration));
+    }
+
+    private async Task StartEngineAsync(ProxyConfiguration configuration, CancellationToken cancellationToken)
+    {
+        await ValidateRuntimeConfigurationAsync(configuration, cancellationToken);
+        await ConfigureFirewallAsync(configuration, cancellationToken);
+        _acl.Refresh(configuration);
+        await _proxyEngine.StartAsync(configuration, cancellationToken);
+    }
+
+    private bool IsEngineActive()
+        => _proxyEngine.GetStatus().State is ProxyState.Running or ProxyState.Starting or ProxyState.Faulted;
+
+    /// <summary>Discovery is optional: the proxy keeps serving clients that already know its address, so failures are only logged.</summary>
+    private async Task TryStartDiscoveryAsync(string failureMessage, CancellationToken cancellationToken = default)
+    {
+        try
         {
-            Type = IpcMessageTypes.SecurityAuditResponse,
-            CorrelationId = request.CorrelationId,
-            Payload = JsonSerializer.Serialize(_securityAuditor.Audit(configuration), _jsonOptions)
-        };
+            await _discoveryService.StartAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, failureMessage);
+        }
+    }
+
+    private async Task TryStopDiscoveryAsync(string failureMessage)
+    {
+        try
+        {
+            await _discoveryService.StopAsync(CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, failureMessage);
+        }
     }
 
     private async Task ValidateRuntimeConfigurationAsync(ProxyConfiguration configuration, CancellationToken cancellationToken)
@@ -575,10 +523,7 @@ public sealed class ProxyWorker : BackgroundService
 
         return configuration.Listener.Mode switch
         {
-            ListenerMode.Auto => interfaces.SelectMany(networkInterface => networkInterface.Addresses)
-                .Select(s => IPAddress.TryParse(s, out var ip) ? ip : null)
-                .Where(ip => ip != null)
-                .Select(ip => ip!)
+            ListenerMode.Auto => ParseAddresses(interfaces.SelectMany(networkInterface => networkInterface.Addresses))
                 .Distinct()
                 .ToList() switch
             {
@@ -595,13 +540,9 @@ public sealed class ProxyWorker : BackgroundService
     private static List<IPAddress> ResolveSpecificAdapter(
         IEnumerable<DiscoveredNetworkInterface> interfaces, string? adapterName)
     {
-        var addresses = interfaces
-            .FirstOrDefault(networkInterface => string.Equals(networkInterface.Name, adapterName, StringComparison.OrdinalIgnoreCase))
-            ?.Addresses
-            .Select(s => IPAddress.TryParse(s, out var ip) ? ip : null)
-            .Where(ip => ip != null)
-            .Select(ip => ip!)
-            .ToList();
+        var adapter = interfaces
+            .FirstOrDefault(networkInterface => string.Equals(networkInterface.Name, adapterName, StringComparison.OrdinalIgnoreCase));
+        var addresses = adapter is null ? null : ParseAddresses(adapter.Addresses).ToList();
         return addresses is { Count: > 0 }
             ? addresses
             : throw new InvalidOperationException("The selected network adapter is unavailable or has no usable IP address.");
@@ -615,14 +556,25 @@ public sealed class ProxyWorker : BackgroundService
             throw new InvalidOperationException("The selected listener address is invalid.");
         }
 
-        if (IPAddress.IsLoopback(address) || interfaces.SelectMany(networkInterface => networkInterface.Addresses)
-                .Select(s => IPAddress.TryParse(s, out var ip) ? ip : null)
-                .Any(localIp => localIp != null && localIp.Equals(address)))
+        if (IPAddress.IsLoopback(address) || ParseAddresses(interfaces.SelectMany(networkInterface => networkInterface.Addresses))
+                .Any(localIp => localIp.Equals(address)))
         {
             return new List<IPAddress> { address };
         }
 
         throw new InvalidOperationException("The selected listener address is not assigned to this computer.");
+    }
+
+    /// <summary>Parses address strings, skipping any that are not valid IP addresses.</summary>
+    private static IEnumerable<IPAddress> ParseAddresses(IEnumerable<string> addresses)
+    {
+        foreach (var value in addresses)
+        {
+            if (IPAddress.TryParse(value, out var address))
+            {
+                yield return address;
+            }
+        }
     }
 
     private async Task ConfigureFirewallAsync(ProxyConfiguration configuration, CancellationToken cancellationToken)
@@ -677,6 +629,13 @@ public sealed class ProxyWorker : BackgroundService
 
     private static bool RequiresProxyRestart(ProxyConfiguration before, ProxyConfiguration after)
         => PrintPilotProxy.Core.Validation.ConfigurationRestartPolicy.RequiresProxyRestart(before, after);
+
+    private IpcMessage JsonResponse<T>(IpcMessage request, string type, T payload) => new()
+    {
+        Type = type,
+        CorrelationId = request.CorrelationId,
+        Payload = JsonSerializer.Serialize(payload, _jsonOptions)
+    };
 
     private static IpcMessage Success(IpcMessage request, string message) => new()
     {

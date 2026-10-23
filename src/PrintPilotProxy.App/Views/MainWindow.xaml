@@ -59,7 +59,7 @@
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Foreground="White" />
-                        <TextBlock Text="Management console"
+                        <TextBlock Text="{loc:Loc Key=MainWindow.Subtitle}"
                                    Margin="0,3,0,0"
                                    FontSize="11"
                                    Foreground="{StaticResource MutedTextBrush}" />
@@ -71,7 +71,7 @@
                               VerticalScrollBarVisibility="Auto"
                               HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,0,0,14">
-                        <TextBlock Text="CONTROL CENTER"
+                        <TextBlock Text="{loc:Loc Key=Eyebrow.ControlCenter}"
                                    Margin="25,0,0,8"
                                    FontSize="10"
                                    FontWeight="SemiBold"
@@ -135,7 +135,7 @@
 
                         <Separator />
 
-                        <TextBlock Text="OPERATIONS"
+                        <TextBlock Text="{loc:Loc Key=Eyebrow.Operations}"
                                    Margin="25,2,0,8"
                                    FontSize="10"
                                    FontWeight="SemiBold"

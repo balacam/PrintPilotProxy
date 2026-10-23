@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <TextBlock Text="OBSERVABILITY" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+                <TextBlock Text="{loc:Loc Key=Eyebrow.Observability}" Style="{StaticResource PageEyebrowTextBlockStyle}" />
                 <TextBlock Text="{loc:Loc Key=Page.Logs}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">

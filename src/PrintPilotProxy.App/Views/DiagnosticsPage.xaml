@@ -15,7 +15,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <TextBlock Text="SYSTEM HEALTH" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+                <TextBlock Text="{loc:Loc Key=Eyebrow.SystemHealth}" Style="{StaticResource PageEyebrowTextBlockStyle}" />
                 <TextBlock Text="{loc:Loc Key=Page.Diagnostics}" Style="{StaticResource HeaderTextBlockStyle}" Margin="0" />
             </StackPanel>
             <Button Grid.Column="1"

@@ -13,7 +13,7 @@
     <StackPanel>
         <!-- Page heading -->
         <StackPanel Margin="0,0,0,20">
-            <TextBlock Text="CONFIGURATION" Style="{StaticResource PageEyebrowTextBlockStyle}" />
+            <TextBlock Text="{loc:Loc Key=Eyebrow.Configuration}" Style="{StaticResource PageEyebrowTextBlockStyle}" />
             <TextBlock Text="{loc:Loc Key=Page.NetworkSettings}"
                        Style="{StaticResource HeaderTextBlockStyle}"
                        Margin="0" />
@@ -227,15 +227,15 @@
                                    VerticalAlignment="Center" />
                     </Border>
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock Text="Internet Connection"
+                        <TextBlock Text="{loc:Loc Key=Net.InternetConnection}"
                                    Style="{StaticResource SubheaderTextBlockStyle}"
                                    Margin="0" />
-                        <TextBlock Text="Configure how the proxy connects to the internet."
+                        <TextBlock Text="{loc:Loc Key=Net.InternetConnectionDesc}"
                                    Style="{StaticResource MutedTextBlockStyle}"
                                    Margin="0,3,0,0" />
                     </StackPanel>
-                    <Button Grid.Column="2" 
-                            Content="Test Connection" 
+                    <Button Grid.Column="2"
+                            Content="{loc:Loc Key=Net.TestConnection}"
                             Command="{Binding TestConnectionCommand}"
                             Style="{StaticResource SecondaryButtonStyle}"
                             VerticalAlignment="Center" />
@@ -250,12 +250,12 @@
 
                     <Border Grid.Column="0" Style="{StaticResource InsetPanelStyle}">
                         <StackPanel>
-                            <TextBlock Text="Connection Mode" Style="{StaticResource FieldLabelTextBlockStyle}" Margin="0,0,0,12" />
-                            <RadioButton Content="Direct Connection"
+                            <TextBlock Text="{loc:Loc Key=Net.ConnectionMode}" Style="{StaticResource FieldLabelTextBlockStyle}" Margin="0,0,0,12" />
+                            <RadioButton Content="{loc:Loc Key=Net.UpstreamDirect}"
                                          GroupName="UpstreamModeGroup"
                                          IsChecked="{Binding UpstreamModeDirect}"
                                          Margin="0,0,0,12" />
-                            <RadioButton Content="Manual Proxy"
+                            <RadioButton Content="{loc:Loc Key=Net.UpstreamManual}"
                                          GroupName="UpstreamModeGroup"
                                          IsChecked="{Binding UpstreamModeManual}" />
                         </StackPanel>
@@ -276,23 +276,28 @@
                             
                             <!-- Host and Port -->
                             <StackPanel Grid.Row="0" Grid.Column="0">
-                                <TextBlock Text="Upstream Host" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                                <TextBlock Text="{loc:Loc Key=Net.UpstreamHost}" Style="{StaticResource FieldLabelTextBlockStyle}" />
                                 <TextBox Text="{Binding UpstreamHost, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                             <StackPanel Grid.Row="0" Grid.Column="2">
-                                <TextBlock Text="Port" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                                <TextBlock Text="{loc:Loc Key=Net.UpstreamPort}" Style="{StaticResource FieldLabelTextBlockStyle}" />
                                 <TextBox Text="{Binding UpstreamPort, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                             
                             <!-- Credentials -->
                             <StackPanel Grid.Row="2" Grid.Column="0">
-                                <TextBlock Text="Username (Optional)" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                                <TextBlock Text="{loc:Loc Key=Net.UpstreamUsername}" Style="{StaticResource FieldLabelTextBlockStyle}" />
                                 <TextBox Text="{Binding UpstreamUsername, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                             <StackPanel Grid.Row="2" Grid.Column="2">
-                                <TextBlock Text="Password" Style="{StaticResource FieldLabelTextBlockStyle}" />
-                                <!-- For simplicity, standard TextBox is used. A secure PasswordBox requires code-behind bindings, but standard TextBox is easier since this runs as User and sends to IPC. -->
-                                <TextBox Text="{Binding UpstreamPassword, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{loc:Loc Key=Net.UpstreamPassword}" Style="{StaticResource FieldLabelTextBlockStyle}" />
+                                <!-- PasswordBox cannot be data-bound; the code-behind keeps it in step with UpstreamPassword. -->
+                                <PasswordBox x:Name="UpstreamPasswordBox" PasswordChanged="OnUpstreamPasswordChanged" />
+                                <TextBlock Text="{loc:Loc Key=Net.UpstreamPasswordHint}"
+                                           Style="{StaticResource MutedTextBlockStyle}"
+                                           FontSize="11"
+                                           TextWrapping="Wrap"
+                                           Margin="0,4,0,0" />
                             </StackPanel>
                         </Grid>
                     </Border>

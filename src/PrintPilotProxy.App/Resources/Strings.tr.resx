@@ -312,8 +312,8 @@
   <!-- About -->
   <data name="Nav.About" xml:space="preserve"><value>Hakkında</value></data>
   <data name="Page.About" xml:space="preserve"><value>Hakkında</value></data>
-  <data name="About.Subtitle" xml:space="preserve"><value>Yüksek performanslı kurumsal yazdırma proxysi ve ağ güvenliği köprüsü.</value></data>
-  <data name="About.Description" xml:space="preserve"><value>PrintPilotProxy, kurumsal altyapılarda güvenli, denetimli ve izlenebilir ağ yazdırma işlemleri sağlar. İş uygulamalarını yerel ve ağ yazıcılarına ayrıntılı erişim kontrolü (ACL) ile bağlar.</value></data>
+  <data name="About.Subtitle" xml:space="preserve"><value>Kısıtlı ağlardaki PrintPilot istemcileri için güvenli ileri yönlü proxy.</value></data>
+  <data name="About.Description" xml:space="preserve"><value>PrintPilotProxy, hastane, banka ve kurumsal intranet gibi kısıtlı ağlardaki PrintPilot istemcilerinin dış hizmetlere denetimli bir HTTP CONNECT tüneli üzerinden ulaşmasını sağlar. Erişim varsayılan olarak reddedilir: yalnızca izin verilen istemci IP adresleri ve hedef portlar kabul edilir, isteğe bağlı olarak HMAC kimlik doğrulaması kullanılabilir. Şifreli trafik çözülmeden iletilir.</value></data>
   <data name="About.SystemInfo" xml:space="preserve"><value>Sistem ve Ortam Bilgileri</value></data>
   <data name="About.Version" xml:space="preserve"><value>Sürüm</value></data>
   <data name="About.Runtime" xml:space="preserve"><value>Çalışma Zamanı</value></data>
@@ -328,14 +328,56 @@
   <data name="About.OpenConfig" xml:space="preserve"><value>Veri Klasörünü Aç</value></data>
   <data name="About.OpenConfigDesc" xml:space="preserve"><value>Program yapılandırması ve durum dosyalarını görüntüler</value></data>
   <data name="About.KeyFeatures" xml:space="preserve"><value>Temel Yetenekler</value></data>
-  <data name="About.Feature1.Title" xml:space="preserve"><value>Yüksek Hızlı Akış Proxysi</value></data>
-  <data name="About.Feature1.Desc" xml:space="preserve"><value>Düşük gecikmeli RAW, LPR ve HTTP/IPP yazdırma veri aktarımı ve güçlü bağlantı yönetimi.</value></data>
+  <data name="About.Feature1.Title" xml:space="preserve"><value>Şifreli Tünelleme</value></data>
+  <data name="About.Feature1.Desc" xml:space="preserve"><value>HTTP CONNECT tünelleri istemci trafiğini uçtan uca taşır; TLS trafiği hiçbir zaman çözülmez veya incelenmez.</value></data>
   <data name="About.Feature2.Title" xml:space="preserve"><value>Erişim Kontrolü ve ACL</value></data>
-  <data name="About.Feature2.Desc" xml:space="preserve"><value>Yazıcı filolarını izole etmek için sıkı IP/CIDR istemci izin listesi ve hedef port kısıtlaması.</value></data>
+  <data name="About.Feature2.Desc" xml:space="preserve"><value>Varsayılan olarak reddeden IP/CIDR istemci izin listesi, hedef port kısıtlamaları ve isteğe bağlı HMAC kimlik doğrulaması.</value></data>
   <data name="About.Feature3.Title" xml:space="preserve"><value>Dayanıklı Windows Hizmeti</value></data>
-  <data name="About.Feature3.Desc" xml:space="preserve"><value>Anında yapılandırma güncellemeleri ile yüksek erişilebilirlikli arka plan hizmeti olarak çalışır.</value></data>
+  <data name="About.Feature3.Desc" xml:space="preserve"><value>Arka planda Windows hizmeti olarak çalışır, hata sonrasında proxy'yi yeniden başlatır ve yapılandırma değişikliklerini hemen uygular.</value></data>
   <data name="About.Feature4.Title" xml:space="preserve"><value>Tanılama ve Denetim</value></data>
-  <data name="About.Feature4.Desc" xml:space="preserve"><value>Entegre güvenlik duruşu denetimi, canlı telemetri ve yapılandırılmış tanılama günlükleri.</value></data>
-  <data name="About.Copyright" xml:space="preserve"><value>Telif Hakkı © 2026 PrintPilotProxy Katkıda Bulunanları. MIT Lisansı altında dağıtılmaktadır.</value></data>
+  <data name="About.Feature4.Desc" xml:space="preserve"><value>Yerleşik güvenlik denetimi, canlı trafik izleme ve yapılandırılmış tanılama günlükleri.</value></data>
+  <data name="About.Copyright" xml:space="preserve"><value>Telif Hakkı © 2026 balacam. MIT Lisansı altında dağıtılmaktadır.</value></data>
   <data name="About.SysInfoCopied" xml:space="preserve"><value>Sistem bilgileri panoya kopyalandı!</value></data>
+  <data name="Eyebrow.Application" xml:space="preserve"><value>UYGULAMA</value></data>
+  <data name="Eyebrow.AccessControl" xml:space="preserve"><value>ERİŞİM KONTROLÜ</value></data>
+  <data name="Eyebrow.Overview" xml:space="preserve"><value>GENEL BAKIŞ</value></data>
+  <data name="Eyebrow.SystemHealth" xml:space="preserve"><value>SİSTEM DURUMU</value></data>
+  <data name="Eyebrow.NetworkSecurity" xml:space="preserve"><value>AĞ GÜVENLİĞİ</value></data>
+  <data name="Eyebrow.Preferences" xml:space="preserve"><value>TERCİHLER</value></data>
+  <data name="Eyebrow.Observability" xml:space="preserve"><value>İZLEME</value></data>
+  <data name="Eyebrow.ControlCenter" xml:space="preserve"><value>KONTROL MERKEZİ</value></data>
+  <data name="Eyebrow.Operations" xml:space="preserve"><value>İŞLEMLER</value></data>
+  <data name="Eyebrow.Configuration" xml:space="preserve"><value>YAPILANDIRMA</value></data>
+  <data name="Eyebrow.SecurityPosture" xml:space="preserve"><value>GÜVENLİK DURUMU</value></data>
+  <data name="About.ProductionReady" xml:space="preserve"><value>ÜRETİME HAZIR</value></data>
+  <data name="MainWindow.Subtitle" xml:space="preserve"><value>Yönetim konsolu</value></data>
+  <data name="Cli.NamePlaceholder" xml:space="preserve"><value>örn. PrintPilot-PC-01</value></data>
+  <data name="Cli.IpPlaceholder" xml:space="preserve"><value>192.168.1.0/24 veya 10.0.0.5</value></data>
+  <data name="Cli.DescriptionPlaceholder" xml:space="preserve"><value>örn. Muhasebe bilgisayarı</value></data>
+  <data name="Net.InternetConnection" xml:space="preserve"><value>İnternet Bağlantısı</value></data>
+  <data name="Net.InternetConnectionDesc" xml:space="preserve"><value>Proxy'nin internete nasıl bağlanacağını yapılandırın.</value></data>
+  <data name="Net.TestConnection" xml:space="preserve"><value>Bağlantıyı Test Et</value></data>
+  <data name="Net.ConnectionMode" xml:space="preserve"><value>Bağlantı Modu</value></data>
+  <data name="Net.UpstreamDirect" xml:space="preserve"><value>Doğrudan Bağlantı</value></data>
+  <data name="Net.UpstreamManual" xml:space="preserve"><value>Elle Proxy Ayarı</value></data>
+  <data name="Net.UpstreamHost" xml:space="preserve"><value>Üst Proxy Sunucusu</value></data>
+  <data name="Net.UpstreamPort" xml:space="preserve"><value>Port</value></data>
+  <data name="Net.UpstreamUsername" xml:space="preserve"><value>Kullanıcı adı (isteğe bağlı)</value></data>
+  <data name="Net.UpstreamPassword" xml:space="preserve"><value>Parola</value></data>
+  <data name="Net.UpstreamPasswordHint" xml:space="preserve"><value>Kayıtlı parolayı korumak için boş bırakın.</value></data>
+  <data name="Net.Msgs.PasswordProtectFailed" xml:space="preserve"><value>Parola şifrelenemediği için hiçbir değişiklik uygulanmadı: {0}</value></data>
+  <data name="Net.Msgs.TestRunning" xml:space="preserve"><value>İnternet bağlantısı test ediliyor...</value></data>
+  <data name="Net.Msgs.TestConnectedDirect" xml:space="preserve"><value>Bağlantı başarılı: internete doğrudan erişilebiliyor.</value></data>
+  <data name="Net.Msgs.TestConnectedViaUpstream" xml:space="preserve"><value>Bağlantı başarılı: internete üst proxy üzerinden erişilebiliyor.</value></data>
+  <data name="Net.Msgs.TestFailed" xml:space="preserve"><value>Bağlantı başarısız: {0}</value></data>
+  <data name="Net.Msgs.TestNoResult" xml:space="preserve"><value>İnternet testi çalıştırılamadı.</value></data>
+  <data name="Net.Msgs.TestError" xml:space="preserve"><value>Test sırasında hata: {0}</value></data>
+  <data name="Net.Test.DNSFailure" xml:space="preserve"><value>DNS ad çözümlemesi başarısız oldu.</value></data>
+  <data name="Net.Test.TargetUnreachable" xml:space="preserve"><value>Test adresine ulaşılamadı.</value></data>
+  <data name="Net.Test.Timeout" xml:space="preserve"><value>Bağlantı zaman aşımına uğradı.</value></data>
+  <data name="Net.Test.UnknownFailure" xml:space="preserve"><value>Bilinmeyen bir hata oluştu.</value></data>
+  <data name="Net.Test.UpstreamUnavailable" xml:space="preserve"><value>Üst proxy'ye ulaşılamıyor.</value></data>
+  <data name="Net.Test.UpstreamAuthenticationFailed" xml:space="preserve"><value>Üst proxy kullanıcı adını veya parolayı reddetti.</value></data>
+  <data name="Page.ProxySettings" xml:space="preserve"><value>Proxy Ayarları</value></data>
+  <data name="ProxySettings.Moved" xml:space="preserve"><value>Bu sayfa Ağ Ayarları'na taşındı.</value></data>
 </root>

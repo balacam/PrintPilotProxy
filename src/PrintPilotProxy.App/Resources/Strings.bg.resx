@@ -308,4 +308,74 @@
   <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Прокси модулът е спрян.</value></data>
   <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Прокси модулът е рестартиран.</value></data>
   <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Изпълнението на командата беше неуспешно.</value></data>
+  <data name="Nav.About" xml:space="preserve"><value>Относно</value></data>
+  <data name="Page.About" xml:space="preserve"><value>Относно</value></data>
+  <data name="About.SystemInfo" xml:space="preserve"><value>Система и среда</value></data>
+  <data name="About.Version" xml:space="preserve"><value>Версия</value></data>
+  <data name="About.Runtime" xml:space="preserve"><value>Среда за изпълнение</value></data>
+  <data name="About.Platform" xml:space="preserve"><value>Операционна система</value></data>
+  <data name="About.Architecture" xml:space="preserve"><value>Архитектура</value></data>
+  <data name="About.InstallLocation" xml:space="preserve"><value>Инсталационна папка</value></data>
+  <data name="About.Links" xml:space="preserve"><value>Инструменти и съхранение</value></data>
+  <data name="About.CopySysInfo" xml:space="preserve"><value>Копиране на системната информация</value></data>
+  <data name="About.CopySysInfoDesc" xml:space="preserve"><value>Копира данни за хардуера, средата за изпълнение и операционната система в клипборда</value></data>
+  <data name="About.OpenLogs" xml:space="preserve"><value>Отваряне на папката с дневници</value></data>
+  <data name="About.OpenLogsDesc" xml:space="preserve"><value>Преглед на дневниците за достъп на проксито и диагностичните файлове на услугата</value></data>
+  <data name="About.OpenConfig" xml:space="preserve"><value>Отваряне на папката с данни</value></data>
+  <data name="About.OpenConfigDesc" xml:space="preserve"><value>Преглед на конфигурацията на програмата и файловете със състояние</value></data>
+  <data name="About.KeyFeatures" xml:space="preserve"><value>Основни възможности</value></data>
+  <data name="About.Feature2.Title" xml:space="preserve"><value>Контрол на достъпа и ACL</value></data>
+  <data name="About.Feature3.Title" xml:space="preserve"><value>Устойчива Windows услуга</value></data>
+  <data name="About.Feature4.Title" xml:space="preserve"><value>Диагностика и одит</value></data>
+  <data name="About.SysInfoCopied" xml:space="preserve"><value>Системната информация е копирана в клипборда!</value></data>
+  <data name="About.Subtitle" xml:space="preserve"><value>Сигурен препращащ прокси сървър за клиенти на PrintPilot в мрежи с ограничен достъп.</value></data>
+  <data name="About.Description" xml:space="preserve"><value>PrintPilotProxy позволява на клиентите на PrintPilot в мрежи с ограничен достъп, като болници, банки и корпоративни интранет мрежи, да достигат до външните си услуги през контролиран HTTP CONNECT тунел. Достъпът е забранен по подразбиране: приемат се само разрешени клиентски IP адреси и целеви портове, с незадължително HMAC удостоверяване. Шифрованият трафик се препраща, без да се дешифрира.</value></data>
+  <data name="About.Feature1.Title" xml:space="preserve"><value>Шифровано тунелиране</value></data>
+  <data name="About.Feature1.Desc" xml:space="preserve"><value>HTTP CONNECT тунелите пренасят клиентския трафик от край до край; TLS трафикът никога не се дешифрира и не се проверява.</value></data>
+  <data name="About.Feature2.Desc" xml:space="preserve"><value>Списък с разрешени клиенти по IP/CIDR със забрана по подразбиране, ограничения на целевите портове и незадължително HMAC удостоверяване.</value></data>
+  <data name="About.Feature3.Desc" xml:space="preserve"><value>Работи във фонов режим като Windows услуга, рестартира проксито след грешки и прилага промените в конфигурацията незабавно.</value></data>
+  <data name="About.Feature4.Desc" xml:space="preserve"><value>Вграден одит на сигурността, наблюдение на трафика в реално време и структурирани диагностични дневници.</value></data>
+  <data name="About.Copyright" xml:space="preserve"><value>Авторско право © 2026 balacam. Разпространява се под лиценза MIT.</value></data>
+  <data name="Eyebrow.Application" xml:space="preserve"><value>ПРИЛОЖЕНИЕ</value></data>
+  <data name="Eyebrow.AccessControl" xml:space="preserve"><value>КОНТРОЛ НА ДОСТЪПА</value></data>
+  <data name="Eyebrow.Overview" xml:space="preserve"><value>ОБЗОР</value></data>
+  <data name="Eyebrow.SystemHealth" xml:space="preserve"><value>СЪСТОЯНИЕ НА СИСТЕМАТА</value></data>
+  <data name="Eyebrow.NetworkSecurity" xml:space="preserve"><value>МРЕЖОВА СИГУРНОСТ</value></data>
+  <data name="Eyebrow.Preferences" xml:space="preserve"><value>ПРЕДПОЧИТАНИЯ</value></data>
+  <data name="Eyebrow.Observability" xml:space="preserve"><value>НАБЛЮДЕНИЕ</value></data>
+  <data name="Eyebrow.ControlCenter" xml:space="preserve"><value>КОНТРОЛЕН ЦЕНТЪР</value></data>
+  <data name="Eyebrow.Operations" xml:space="preserve"><value>ОПЕРАЦИИ</value></data>
+  <data name="Eyebrow.Configuration" xml:space="preserve"><value>КОНФИГУРАЦИЯ</value></data>
+  <data name="Eyebrow.SecurityPosture" xml:space="preserve"><value>НИВО НА СИГУРНОСТ</value></data>
+  <data name="About.ProductionReady" xml:space="preserve"><value>ГОТОВО ЗА ПРОДУКЦИЯ</value></data>
+  <data name="MainWindow.Subtitle" xml:space="preserve"><value>Конзола за управление</value></data>
+  <data name="Cli.NamePlaceholder" xml:space="preserve"><value>напр. PrintPilot-PC-01</value></data>
+  <data name="Cli.IpPlaceholder" xml:space="preserve"><value>192.168.1.0/24 или 10.0.0.5</value></data>
+  <data name="Cli.DescriptionPlaceholder" xml:space="preserve"><value>напр. Работна станция на счетоводството</value></data>
+  <data name="Net.InternetConnection" xml:space="preserve"><value>Интернет връзка</value></data>
+  <data name="Net.InternetConnectionDesc" xml:space="preserve"><value>Настройте как проксито се свързва с интернет.</value></data>
+  <data name="Net.TestConnection" xml:space="preserve"><value>Тест на връзката</value></data>
+  <data name="Net.ConnectionMode" xml:space="preserve"><value>Режим на връзка</value></data>
+  <data name="Net.UpstreamDirect" xml:space="preserve"><value>Директна връзка</value></data>
+  <data name="Net.UpstreamManual" xml:space="preserve"><value>Ръчен прокси</value></data>
+  <data name="Net.UpstreamHost" xml:space="preserve"><value>Хост на горестоящия прокси</value></data>
+  <data name="Net.UpstreamPort" xml:space="preserve"><value>Порт</value></data>
+  <data name="Net.UpstreamUsername" xml:space="preserve"><value>Потребителско име (незадължително)</value></data>
+  <data name="Net.UpstreamPassword" xml:space="preserve"><value>Парола</value></data>
+  <data name="Net.UpstreamPasswordHint" xml:space="preserve"><value>Оставете празно, за да запазите съхранената парола.</value></data>
+  <data name="Net.Msgs.PasswordProtectFailed" xml:space="preserve"><value>Паролата не можа да бъде шифрована, затова не бяха приложени промени: {0}</value></data>
+  <data name="Net.Msgs.TestRunning" xml:space="preserve"><value>Тестване на интернет връзката...</value></data>
+  <data name="Net.Msgs.TestConnectedDirect" xml:space="preserve"><value>Връзката е успешна: интернет е достъпен директно.</value></data>
+  <data name="Net.Msgs.TestConnectedViaUpstream" xml:space="preserve"><value>Връзката е успешна: интернет е достъпен през горестоящия прокси.</value></data>
+  <data name="Net.Msgs.TestFailed" xml:space="preserve"><value>Връзката е неуспешна: {0}</value></data>
+  <data name="Net.Msgs.TestNoResult" xml:space="preserve"><value>Тестът на интернет връзката не можа да бъде изпълнен.</value></data>
+  <data name="Net.Msgs.TestError" xml:space="preserve"><value>Грешка по време на теста: {0}</value></data>
+  <data name="Net.Test.DNSFailure" xml:space="preserve"><value>Неуспешно DNS разрешаване на имена.</value></data>
+  <data name="Net.Test.TargetUnreachable" xml:space="preserve"><value>Тестовият адрес е недостъпен.</value></data>
+  <data name="Net.Test.Timeout" xml:space="preserve"><value>Времето за връзка изтече.</value></data>
+  <data name="Net.Test.UnknownFailure" xml:space="preserve"><value>Възникна неизвестна грешка.</value></data>
+  <data name="Net.Test.UpstreamUnavailable" xml:space="preserve"><value>Горестоящият прокси е недостъпен.</value></data>
+  <data name="Net.Test.UpstreamAuthenticationFailed" xml:space="preserve"><value>Горестоящият прокси отхвърли потребителското име или паролата.</value></data>
+  <data name="Page.ProxySettings" xml:space="preserve"><value>Настройки на проксито</value></data>
+  <data name="ProxySettings.Moved" xml:space="preserve"><value>Тази страница е преместена в „Мрежови настройки“.</value></data>
 </root>

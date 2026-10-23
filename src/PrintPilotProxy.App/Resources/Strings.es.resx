@@ -308,4 +308,74 @@
   <data name="Svc.Msgs.EngineStopped" xml:space="preserve"><value>Motor proxy detenido.</value></data>
   <data name="Svc.Msgs.EngineRestarted" xml:space="preserve"><value>Motor proxy reiniciado.</value></data>
   <data name="Svc.Msgs.CommandFailed" xml:space="preserve"><value>Error al ejecutar el comando.</value></data>
+  <data name="Nav.About" xml:space="preserve"><value>Acerca de</value></data>
+  <data name="Page.About" xml:space="preserve"><value>Acerca de</value></data>
+  <data name="About.SystemInfo" xml:space="preserve"><value>Sistema y entorno</value></data>
+  <data name="About.Version" xml:space="preserve"><value>Versión</value></data>
+  <data name="About.Runtime" xml:space="preserve"><value>Entorno de ejecución</value></data>
+  <data name="About.Platform" xml:space="preserve"><value>Sistema operativo</value></data>
+  <data name="About.Architecture" xml:space="preserve"><value>Arquitectura</value></data>
+  <data name="About.InstallLocation" xml:space="preserve"><value>Directorio de instalación</value></data>
+  <data name="About.Links" xml:space="preserve"><value>Herramientas y almacenamiento</value></data>
+  <data name="About.CopySysInfo" xml:space="preserve"><value>Copiar información del sistema</value></data>
+  <data name="About.CopySysInfoDesc" xml:space="preserve"><value>Copiar los detalles de hardware, entorno de ejecución y sistema operativo al portapapeles</value></data>
+  <data name="About.OpenLogs" xml:space="preserve"><value>Abrir carpeta de registros</value></data>
+  <data name="About.OpenLogsDesc" xml:space="preserve"><value>Ver los registros de acceso del proxy y los archivos de diagnóstico del servicio</value></data>
+  <data name="About.OpenConfig" xml:space="preserve"><value>Abrir carpeta de datos</value></data>
+  <data name="About.OpenConfigDesc" xml:space="preserve"><value>Ver la configuración del programa y los archivos de estado</value></data>
+  <data name="About.KeyFeatures" xml:space="preserve"><value>Funciones principales</value></data>
+  <data name="About.Feature2.Title" xml:space="preserve"><value>Control de acceso y ACL</value></data>
+  <data name="About.Feature3.Title" xml:space="preserve"><value>Servicio de Windows resiliente</value></data>
+  <data name="About.Feature4.Title" xml:space="preserve"><value>Diagnóstico y auditoría</value></data>
+  <data name="About.SysInfoCopied" xml:space="preserve"><value>¡Información del sistema copiada al portapapeles!</value></data>
+  <data name="About.Subtitle" xml:space="preserve"><value>Proxy de reenvío seguro para clientes PrintPilot en redes restringidas.</value></data>
+  <data name="About.Description" xml:space="preserve"><value>PrintPilotProxy permite que los clientes PrintPilot de redes restringidas, como hospitales, bancos e intranets corporativas, accedan a sus servicios externos a través de un túnel HTTP CONNECT controlado. El acceso se deniega por defecto: solo se aceptan las direcciones IP de cliente y los puertos de destino permitidos, con autenticación HMAC opcional. El tráfico cifrado se reenvía sin descifrarlo.</value></data>
+  <data name="About.Feature1.Title" xml:space="preserve"><value>Túnel cifrado</value></data>
+  <data name="About.Feature1.Desc" xml:space="preserve"><value>Los túneles HTTP CONNECT transportan el tráfico del cliente de extremo a extremo; el tráfico TLS nunca se descifra ni se inspecciona.</value></data>
+  <data name="About.Feature2.Desc" xml:space="preserve"><value>Lista de clientes IP/CIDR permitidos con denegación por defecto, restricción de puertos de destino y autenticación HMAC opcional.</value></data>
+  <data name="About.Feature3.Desc" xml:space="preserve"><value>Se ejecuta en segundo plano como servicio de Windows, reinicia el proxy tras un fallo y aplica los cambios de configuración al instante.</value></data>
+  <data name="About.Feature4.Desc" xml:space="preserve"><value>Auditoría de seguridad integrada, supervisión del tráfico en tiempo real y registros de diagnóstico estructurados.</value></data>
+  <data name="About.Copyright" xml:space="preserve"><value>Copyright © 2026 balacam. Distribuido bajo la licencia MIT.</value></data>
+  <data name="Eyebrow.Application" xml:space="preserve"><value>APLICACIÓN</value></data>
+  <data name="Eyebrow.AccessControl" xml:space="preserve"><value>CONTROL DE ACCESO</value></data>
+  <data name="Eyebrow.Overview" xml:space="preserve"><value>RESUMEN</value></data>
+  <data name="Eyebrow.SystemHealth" xml:space="preserve"><value>ESTADO DEL SISTEMA</value></data>
+  <data name="Eyebrow.NetworkSecurity" xml:space="preserve"><value>SEGURIDAD DE RED</value></data>
+  <data name="Eyebrow.Preferences" xml:space="preserve"><value>PREFERENCIAS</value></data>
+  <data name="Eyebrow.Observability" xml:space="preserve"><value>SUPERVISIÓN</value></data>
+  <data name="Eyebrow.ControlCenter" xml:space="preserve"><value>CENTRO DE CONTROL</value></data>
+  <data name="Eyebrow.Operations" xml:space="preserve"><value>OPERACIONES</value></data>
+  <data name="Eyebrow.Configuration" xml:space="preserve"><value>CONFIGURACIÓN</value></data>
+  <data name="Eyebrow.SecurityPosture" xml:space="preserve"><value>POSTURA DE SEGURIDAD</value></data>
+  <data name="About.ProductionReady" xml:space="preserve"><value>LISTO PARA PRODUCCIÓN</value></data>
+  <data name="MainWindow.Subtitle" xml:space="preserve"><value>Consola de administración</value></data>
+  <data name="Cli.NamePlaceholder" xml:space="preserve"><value>p. ej., PrintPilot-PC-01</value></data>
+  <data name="Cli.IpPlaceholder" xml:space="preserve"><value>192.168.1.0/24 o 10.0.0.5</value></data>
+  <data name="Cli.DescriptionPlaceholder" xml:space="preserve"><value>p. ej., Equipo de contabilidad</value></data>
+  <data name="Net.InternetConnection" xml:space="preserve"><value>Conexión a Internet</value></data>
+  <data name="Net.InternetConnectionDesc" xml:space="preserve"><value>Configure cómo se conecta el proxy a Internet.</value></data>
+  <data name="Net.TestConnection" xml:space="preserve"><value>Probar conexión</value></data>
+  <data name="Net.ConnectionMode" xml:space="preserve"><value>Modo de conexión</value></data>
+  <data name="Net.UpstreamDirect" xml:space="preserve"><value>Conexión directa</value></data>
+  <data name="Net.UpstreamManual" xml:space="preserve"><value>Proxy manual</value></data>
+  <data name="Net.UpstreamHost" xml:space="preserve"><value>Host del proxy ascendente</value></data>
+  <data name="Net.UpstreamPort" xml:space="preserve"><value>Puerto</value></data>
+  <data name="Net.UpstreamUsername" xml:space="preserve"><value>Nombre de usuario (opcional)</value></data>
+  <data name="Net.UpstreamPassword" xml:space="preserve"><value>Contraseña</value></data>
+  <data name="Net.UpstreamPasswordHint" xml:space="preserve"><value>Déjelo en blanco para conservar la contraseña guardada.</value></data>
+  <data name="Net.Msgs.PasswordProtectFailed" xml:space="preserve"><value>No se pudo cifrar la contraseña, por lo que no se aplicó ningún cambio: {0}</value></data>
+  <data name="Net.Msgs.TestRunning" xml:space="preserve"><value>Probando la conexión a Internet...</value></data>
+  <data name="Net.Msgs.TestConnectedDirect" xml:space="preserve"><value>Conexión correcta: Internet es accesible directamente.</value></data>
+  <data name="Net.Msgs.TestConnectedViaUpstream" xml:space="preserve"><value>Conexión correcta: Internet es accesible a través del proxy ascendente.</value></data>
+  <data name="Net.Msgs.TestFailed" xml:space="preserve"><value>Error de conexión: {0}</value></data>
+  <data name="Net.Msgs.TestNoResult" xml:space="preserve"><value>No se pudo ejecutar la prueba de Internet.</value></data>
+  <data name="Net.Msgs.TestError" xml:space="preserve"><value>Error durante la prueba: {0}</value></data>
+  <data name="Net.Test.DNSFailure" xml:space="preserve"><value>Error en la resolución de nombres DNS.</value></data>
+  <data name="Net.Test.TargetUnreachable" xml:space="preserve"><value>No se pudo alcanzar la dirección de prueba.</value></data>
+  <data name="Net.Test.Timeout" xml:space="preserve"><value>Se agotó el tiempo de espera de la conexión.</value></data>
+  <data name="Net.Test.UnknownFailure" xml:space="preserve"><value>Se produjo un error desconocido.</value></data>
+  <data name="Net.Test.UpstreamUnavailable" xml:space="preserve"><value>No se puede acceder al proxy ascendente.</value></data>
+  <data name="Net.Test.UpstreamAuthenticationFailed" xml:space="preserve"><value>El proxy ascendente rechazó el nombre de usuario o la contraseña.</value></data>
+  <data name="Page.ProxySettings" xml:space="preserve"><value>Configuración del proxy</value></data>
+  <data name="ProxySettings.Moved" xml:space="preserve"><value>Esta página se ha trasladado a Configuración de red.</value></data>
 </root>

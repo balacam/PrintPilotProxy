@@ -29,7 +29,7 @@ Defines how the proxy binds to network interfaces.
 | :--- | :--- | :--- | :--- |
 | `Mode` | string | `"Auto"` | Allowed values: `"Auto"`, `"SpecificAddress"`, `"AllInterfaces"`, `"SpecificAdapter"`. |
 | `ListenAddress` | string | `"0.0.0.0"` | IP to bind to. Only used if `Mode` is `SpecificAddress`. |
-| `AdapterName` | string | `null` | Network adapter name. Only used if `Mode` is `SpecificAdapter`. |
+| `AdapterName` | string | `null` | Network adapter name. Only used if `Mode` is `SpecificAdapter`; the proxy listens on every usable address of that adapter (IPv4 and IPv6). |
 | `Port` | int | `3128` | The TCP port for the HTTP CONNECT proxy. |
 | `MaxConnections` | int | `1000` | Max concurrent proxy connections. |
 | `ConnectionTimeoutSeconds` | int | `120` | Timeout for idle connections. |

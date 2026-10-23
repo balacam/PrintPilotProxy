@@ -243,7 +243,7 @@ public partial class NetworkSettingsViewModel : ObservableObject
         UpstreamHost = config.UpstreamProxy.Host ?? string.Empty;
         UpstreamPort = config.UpstreamProxy.Port.ToString();
         UpstreamUsername = config.UpstreamProxy.Username ?? string.Empty;
-        UpstreamPassword = string.IsNullOrEmpty(config.UpstreamProxy.ProtectedPassword) ? string.Empty : "(unchanged)";
+        UpstreamPassword = string.IsNullOrEmpty(config.UpstreamProxy.ProtectedPassword) ? string.Empty : ConfigurationSecrets.UnchangedSentinel;
     }
 
     // ─── Validate ────────────────────────────────────────────────────────────
@@ -370,23 +370,24 @@ public partial class NetworkSettingsViewModel : ObservableObject
                 current.UpstreamProxy.Port = upPort;
             }
             current.UpstreamProxy.Username = UpstreamModeManual ? UpstreamUsername.Trim() : null;
-            if (UpstreamModeManual && UpstreamPassword != "(unchanged)" && !string.IsNullOrEmpty(UpstreamPassword))
+            // An empty box or the placeholder keeps the stored password: `current` still carries the service's
+            // placeholder, which the service resolves back to the stored value.
+            if (UpstreamModeManual && UpstreamPassword != ConfigurationSecrets.UnchangedSentinel && !string.IsNullOrEmpty(UpstreamPassword))
             {
-                // We'd ideally hash/protect this here, but UI doesn't have IDataProtector.
-                // Wait, we need to protect it! But `IpcClientService` doesn't have DPAPI access since it's just the UI.
-                // Actually, UI runs as the User. `DataProtectionScope.LocalMachine` allows any user to unprotect.
-                // Instead of DPAPI in UI, maybe we send plaintext and the service protects it?
-                // The requirements: "UI doğrudan config.json yazmamalı", "Password ... IPC response içinde plaintext dönmeyecek".
-                // If we send it via IPC as part of UpdateConfiguration, it is in memory. We can protect it before sending if we use DPAPI in UI too.
-                // Let's just use System.Security.Cryptography.ProtectedData here directly, or add it to a service.
-                // Since this is WPF running on Windows, we can just call ProtectedData.Protect.
+                // A new password is protected with machine-scope DPAPI before it leaves the UI, so it never travels
+                // over the named pipe in plain text. The service unprotects it with the same scope and entropy.
                 try
                 {
                     var bytes = System.Text.Encoding.UTF8.GetBytes(UpstreamPassword);
                     var protectedBytes = System.Security.Cryptography.ProtectedData.Protect(bytes, System.Text.Encoding.UTF8.GetBytes("PrintPilotProxy"), System.Security.Cryptography.DataProtectionScope.LocalMachine);
                     current.UpstreamProxy.ProtectedPassword = Convert.ToBase64String(protectedBytes);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    // Without this the old password would be kept silently while the user believes it was changed.
+                    SetStatus(LocalizationService.Instance.GetFormat("Net.Msgs.PasswordProtectFailed", ex.Message), isError: true);
+                    return;
+                }
             }
             else if (!UpstreamModeManual)
             {
@@ -432,25 +433,28 @@ public partial class NetworkSettingsViewModel : ObservableObject
         try
         {
             IsBusy = true;
-            StatusMessage = "Testing connection...";
-            StatusIsError = false;
+            SetStatus(LocalizationService.Instance["Net.Msgs.TestRunning"], isError: false);
 
             var result = await _ipc.RunInternetTestAsync();
-            if (!string.IsNullOrEmpty(result))
+            switch (result)
             {
-                if (result == "ConnectedDirect" || result == "ConnectedViaUpstream")
-                    SetStatus($"Connection successful ({result})", isError: false);
-                else
-                    SetStatus($"Connection failed: {result}", isError: true);
-            }
-            else
-            {
-                SetStatus("Failed to run internet test.", isError: true);
+                case null or "":
+                    SetStatus(LocalizationService.Instance["Net.Msgs.TestNoResult"], isError: true);
+                    break;
+                case "ConnectedDirect":
+                    SetStatus(LocalizationService.Instance["Net.Msgs.TestConnectedDirect"], isError: false);
+                    break;
+                case "ConnectedViaUpstream":
+                    SetStatus(LocalizationService.Instance["Net.Msgs.TestConnectedViaUpstream"], isError: false);
+                    break;
+                default:
+                    SetStatus(LocalizationService.Instance.GetFormat("Net.Msgs.TestFailed", DescribeTestFailure(result)), isError: true);
+                    break;
             }
         }
         catch (Exception ex)
         {
-            SetStatus($"Error during test: {ex.Message}", isError: true);
+            SetStatus(LocalizationService.Instance.GetFormat("Net.Msgs.TestError", ex.Message), isError: true);
         }
         finally
         {
@@ -459,6 +463,17 @@ public partial class NetworkSettingsViewModel : ObservableObject
     }
 
     // ─── Helpers ─────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Turns a failure code from the service's internet test into a sentence. An unknown code (for example an
+    /// error text from the service) is shown as it is.
+    /// </summary>
+    private static string DescribeTestFailure(string code)
+    {
+        var key = "Net.Test." + code;
+        var text = LocalizationService.Instance[key];
+        return text == key ? code : text;
+    }
 
     private static bool IsIpAssignedLocally(string ip, out List<string> allLocalIps)
     {
