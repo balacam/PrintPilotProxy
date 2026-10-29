@@ -31,18 +31,20 @@ The project is built on .NET 8 and consists of cleanly separated layers:
 ## Security Model Overview
 The proxy operates on a "deny-by-default" principle:
 - **Network ACL**: Client IP addresses must be explicitly allowed.
-- **HMAC Authentication**: Optional zero-touch HMAC-based authentication prevents unauthorized use of the proxy even from allowed IPs.
+- **HMAC Authentication**: Optional HMAC checks protocol membership and replay freshness. Its secret is derived from shared client/proxy code, so it is not a unique device or application identity; keep IP ACLs and firewall restrictions.
 - **Destination Restrictions**: Outbound connections are restricted to specific ports (e.g., 80, 443).
 - **No Interception**: The proxy does NOT perform SSL/TLS decryption.
 
 ## Important Implementation Notes
 - Configuration is stored locally at `C:\ProgramData\PrintPilotProxy\config.json`.
 - The root certificate for the underlying Unobtanium engine is stored in `C:\ProgramData\PrintPilotProxy\rootCert.pfx` (used for engine initialization, though MITM is disabled).
-- While the Core is .NET 8 Standard and platform-independent, the current hosting environment is tightly coupled to Windows (Windows Service & WPF). Linux support (systemd) is planned.
+- Core targets `net8.0`, not .NET Standard. The host and WPF management app are Windows-specific; a Linux/systemd deployment is not implemented here.
 - **Build & Test Ambiguity (MSB1011)**: The repository contains both `PrintPilotProxy.sln` and `PrintPilotProxy.slnx`. Developers and AI assistants must explicitly target `PrintPilotProxy.sln` (e.g., `dotnet build PrintPilotProxy.sln` and `dotnet test PrintPilotProxy.sln`) to avoid MSBuild error `MSB1011`.
 
 
 ## Documentation Index
+
+- `docs/AGENT_CONTEXT.md` - Actual defaults, management privileges, limits and cross-repository boundaries.
 
 - `docs/ARCHITECTURE.md` - System overview, component breakdown, engine details.
 - `docs/COMMUNICATION.md` - Protocols (HTTP CONNECT, UDP Discovery, IPC, PrintPilot integration).

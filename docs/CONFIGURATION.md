@@ -31,7 +31,7 @@ Defines how the proxy binds to network interfaces.
 | `ListenAddress` | string | `"0.0.0.0"` | IP to bind to. Only used if `Mode` is `SpecificAddress`. |
 | `AdapterName` | string | `null` | Network adapter name. Only used if `Mode` is `SpecificAdapter`; the proxy listens on every usable address of that adapter (IPv4 and IPv6). |
 | `Port` | int | `3128` | The TCP port for the HTTP CONNECT proxy. |
-| `MaxConnections` | int | `1000` | Max concurrent proxy connections. |
+| `MaxConnections` | int | `1000` | Advisory warning threshold, not an admission limit. The engine logs excess connections; it does not refuse them on this count. `ConnectionTimeoutSeconds` is enforced separately. |
 | `ConnectionTimeoutSeconds` | int | `120` | Timeout for idle connections. |
 
 ## Upstream Proxy Settings (`UpstreamProxy`)
