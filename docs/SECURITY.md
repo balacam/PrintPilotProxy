@@ -26,11 +26,12 @@ Forward proxies can be abused to connect to internal services or send spam if un
 - **Behavior**: The proxy inspects the requested URI in the HTTP `CONNECT` request. If the destination port is not explicitly in `AllowedDestinationPorts` (default 80, 443, 587, 465), the connection is dropped (HTTP 403 Forbidden).
 
 ## 3. Cryptographic HMAC Authentication (Zero-Touch)
-To prevent unauthorized software on *allowed* IP addresses from abusing the proxy, PrintPilotProxy supports a zero-touch cryptographic authentication scheme (`PrintPilot-HMAC`).
+PrintPilotProxy supports an optional protocol HMAC (`PrintPilot-HMAC`) and replay cache. The shared secret is derived from distributed code, so software that reproduces the derivation can generate valid headers. This is not per-device enrollment or proof that an allowed-IP request came from the genuine PrintPilot executable.
 - **Enabled via Config**: `Security.RequireAuthentication = true`
 - **Protocol**: Clients must include a `Proxy-Authorization` or `X-PrintPilot-Auth` header.
 - **Mechanism**: The header contains a protocol version, a Unix timestamp, a random nonce, and a SHA-256 HMAC signature.
 - **Key Generation**: Both the Client and Proxy derive a shared secret using obfuscated byte fragments combined with a salt. No manual key exchange is required.
+- **Boundary**: Obfuscation is not secret provisioning. Retain the IP allow list and network firewall; use separately provisioned credentials if unique client authentication is required. Destination policy currently checks ports, not a domain or destination-IP allow list.
 - **Replay Protection**: The proxy enforces a strict clock skew validation (maximum 5 minutes) based on the timestamp. Requests with expired timestamps are rejected.
 
 ### Authentication Header Example

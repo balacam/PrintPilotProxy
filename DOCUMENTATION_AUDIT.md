@@ -1,5 +1,11 @@
 # PrintPilotProxy Documentation Audit & Status Report
 
+## Current review 2026-10-25
+
+Source `154a97a`: the distinction between fresh allow-list defaults and model defaults, shared HMAC identity limits, console-user management policy, advisory MaxConnections and Windows/net8.0 scope were checked. See [AGENT_CONTEXT](docs/AGENT_CONTEXT.md) and the [decision report](docs/archive/CODE_REVIEW_2026-10-25_TR.md). All 297 tests and the NuGet scan passed; live network/firewall/load were not tested. Only Markdown changed. The previous record below is historical, not a guarantee of present completeness.
+
+## Historical audit record
+
 ## Executive Summary
 This document provides a summary of the extensive documentation audit and restructuring performed on the PrintPilotProxy project. The primary goal was to ensure all documentation accurately reflects the source code, is comprehensive enough for AI (like NotebookLM) and developers to understand without reverse-engineering the codebase, and maintains a clean and consistent architecture without redundant or overlapping Markdown files.
 
