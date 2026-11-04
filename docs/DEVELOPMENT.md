@@ -3,7 +3,7 @@
 This guide explains how to set up the development environment, build the project, and run it locally.
 
 ## Prerequisites
-- **.NET 8.0 SDK** or later.
+- **.NET 10 SDK** or later (the projects target `net10.0` / `net10.0-windows`).
 - **Visual Studio 2022** (recommended for WPF support) or JetBrains Rider.
 - **Windows 10/11** (required for the WPF App and Windows Service testing).
 

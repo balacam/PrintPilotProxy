@@ -4,12 +4,12 @@ We welcome contributions! Please follow these guidelines:
 
 ## Getting Started
 1. Clone the repository: `git clone https://github.com/balacam/PrintPilotProxy.git`
-2. Ensure you have the .NET 8 SDK installed.
+2. Ensure you have the .NET 10 SDK installed.
 3. Build the solution: `dotnet build`
 4. Run tests: `dotnet test`
 
 ## Coding Conventions
-- We use C# and target .NET 8.
+- We use C# and target .NET 10.
 - Follow standard C# naming conventions.
 - Use nullable reference types.
 - Follow MVVM pattern for the WPF application.

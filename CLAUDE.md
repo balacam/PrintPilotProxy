@@ -1,6 +1,6 @@
 # PrintPilotProxy
 
-Secure forward HTTP CONNECT proxy for PrintPilot clients on restricted networks (hospitals, banks, intranets). .NET 8, Windows Service + WPF management app. Read `PROJECT_CONTEXT.md` first, then `docs/` (`ARCHITECTURE.md`, `SECURITY.md`, `COMMUNICATION.md`).
+Secure forward HTTP CONNECT proxy for PrintPilot clients on restricted networks (hospitals, banks, intranets). .NET 10, Windows Service + WPF management app. Read `PROJECT_CONTEXT.md` first, then `docs/` (`ARCHITECTURE.md`, `SECURITY.md`, `COMMUNICATION.md`).
 
 ## Commands
 

@@ -7,6 +7,7 @@
 - The About page, the page headings and the Internet Connection section are translated in all 13 UI languages; internet test results are shown as translated sentences instead of raw codes.
 - The About page describes what the product does: an HTTP CONNECT tunnel for PrintPilot clients, not a print stream relay.
 ### Changed
+- Version 1.0.3 targets .NET 10 LTS (`net10.0` / `net10.0-windows`, self-contained) instead of .NET 8, whose support ends on 2026-11-10. Microsoft.Extensions packages are 10.0.14 and Serilog.Extensions.Hosting is 10.0.0; the redundant `System.IO.Pipes.AccessControl` package is dropped because .NET 10 ships it.
 - Internal refactoring of the proxy engine and service worker: the access checks shared by CONNECT and plain HTTP requests, endpoint setup and IPC responses each live in one place. Behaviour is unchanged.
 
 ## [0.9.3] - 2026-08-22
