@@ -156,9 +156,11 @@ public enum ClientAccessMode
 public sealed class ClientAccessSettings
 {
     /// <summary>
-    /// Access mode.
+    /// Access mode. Defaults to <see cref="ClientAccessMode.AllowList"/> (deny by default), so a config file that lost its
+    /// clientAccess section or mode does not open the proxy to everyone. Files always write the mode, so an explicit
+    /// AllowAll is kept.
     /// </summary>
-    public ClientAccessMode Mode { get; set; } = ClientAccessMode.AllowAll;
+    public ClientAccessMode Mode { get; set; } = ClientAccessMode.AllowList;
 
     /// <summary>
     /// List of explicitly allowed clients.

@@ -10,7 +10,7 @@ Please do not report security vulnerabilities through public GitHub issues. Inst
 Its primary purpose is to allow restricted internal clients to reach external servers (like Office365 or SendGrid) securely.
 
 ## 1. Network ACL (Access Control List)
-A new installation starts in `AllowList` mode with an empty list, so no client is accepted until it is added. A configuration file that already exists keeps its mode; if it is `AllowAll`, change it to `AllowList` for production. The service logs a warning at start when the proxy listens on a publicly routable address, or accepts everyone without authentication on a non-loopback address.
+A new installation starts in `AllowList` mode with an empty list, so no client is accepted until it is added. A configuration file that already exists keeps its mode; if it is `AllowAll`, change it to `AllowList` for production. Since 1.0.3 a file whose `clientAccess` section or `mode` is missing is read as `AllowList`, not `AllowAll`. The service logs a warning at start when the proxy listens on a publicly routable address, or accepts everyone without authentication on a non-loopback address.
 - **IP / CIDR Validation**: The proxy verifies the incoming socket's IP address against the configured `AllowedClients` list.
 - **Action**: Any connection from an IP not on the allow list is immediately dropped (HTTP 403 Forbidden).
 

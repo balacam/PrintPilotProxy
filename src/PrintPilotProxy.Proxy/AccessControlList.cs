@@ -14,7 +14,7 @@ public sealed class AccessControlList : IAccessControlList
 {
     private readonly object _lock = new();
     private List<AllowedClient> _allowedClients = new();
-    private ClientAccessMode _clientAccessMode = ClientAccessMode.AllowAll;
+    private ClientAccessMode _clientAccessMode = ClientAccessMode.AllowList;
     private List<int> _allowedDestinationPorts = new() { 80, 443 };
     private bool _destinationPortRestrictionsEnabled = true;
 
