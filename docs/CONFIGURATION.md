@@ -52,7 +52,7 @@ Controls which IP addresses can connect to the proxy. **Deny-by-default is recom
 
 | Property | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `Mode` | string | `"AllowList"` on a new installation, `"AllowAll"` if the field is missing from an existing file | Allowed values: `"AllowAll"`, `"AllowList"`. A fresh install creates its configuration with `AllowList` and an empty list, so no client is accepted until one is added. Existing configuration files keep whatever mode they already contain. |
+| `Mode` | string | `"AllowList"` (also when the field or the whole `clientAccess` section is missing, since 1.0.3; before that a missing field meant `"AllowAll"`) | Allowed values: `"AllowAll"`, `"AllowList"`. A fresh install creates its configuration with `AllowList` and an empty list, so no client is accepted until one is added. Existing configuration files keep whatever mode they already contain. |
 | `AllowedClients` | array | `[]` | List of explicit client objects. Each object contains `Name` (string), `IpOrCidr` (string), `Description` (string) and `Enabled` (bool, default `true`); `Id`, `CreatedAt` and `ModifiedAt` are maintained automatically. |
 
 ## Security Settings (`Security`)

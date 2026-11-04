@@ -73,8 +73,8 @@ public partial class NetworkSettingsViewModel : ObservableObject
     [ObservableProperty] private bool _allowAllDestinationPorts = true;
     [ObservableProperty] private string _allowedDestinationPortsText = "80, 443";
 
-    [ObservableProperty] private bool _clientAccessAllowAll = true;
-    [ObservableProperty] private bool _clientAccessAllowList = false;
+    [ObservableProperty] private bool _clientAccessAllowAll;
+    [ObservableProperty] private bool _clientAccessAllowList = true;
 
     private ProxyConfiguration? _originalConfig;
 
