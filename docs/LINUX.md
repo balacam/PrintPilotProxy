@@ -3,7 +3,7 @@
 **Note: Linux support is currently PLANNED and not yet implemented.**
 
 ## Future Architecture
-When implemented, PrintPilotProxy will run on modern Linux distributions using the .NET 8 runtime. 
+When implemented, PrintPilotProxy will run on modern Linux distributions using the .NET 10 runtime. 
 It will run as a `systemd` service for background execution.
 
 ## Configuration

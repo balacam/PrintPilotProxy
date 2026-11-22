@@ -1,6 +1,6 @@
 # Architecture
 
-PrintPilotProxy is designed with a clean architecture and separation of concerns, heavily utilizing .NET 8 standard libraries.
+PrintPilotProxy is designed with a clean architecture and separation of concerns, heavily utilizing .NET 10 standard libraries.
 
 ## System Overview
 
@@ -62,5 +62,5 @@ flowchart TD
    - **Details**: Manages file paths (e.g., `C:\ProgramData\PrintPilotProxy`), reads/writes JSON configuration, and provides the HMAC authenticator logic.
 
 ## Cross-Platform Considerations
-While the solution currently focuses on Windows environments (utilizing Windows Services and WPF), the `Core`, `Proxy`, and `Infrastructure` layers are built on .NET 8. 
+While the solution currently focuses on Windows environments (utilizing Windows Services and WPF), the `Core`, `Proxy`, and `Infrastructure` layers are built on .NET 10. 
 **Planned Linux Support**: Future support for Linux will focus on headless operation running as a `systemd` service for background execution, leveraging the CLI for management. A graphical UI for Linux is not planned.

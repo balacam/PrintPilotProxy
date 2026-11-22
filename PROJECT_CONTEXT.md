@@ -15,7 +15,7 @@ PrintPilotProxy solves this problem by acting as a controlled intermediary. It s
 - **Security Boundaries**: The proxy only validates the IP ACL and the HMAC signature. It does not perform SSL/TLS decryption (no MITM). It simply forwards the encrypted traffic.
 
 ## Architecture Summary
-The project is built on .NET 8 and consists of cleanly separated layers:
+The project is built on .NET 10 LTS (since 1.0.3; .NET 8 support ended on 2026-11-10) and consists of cleanly separated layers:
 - **Service**: A headless Windows Service (`PrintPilotProxy.Service`) that hosts the proxy engine.
 - **Proxy**: The proxy engine implementation (`PrintPilotProxy.Proxy`) wrapping Unobtanium Web Proxy.
 - **Core**: Platform-agnostic domain models, interfaces, and business logic (`PrintPilotProxy.Core`).
@@ -38,7 +38,7 @@ The proxy operates on a "deny-by-default" principle:
 ## Important Implementation Notes
 - Configuration is stored locally at `C:\ProgramData\PrintPilotProxy\config.json`.
 - The root certificate for the underlying Unobtanium engine is stored in `C:\ProgramData\PrintPilotProxy\rootCert.pfx` (used for engine initialization, though MITM is disabled).
-- Core targets `net8.0`, not .NET Standard. The host and WPF management app are Windows-specific; a Linux/systemd deployment is not implemented here.
+- Core targets `net10.0`, not .NET Standard. The host and WPF management app are Windows-specific; a Linux/systemd deployment is not implemented here.
 - **Build & Test Ambiguity (MSB1011)**: The repository contains both `PrintPilotProxy.sln` and `PrintPilotProxy.slnx`. Developers and AI assistants must explicitly target `PrintPilotProxy.sln` (e.g., `dotnet build PrintPilotProxy.sln` and `dotnet test PrintPilotProxy.sln`) to avoid MSBuild error `MSB1011`.
 
 

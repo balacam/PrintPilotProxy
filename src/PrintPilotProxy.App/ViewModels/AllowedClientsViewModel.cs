@@ -14,8 +14,8 @@ public partial class AllowedClientsViewModel : ObservableObject
 {
     private readonly IpcClientService _ipc;
 
-    [ObservableProperty] private bool _modeAllowAll = true;
-    [ObservableProperty] private bool _modeAllowList = false;
+    [ObservableProperty] private bool _modeAllowAll;
+    [ObservableProperty] private bool _modeAllowList = true;
 
     public ObservableCollection<AllowedClientItem> Clients { get; } = new();
 

@@ -58,15 +58,15 @@
 <data name="Net.PortAndLimits" xml:space="preserve"><value>Port și limite</value></data>
 <data name="Net.ProxyPort" xml:space="preserve"><value>Port proxy</value></data>
 <data name="Net.DefaultPort" xml:space="preserve"><value>Implicit: 3128</value></data>
-<data name="Net.MaxConnections" xml:space="preserve"><value>Conexiuni maxime</value></data>
-<data name="Net.DefaultConnections" xml:space="preserve"><value>Implicit: 1000</value></data>
+<data name="Net.MaxConnections" xml:space="preserve"><value>Prag de avertizare conexiuni</value></data>
+<data name="Net.DefaultConnections" xml:space="preserve"><value>Peste această valoare se înregistrează un avertisment; conexiunile nu sunt refuzate. Implicit: 1000</value></data>
 <data name="Net.TimeoutSeconds" xml:space="preserve"><value>Limită de timp (secunde)</value></data>
 <data name="Net.DefaultTimeout" xml:space="preserve"><value>Implicit: 120</value></data>
 <data name="Net.Msgs.LoadFailed" xml:space="preserve"><value>Nu s-a putut încărca configurația din serviciu.</value></data>
 <data name="Net.Msgs.LoadError" xml:space="preserve"><value>Eroare la încărcare: {0}</value></data>
 <data name="Net.Msgs.ResetDone" xml:space="preserve"><value>Setările au fost restaurate la ultima valoare salvată.</value></data>
 <data name="Net.Msgs.PortInvalid" xml:space="preserve"><value>Portul &apos;{0}&apos; este invalid. Trebuie să fie între 1 și 65535.</value></data>
-<data name="Net.Msgs.MaxConnectionsInvalid" xml:space="preserve"><value>Conexiunile maxime trebuie să fie între 1 și 100000.</value></data>
+<data name="Net.Msgs.MaxConnectionsInvalid" xml:space="preserve"><value>Pragul de avertizare pentru conexiuni trebuie să fie între 1 și 100000.</value></data>
 <data name="Net.Msgs.TimeoutInvalid" xml:space="preserve"><value>Limita de timp trebuie să fie între 1 și 3600 secunde.</value></data>
 <data name="Net.Msgs.SelectAdapter" xml:space="preserve"><value>Selectează un adaptor de rețea.</value></data>
 <data name="Net.Msgs.IpInvalid" xml:space="preserve"><value>&apos;{0}&apos; nu este o adresă IP validă.</value></data>

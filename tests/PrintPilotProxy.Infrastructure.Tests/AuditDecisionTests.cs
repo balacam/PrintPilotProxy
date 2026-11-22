@@ -159,6 +159,12 @@ public class AuditDecisionTests
             await File.WriteAllTextAsync(configPath, "{\"schemaVersion\":2,\"clientAccess\":{\"mode\":\"allowAll\"}}");
             var existing = await manager.LoadAsync();
             existing.ClientAccess.Mode.Should().Be(ClientAccessMode.AllowAll);
+
+            // PX-03: a file that lost its clientAccess section, or only its mode, stays closed.
+            await File.WriteAllTextAsync(configPath, "{\"schemaVersion\":2}");
+            (await manager.LoadAsync()).ClientAccess.Mode.Should().Be(ClientAccessMode.AllowList);
+            await File.WriteAllTextAsync(configPath, "{\"schemaVersion\":2,\"clientAccess\":{\"allowedClients\":[]}}");
+            (await manager.LoadAsync()).ClientAccess.Mode.Should().Be(ClientAccessMode.AllowList);
         }
         finally
         {
