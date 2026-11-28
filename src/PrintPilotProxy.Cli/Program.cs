@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using PrintPilotProxy.Infrastructure;
 using PrintPilotProxy.Infrastructure.Ipc;
+using PrintPilotProxy.Infrastructure.Platform;
 using PrintPilotProxy.Core.Validation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ public class Program
                 await SendManagementCommandAsync(IpcMessageTypes.GetStatus);
                 break;
             case "validate":
-                ValidateConfiguration(args.Length > 1 ? args[1] : @"C:\ProgramData\PrintPilotProxy\config.json");
+                ValidateConfiguration(args.Length > 1 ? args[1] : PlatformPaths.CreateProvider().ConfigurationFilePath);
                 break;
             case "version":
                 Console.WriteLine($"PrintPilotProxy Version {typeof(Program).Assembly.GetName().Version}");

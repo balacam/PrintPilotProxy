@@ -17,7 +17,7 @@ public static class PrivateFileAcl
     {
         if (!OperatingSystem.IsWindows())
         {
-            return false;
+            return ApplyUnixMode(path, logger);
         }
 
         try
@@ -61,6 +61,32 @@ public static class PrivateFileAcl
         catch (Exception ex)
         {
             logger?.LogWarning(ex, "Could not restrict access to {Path}; it keeps its inherited permissions.", path);
+        }
+
+        return false;
+    }
+
+    /// <summary>Unix equivalent: owner-only access (0700 for folders, 0600 for files).</summary>
+    [System.Runtime.Versioning.UnsupportedOSPlatform("windows")]
+    private static bool ApplyUnixMode(string path, ILogger? logger)
+    {
+        try
+        {
+            if (Directory.Exists(path))
+            {
+                File.SetUnixFileMode(path, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+                return true;
+            }
+
+            if (File.Exists(path))
+            {
+                File.SetUnixFileMode(path, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            logger?.LogWarning(ex, "Could not restrict access to {Path}; it keeps its current permissions.", path);
         }
 
         return false;

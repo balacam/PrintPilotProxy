@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using System.Text.Json;
 using PrintPilotProxy.Core.Models;
 using PrintPilotProxy.Core.Validation;
+using PrintPilotProxy.Infrastructure.Platform;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
@@ -14,13 +15,14 @@ public class Program
     public static void Main(string[] args)
     {
         // The log sink honours the retention, size and level settings from config.json (read once at start).
-        var loggingSettings = ReadLoggingSettings(@"C:\ProgramData\PrintPilotProxy\config.json");
+        var paths = PlatformPaths.CreateProvider();
+        var loggingSettings = ReadLoggingSettings(paths.ConfigurationFilePath);
         var minimumLevel = new LoggingLevelSwitch(Enum.Parse<LogEventLevel>(LoggingPolicy.NormalizeMinimumLevel(loggingSettings)));
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(minimumLevel)
             .WriteTo.Console()
             .WriteTo.File(
-                @"C:\ProgramData\PrintPilotProxy\logs\service.log",
+                Path.Combine(paths.LogDirectory, "service.log"),
                 rollingInterval: RollingInterval.Day,
                 retainedFileCountLimit: LoggingPolicy.RetainedFileCount(loggingSettings),
                 fileSizeLimitBytes: LoggingPolicy.FileSizeLimitBytes(loggingSettings),
@@ -61,10 +63,13 @@ public class Program
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
+            // Each call is a no-op unless the process was started by that service manager, so one binary
+            // runs as a Windows Service, under systemd, or in a terminal.
             .UseWindowsService(options =>
             {
                 options.ServiceName = "PrintPilotProxy";
             })
+            .UseSystemd()
             .UseSerilog()
             .ConfigureServices((hostContext, services) =>
             {

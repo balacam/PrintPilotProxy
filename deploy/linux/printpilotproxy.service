@@ -1,0 +1,42 @@
+[Unit]
+Description=PrintPilotProxy forward proxy for PrintPilot clients
+Documentation=https://github.com/balacam/PrintPilotProxy/blob/main/docs/LINUX.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# UseSystemd() in the host sends the READY notification.
+Type=notify
+ExecStart=/opt/printpilotproxy/PrintPilotProxy.Service
+User=printpilotproxy
+Group=printpilotproxy
+Restart=on-failure
+RestartSec=10
+
+# Directories systemd creates and owns for the service account. They match UnixPathProvider:
+# /etc/printpilotproxy (config), /var/lib/printpilotproxy (data, secret.key), /var/log/printpilotproxy.
+ConfigurationDirectory=printpilotproxy
+StateDirectory=printpilotproxy
+LogsDirectory=printpilotproxy
+# The management socket /run/printpilotproxy/ipc.sock is 0660 printpilotproxy:printpilotproxy. Add an
+# administrator to that group (or use sudo) to run `printpilotproxy status|start|stop`.
+RuntimeDirectory=printpilotproxy
+RuntimeDirectoryMode=0750
+
+# The proxy listens on TCP 3128 and UDP 37421 (both above 1024): no capabilities are needed.
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=yes
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

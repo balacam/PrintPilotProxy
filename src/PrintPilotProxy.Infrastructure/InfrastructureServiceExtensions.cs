@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using PrintPilotProxy.Core.Interfaces;
 using PrintPilotProxy.Core.Security;
@@ -14,19 +15,30 @@ namespace PrintPilotProxy.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddSingleton<IPlatformPathProvider, WindowsPathProvider>();
             services.AddSingleton<IConfigurationManager, JsonConfigurationManager>();
 
+            // The network classes are plain .NET and work everywhere; the Windows prefix is historical.
             services.AddTransient<IPlatformNetworkManager, WindowsNetworkManager>();
-            services.AddTransient<IPlatformFirewallManager, WindowsFirewallManager>();
-            services.AddTransient<IPlatformServiceManager, WindowsServiceManager>();
             services.AddSingleton<INetworkInterfaceDiscovery, WindowsNetworkDiscovery>();
+
+            if (OperatingSystem.IsWindows())
+            {
+                services.AddSingleton<IPlatformPathProvider, WindowsPathProvider>();
+                services.AddTransient<IPlatformFirewallManager, WindowsFirewallManager>();
+                services.AddTransient<IPlatformServiceManager, WindowsServiceManager>();
+                services.AddSingleton<IDataProtector, DpapiDataProtector>();
+            }
+            else
+            {
+                services.AddSingleton<IPlatformPathProvider, UnixPathProvider>();
+                services.AddTransient<IPlatformFirewallManager, UnsupportedFirewallManager>();
+                services.AddTransient<IPlatformServiceManager, LinuxServiceManager>();
+                services.AddSingleton<IDataProtector, KeyFileDataProtector>();
+            }
 
             services.AddTransient<IDiagnosticsRunner, DiagnosticsRunner>();
             services.AddTransient<IInternetConnectivityTester, InternetConnectivityTester>();
             services.AddTransient<ISecurityAuditor, SecurityAuditor>();
-            services.AddSingleton<IDataProtector, DpapiDataProtector>();
-
             services.AddSingleton<IIpcServer, NamedPipeIpcServer>();
             services.AddSingleton<IIpcClient, NamedPipeIpcClient>();
             services.AddSingleton<IpcSecurityOptions>(sp =>

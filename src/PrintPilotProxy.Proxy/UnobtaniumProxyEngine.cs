@@ -22,6 +22,7 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
     private readonly INetworkInterfaceDiscovery _networkDiscovery;
     private readonly IProxyAuthenticator? _authenticator;
     private readonly IDataProtector _dataProtector;
+    private readonly IPlatformPathProvider? _paths;
     private ProxyServer? _proxyServer;
     private readonly List<ExplicitProxyEndPoint> _explicitEndPoints = new();
     private ProxyConfiguration? _configuration;
@@ -64,8 +65,10 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
         IAccessControlList acl,
         INetworkInterfaceDiscovery networkDiscovery,
         IDataProtector dataProtector,
-        IProxyAuthenticator? authenticator = null)
+        IProxyAuthenticator? authenticator = null,
+        IPlatformPathProvider? paths = null)
     {
+        _paths = paths;
         _logger = logger;
         _acl = acl;
         _networkDiscovery = networkDiscovery;
@@ -97,7 +100,11 @@ public sealed class UnobtaniumProxyEngine : IProxyEngine
             _proxyServer.ConnectionTimeOutSeconds = configuration.Listener.ConnectionTimeoutSeconds;
             
             // Generate and store certificate in ProgramData instead of Program Files
-            var dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "PrintPilotProxy");
+            // Windows keeps the historical ProgramData location; elsewhere the platform data directory is used
+            // (CommonApplicationData would be /usr/share, which is read-only for the service).
+            var dataFolder = !OperatingSystem.IsWindows() && _paths is not null
+                ? _paths.DataDirectory
+                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "PrintPilotProxy");
             if (!Directory.Exists(dataFolder)) Directory.CreateDirectory(dataFolder);
             _proxyServer.CertificateManager.RootCertificateName = "PrintPilotProxyRoot";
             _proxyServer.CertificateManager.PfxFilePath = Path.Combine(dataFolder, "rootCert.pfx");

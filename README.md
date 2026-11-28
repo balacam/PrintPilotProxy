@@ -45,7 +45,7 @@ graph LR
 ## Supported Platforms
 
 - **Windows**: Fully supported (Windows Service, WPF UI).
-- **Linux**: Planned for future releases (systemd, headless operation).
+- **Linux**: Headless operation under systemd (service host, CLI); see [docs/LINUX.md](docs/LINUX.md). The WPF management app is Windows-only.
 
 ## Quick Start
 

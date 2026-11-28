@@ -43,7 +43,7 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
 
         _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         _serverTask = Task.Run(() => ServerLoopAsync(_cts.Token), CancellationToken.None);
-        _logger.LogInformation("IPC server started on local pipe {PipeName}.", PipeName);
+        _logger.LogInformation("IPC server started on local endpoint {Endpoint}.", IpcEndpoint.Name);
         return Task.CompletedTask;
     }
 
@@ -266,7 +266,14 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
     {
         if (!OperatingSystem.IsWindows())
         {
-            return IpcClientIdentity.Unknown;
+            // The socket file is created 0660 (owner and group only), so the kernel has already decided who may
+            // connect: the service account, root and members of its group. They are the administrators here.
+            return new IpcClientIdentity
+            {
+                Name = "unix-socket-peer",
+                IsAdministrator = true,
+                IsActiveConsoleUser = true
+            };
         }
 
         return ResolveWindowsCallerIdentity(stream);
@@ -338,7 +345,7 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
     {
         if (!OperatingSystem.IsWindows())
         {
-            throw new PlatformNotSupportedException("The PrintPilotProxy management pipe is implemented for Windows only.");
+            return CreateUnixServerStream();
         }
 
         try
@@ -384,6 +391,28 @@ public sealed class NamedPipeIpcServer : IIpcServer, IAsyncDisposable
             _logger.LogError(ex, "Cannot create management pipe with the required ACL. IPC remains unavailable.");
             throw;
         }
+    }
+
+    [System.Runtime.Versioning.UnsupportedOSPlatform("windows")]
+    private NamedPipeServerStream CreateUnixServerStream()
+    {
+        var path = IpcEndpoint.Name;
+        var directory = Path.GetDirectoryName(path);
+        if (!string.IsNullOrEmpty(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        var stream = new NamedPipeServerStream(
+            path,
+            PipeDirection.InOut,
+            NamedPipeServerStream.MaxAllowedServerInstances,
+            PipeTransmissionMode.Byte,
+            PipeOptions.Asynchronous);
+
+        // .NET creates the socket world-readable; only its owner and group may talk to the service.
+        File.SetUnixFileMode(path, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.GroupRead | UnixFileMode.GroupWrite);
+        return stream;
     }
 
     public async ValueTask DisposeAsync() => await StopAsync();

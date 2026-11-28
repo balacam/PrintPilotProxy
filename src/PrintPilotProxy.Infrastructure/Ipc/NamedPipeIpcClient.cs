@@ -52,7 +52,7 @@ public sealed class NamedPipeIpcClient : IIpcClient, IDisposable, IAsyncDisposab
         try
         {
             var stream = new NamedPipeClientStream(
-                ".", NamedPipeIpcServer.PipeName, PipeDirection.InOut,
+                ".", IpcEndpoint.Name, PipeDirection.InOut,
                 PipeOptions.Asynchronous | PipeOptions.WriteThrough);
             await stream.ConnectAsync(ConnectTimeoutMs, cancellationToken);
 

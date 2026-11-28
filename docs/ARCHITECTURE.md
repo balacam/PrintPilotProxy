@@ -63,4 +63,4 @@ flowchart TD
 
 ## Cross-Platform Considerations
 While the solution currently focuses on Windows environments (utilizing Windows Services and WPF), the `Core`, `Proxy`, and `Infrastructure` layers are built on .NET 10. 
-**Planned Linux Support**: Future support for Linux will focus on headless operation running as a `systemd` service for background execution, leveraging the CLI for management. A graphical UI for Linux is not planned.
+**Linux**: The service host, CLI and engine run headless under `systemd` (see [LINUX.md](LINUX.md)). `Infrastructure` picks the implementations at registration time with `OperatingSystem.IsWindows()`: `WindowsPathProvider`/`UnixPathProvider`, `WindowsServiceManager`/`LinuxServiceManager`, `WindowsFirewallManager`/`UnsupportedFirewallManager`, `DpapiDataProtector`/`KeyFileDataProtector`. The management channel is a Named Pipe on Windows and a Unix domain socket (`IpcEndpoint`) elsewhere. A graphical UI for Linux is not planned.

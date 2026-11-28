@@ -1,0 +1,2 @@
+# Install as /usr/lib/sysusers.d/printpilotproxy.conf, then run: systemd-sysusers
+u printpilotproxy - "PrintPilotProxy service account" /var/lib/printpilotproxy

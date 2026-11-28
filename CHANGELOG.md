@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Linux support for the headless parts: the service host runs under systemd (`UseSystemd`, unit in `deploy/linux`), the CLI and proxy engine run unchanged. Linux paths (`/etc`, `/var/lib`, `/var/log`), a Unix-socket management channel (`0660`), AES-GCM secret protection with a key file, owner-only file modes and a systemctl-based service manager were added. The Windows behaviour and pipe name are unchanged. See `docs/LINUX.md`.
 ### Fixed
 - `SpecificAdapter` listener mode now binds every usable address of the adapter. It used to bind only the first one, which Windows often lists as IPv6, leaving IPv4 clients unable to connect.
 - The upstream proxy password is entered in a masked password box instead of a plain text box, and a failure to encrypt it is reported instead of silently keeping the old password.

@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="PrintPilotProxy.Infrastructure.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PrintPilotProxy.Core\PrintPilotProxy.Core.csproj" />
   </ItemGroup>
 
